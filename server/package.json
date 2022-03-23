@@ -4,12 +4,17 @@
   "description": "jaab.dev webserver",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "cross-env PORT=3000 node index.js",
+    "start:dev": "cross-env PORT=3000 nodemon index.js"
   },
   "author": "Janis Abols",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3"
+    "cross-env": "^7.0.3",
+    "express": "^4.17.3",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
