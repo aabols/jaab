@@ -4,5 +4,8 @@ module.exports = {
     },
     api: {
         path: "/api"
+    },
+    client: {
+        path: "/app"
     }
 };

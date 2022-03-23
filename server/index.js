@@ -1,12 +1,13 @@
 // import express
 const express = require("express");
 
-// import configuration
+// configuration
 const config = require("../config.js");
 
-// set parameters
+// parameters
 const PORT = process.env.PORT || config.server.port;
 const API_ROOT = config.api.path;
+const CLIENT_ROOT = config.client.path;
 
 // load routers
 const apiRouter = require('./routes/api');
@@ -18,7 +19,7 @@ const app = express();
 
 // use routers
 app.use(API_ROOT, apiRouter);
-app.use("/", clientRouter);
+app.use(CLIENT_ROOT, clientRouter);
 
 // launch app
 app.listen(

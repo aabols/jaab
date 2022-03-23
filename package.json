@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "jaab.dev website",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "prestart:server:dev": "cd client && npm run build",
+    "start:server:dev": "nodemon server/index.js"
+  },
   "author": "Janis Abols",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
