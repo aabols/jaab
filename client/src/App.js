@@ -1,25 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
+import Keyboard from './components/keyboard';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const logEvent = (event)=>{
+        console.log(event);
+    }
+
+    return (
+        <div className="App">
+            <Keyboard onKeyDown={logEvent}/>
+        </div>
+    );
 }
 
 export default App;
