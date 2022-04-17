@@ -4,7 +4,6 @@
   "description": "jaab.dev website",
   "main": "index.js",
   "scripts": {
-    "prestart:server:dev": "cd client && npm run build",
     "start:server:dev": "nodemon server/index.js"
   },
   "author": "Janis Abols",
