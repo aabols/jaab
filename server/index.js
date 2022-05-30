@@ -3,6 +3,7 @@ const express = require('express');
 
 // import standard middleware
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // configuration
 const config = require('../config.js');
@@ -18,6 +19,7 @@ const clientRouter = require('./routes/client');
 const app = express();
 
 // use middleware
+app.use(cors());
 app.use(bodyParser.json());
 
 // use routers
