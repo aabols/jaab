@@ -1,11 +1,11 @@
 // import express
-const express = require("express");
+const express = require('express');
 
 // import standard middleware
 const bodyParser = require('body-parser');
 
 // configuration
-const config = require("../config.js");
+const config = require('../config.js');
 
 // parameters
 const PORT = config.server.port;
