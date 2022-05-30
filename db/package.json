@@ -7,7 +7,11 @@
   "author": "Janis Abols",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "mysql2": "^2.3.3",
     "sequelize": "^6.19.0"
+  },
+  "devDependencies": {
+    "sqlite3": "^5.0.8"
   }
 }

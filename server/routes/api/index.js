@@ -4,16 +4,11 @@ const express = require('express');
 // create router
 const router = express.Router();
 
-// get route
-router.get(
-    '/:root?/*',
-    (req, res) => {
-        res.json({
-            message: "Hello API!",
-            params: req.params
-        });
-    }
-);
+// import routes
+const User = require('./user');
+
+// use routes
+router.use('/user', User);
 
 // export router
 module.exports = router;
