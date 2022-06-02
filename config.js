@@ -3,7 +3,8 @@ require('dotenv').config();
 
 module.exports = {
     server: {
-        port: process.env.PORT || 3001
+        port: process.env.PORT || 3001,
+        jwtKey: process.env.JWT_SECRET_KEY || 'pleb'
     },
     db: {
         development: {
