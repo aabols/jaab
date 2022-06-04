@@ -6,6 +6,29 @@ POST http://localhost:3001/api/user
 content-type: application/json
 
 {
-    "name": "Janis Abols",
+    "username": "Janis Abols",
     "password": "password"
 }
+
+
+### REGISTER
+POST http://localhost:3001/register
+Content-Type: application/json
+
+{
+    "username": "Janis",
+    "password": "password"
+}
+
+
+### LOGIN
+POST http://localhost:3001/login
+Content-Type: application/json
+
+{
+    "username": "Janis",
+    "password": "password"
+}
+
+
+### 

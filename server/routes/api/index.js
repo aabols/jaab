@@ -5,10 +5,10 @@ const express = require('express');
 const router = express.Router();
 
 // import routes
-const User = require('./user');
+const userRoute = require('./user');
 
 // use routes
-router.use('/user', User);
+router.use('/user', userRoute);
 
 // export router
 module.exports = router;

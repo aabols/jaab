@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const User = sequelize.define(
     'User',
     {
-        name: DataTypes.STRING,
+        username: DataTypes.STRING,
         password: {
             type: DataTypes.STRING,
             set(password) {
@@ -22,6 +22,9 @@ const User = sequelize.define(
         scopes: {
             withPassword: {
                 attributes: {}
+            },
+            jwt: {
+                attributes: ['id', 'username']
             }
         }
     }

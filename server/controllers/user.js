@@ -1,5 +1,4 @@
-// import User model
-const User = require('../../../db/models/user');
+const User = require('../../db/models/user');
 
 const getUsers = async (req, res) => {
     try {
@@ -14,6 +13,7 @@ const addUser = async (req, res) => {
     try {
         const newUser = await User.create(req.body);
         await newUser.reload();
+        console.log(newUser.toJSON());
         res.status(201).json(newUser);
     } catch(err) {
         res.status(400).json({ message: err.message });
