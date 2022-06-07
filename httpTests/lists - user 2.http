@@ -1,0 +1,12 @@
+### GET LISTS
+GET http://localhost:3001/api/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjU0NjA5MzkyfQ.kI7wqWhB2vZY4qiLaAA1V-sU85RqqlDMI7BAVwvTw38
+
+### CREATE LIST
+POST http://localhost:3001/api/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjU0NjA5MzkyfQ.kI7wqWhB2vZY4qiLaAA1V-sU85RqqlDMI7BAVwvTw38
+Content-Type: application/json
+
+{
+    "title": "User2List"
+}

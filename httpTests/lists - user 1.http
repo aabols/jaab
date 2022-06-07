@@ -1,0 +1,17 @@
+### GET LISTS
+GET http://localhost:3001/api/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU0NjA5MzYwfQ.Ev7t-7O6LEmZ2OuNSth1bqamsAPIuvzFOFpbs_2ltNg
+
+### CREATE LIST
+POST http://localhost:3001/api/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU0NjA5MzYwfQ.Ev7t-7O6LEmZ2OuNSth1bqamsAPIuvzFOFpbs_2ltNg
+Content-Type: application/json
+
+{ "title": "mySampleList" }
+
+### SHARE LIST
+POST http://localhost:3001/api/list/share
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU0NjA5MzYwfQ.Ev7t-7O6LEmZ2OuNSth1bqamsAPIuvzFOFpbs_2ltNg
+Content-Type: application/json
+
+{ "userId": 2, "listId": 1}

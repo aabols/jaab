@@ -2,15 +2,15 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const config = require('../../config');
-const User = require('../../db/models/user');
+const User = require('../../db/models/User');
 
 const JWT_SECRET_KEY = config.server.jwtKey;
 
 const loginUser = async (req, res) => {
     try {
-        const userWithPassword = await User.scope('withPassword').findOne({ where: { username: req.body.username }});
+        const userWithPassword = await User.scope('withPassword').findOne({ where: { email: req.body.email }});
         if (userWithPassword === null) {
-            res.status(404).json({ message: 'Username not found' });
+            res.status(404).json({ message: 'User not found' });
             return;
         };
 

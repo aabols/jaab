@@ -1,16 +1,6 @@
 ### GET ALL USERS
 GET http://localhost:3001/api/user
 
-### CREATE NEW USER
-POST http://localhost:3001/api/user
-content-type: application/json
-
-{
-    "username": "Janis Abols",
-    "password": "password"
-}
-
-
 ### REGISTER
 POST http://localhost:3001/register
 Content-Type: application/json
@@ -31,4 +21,19 @@ Content-Type: application/json
 }
 
 
-### 
+### Authorised request
+GET http://localhost:3001/api/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJKYW5pcyIsImlhdCI6MTY1NDYwMjM3N30.YWsMVCD90BqI5LE0aEERh5wl_-Cnyzj0s3F3E2kl6Ug
+
+
+### GET LISTS
+GET http://localhost:3001/api/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJKYW5pcyIsImlhdCI6MTY1NDYwMjM3N30.YWsMVCD90BqI5LE0aEERh5wl_-Cnyzj0s3F3E2kl6Ug
+
+### CREATE LIST
+POST http://localhost:3001/api/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJKYW5pcyIsImlhdCI6MTY1NDYwMjM3N30.YWsMVCD90BqI5LE0aEERh5wl_-Cnyzj0s3F3E2kl6Ug
+
+{
+    "name": "mySecondList"
+}

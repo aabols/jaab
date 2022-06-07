@@ -8,7 +8,8 @@ const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const apiRouter = require('./routes/api');
 const clientRouter = require('./routes/client');
-const auth = require('./middleware/auth');
+const authUser = require('./middleware/authUser');
+const onlyAuthUsers = require('./middleware/onlyAuthUsers');
 
 
 const app = express();
@@ -17,16 +18,15 @@ const PORT = config.server.port;
 // MIDDLEWARE
 app.use(cors());
 app.use(bodyParser.json());
-app.use(auth);
+app.use(authUser);
 
 // ROUTES
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
-app.use('/api', apiRouter);
+app.use('/api', onlyAuthUsers, apiRouter);
 app.use('/', clientRouter);
 
-
-sequelize.sync({ force: true });
+sequelize.sync({ force: false });
 
 function logPort() { console.log(`Server listening on ${PORT}...`) };
 

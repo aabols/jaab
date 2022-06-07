@@ -1,0 +1,33 @@
+### REGISTER USER 1
+POST http://localhost:3001/register
+Content-Type: application/json
+
+{
+    "email": "janis@abols.com",
+    "password": "password",
+    "firstName": "Janis",
+    "lastName": "Abols"
+}
+
+### LOGIN USER 1
+POST http://localhost:3001/login
+Content-Type: application/json
+
+{ "email": "janis@abols.com", "password": "password" }
+
+### REGISTER USER 2
+POST http://localhost:3001/register
+Content-Type: application/json
+
+{
+    "email": "juris@valdis.com",
+    "password": "juris123",
+    "firstName": "Juris",
+    "lastName": "Valdis"
+}
+
+### LOGIN USER 2
+POST http://localhost:3001/login
+Content-Type: application/json
+
+{ "email": "juris@valdis.com", "password": "juris123" }
