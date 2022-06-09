@@ -1,5 +1,5 @@
-const List = require('../../db/models/List');
-const User = require('../../db/models/User')
+const List = require('../db/models/List');
+const User = require('../db/models/User');
 
 const getLists = async (req, res) => {
     try {

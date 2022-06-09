@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const config = require('../config.js');
-const sequelize = require('../db');
+const sequelize = require('./db');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const apiRouter = require('./routes/api');

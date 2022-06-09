@@ -4,13 +4,11 @@
   "description": "jaab.dev website",
   "main": "index.js",
   "scripts": {
-    "start:server:dev": "nodemon server/index.js"
+    "devStart": "cd server && start npm run devStart"
   },
   "author": "Janis Abols",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  },
+  "devDependencies": {},
   "dependencies": {
     "dotenv": "^16.0.1"
   }
