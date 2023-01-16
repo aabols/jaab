@@ -15,8 +15,6 @@ export default function Register() {
   const registering = useSelector(state => state.user.registering);
   const dispatch = useDispatch();
 
-  console.log(registering);
-
   const handleInputChange = (e) => {
     setFormValues((oldValues) => ({
       ...oldValues,
@@ -64,7 +62,11 @@ export default function Register() {
         value={formValues.password}
         onChange={handleInputChange}
       /><br/>
-      <input type="submit" value="Register"></input>
+      <input
+        type="submit"
+        disabled={registering}
+        value={'Register' + (registering ? 'ing...' : '')}
+      />
     </form>
   );
 };
