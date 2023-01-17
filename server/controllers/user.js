@@ -10,10 +10,18 @@ const getUsers = async (req, res) => {
 };
 
 const addUser = async (req, res) => {
+    const {email, ...rest} = req.body;
     try {
-        const newUser = await User.create(req.body);
-        await newUser.reload();
-        res.status(201).json(newUser);
+        const [user, created] = await User.findOrCreate({
+            where: { email: email },
+            defaults: rest
+        });
+        await user.reload();
+        if (!created) {
+            res.status(400).json({ message: 'E-mail already in use'});
+        } else {
+            res.status(201).json(user);
+        }
     } catch(err) {
         res.status(400).json({ message: err.message });
     }
