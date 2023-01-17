@@ -1,13 +1,14 @@
 import './App.css';
-import NavBar from './components/NavBar';
 import Register from './components/Register';
+import Login from './components/Login';
 
 function App() {
-  return (
-    <div>
-      <Register/>
-    </div>
-  );
+    return (
+        <div>
+            <Login/>
+            <Register/>
+        </div>
+    );
 }
 
 export default App;

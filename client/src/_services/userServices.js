@@ -1,3 +1,5 @@
+import { userConstants } from "../_constants/userConstants";
+
 const register = (user) => {
     const requestOptions = {
         method: 'POST',
@@ -5,10 +7,26 @@ const register = (user) => {
         body: JSON.stringify(user)
     };
 
-    return fetch(
-        '/register',
-        requestOptions
-    ).then(handleResponse);
+    return fetch('/register', requestOptions)
+        .then(handleResponse);
+};
+
+const login = (user) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+    };
+
+    return fetch('/login', requestOptions)
+        .then(handleResponse)
+        .then((data) => {
+            localStorage.setItem(
+                userConstants.JWT_LOCAL_STORAGE_KEY,
+                data.token
+            );
+            return data;
+        });
 };
 
 const handleResponse = (response) => {
@@ -23,5 +41,6 @@ const handleResponse = (response) => {
 };
 
 export const userServices = {
-    register
+    register,
+    login
 };

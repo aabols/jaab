@@ -4,7 +4,6 @@ import { userServices } from '../_services/userServices';
 const register = (user) => {
     return (dispatch) => {
         const handleSuccess = (response) => {
-            console.log(response);
             dispatch({
                 type: userConstants.REGISTER_SUCCESS,
                 payload: response.email
@@ -18,10 +17,31 @@ const register = (user) => {
         };
         dispatch({ type: userConstants.REGISTER_REQUEST });
         userServices.register(user)
-            .then(handleSuccess, handleError)
+            .then(handleSuccess, handleError);
+    };
+};
+
+const login = (user) => {
+    return (dispatch) => {
+        const handleSuccess = (response) => {
+            dispatch({
+                type: userConstants.LOGIN_SUCCESS,
+                payload: response.token
+            });
+        };
+        const handleError = (response) => {
+            dispatch({
+                type: userConstants.LOGIN_FAILURE,
+                payload: response
+            });
+        };
+        dispatch({ type: userConstants.LOGIN_REQUEST });
+        userServices.login(user)
+            .then(handleSuccess, handleError);
     };
 };
 
 export const userActions = {
-    register
+    register,
+    login
 };
