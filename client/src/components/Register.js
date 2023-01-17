@@ -31,6 +31,7 @@ export default function Register() {
     };
 
     const validateForm = ({ email, firstName, lastName, password, passwordConfirmation }) => {
+        return true;
         return !!email && !!firstName && !!lastName && !!password && password === passwordConfirmation;
     };
 
