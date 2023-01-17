@@ -31,7 +31,13 @@ export default function Register() {
     };
 
     const validateForm = ({ email, firstName, lastName, password, passwordConfirmation }) => {
-        return !!email && !!firstName && !!lastName && !!password && password === passwordConfirmation;
+        return (
+            !!email && !!firstName && !!lastName && !!password
+        ) && (
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+        ) && (
+            password === passwordConfirmation && password.length >= 8
+        );
     };
 
     return (
@@ -46,7 +52,7 @@ export default function Register() {
                 <label htmlFor="lastName">Surname:</label><br />
                 <input type="text" id="lastName" name="lastName" value={formValues.lastName} onChange={handleInputChange} /><br />
 
-                <label htmlFor="password">Password:</label><br />
+                <label htmlFor="password">Password (at least 8 characters):</label><br />
                 <input type="password" id="password" name="password" value={formValues.password} onChange={handleInputChange} /><br />
 
                 <label htmlFor="passwordConfirmation">Confirm password:</label><br />
