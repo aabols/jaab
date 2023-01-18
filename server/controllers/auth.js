@@ -20,9 +20,12 @@ const loginUser = async (req, res) => {
             return;
         };
 
-        const user = await User.scope('jwt').findByPk(userWithPassword.id);
-        const token = jwt.sign(user.toJSON(), JWT_SECRET_KEY);
-        res.json({ token });
+        const user = await User.scope('jwt').findByPk(userWithPassword.id).then(user => user.toJSON());
+        const token = jwt.sign(user, JWT_SECRET_KEY);
+        res.json({
+            ...user,
+            token
+        });
     } catch(err) {
         res.status(500).json({ message: err.message });
     }

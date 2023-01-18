@@ -59,7 +59,7 @@ const User = sequelize.define(
                 attributes: {}
             },
             jwt: {
-                attributes: ['id']
+                attributes: ['email', 'firstName', 'lastName']
             }
         }
     }

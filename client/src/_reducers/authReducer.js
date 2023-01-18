@@ -1,6 +1,6 @@
 import { userConstants } from "../_constants/userConstants";
 
-let jwt = localStorage.getItem(userConstants.JWT_LOCAL_STORAGE_KEY);
+let user = JSON.parse(localStorage.getItem(userConstants.JWT_LOCAL_STORAGE_KEY));
 
 const initialState = {
     registering: false,
@@ -9,10 +9,10 @@ const initialState = {
     loggingIn: false,
     loginError: false,
     loginMessage: '',
-    jwt
+    user
 };
 
-const userReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case userConstants.REGISTER_REQUEST:
             return {
@@ -45,7 +45,7 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loggingIn: false,
-                jwt: action.payload,
+                user: action.payload,
                 loginMessage: 'Login successful'
             };
         case userConstants.LOGIN_FAILURE:
@@ -61,5 +61,5 @@ const userReducer = (state = initialState, action) => {
 };
 
 export {
-    userReducer
+    authReducer
 };

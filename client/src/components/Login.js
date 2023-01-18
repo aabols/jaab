@@ -9,9 +9,9 @@ export default function Login() {
         password: ''
     });
 
-    const loggingIn = useSelector(state => state.user.loggingIn);
-    const error = useSelector(state => state.user.loginError);
-    const message = useSelector(state => state.user.loginMessage);
+    const loggingIn = useSelector(state => state.auth.loggingIn);
+    const error = useSelector(state => state.auth.loginError);
+    const message = useSelector(state => state.auth.loginMessage);
     const dispatch = useDispatch();
 
     const handleInputChange = (e) => {
@@ -30,7 +30,7 @@ export default function Login() {
         return (
             !!email && !!password
         ) && (
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)
         ) && (
             password.length >= 8
         );

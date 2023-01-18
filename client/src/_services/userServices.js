@@ -23,7 +23,7 @@ const login = (user) => {
         .then((data) => {
             localStorage.setItem(
                 userConstants.JWT_LOCAL_STORAGE_KEY,
-                data.token
+                JSON.stringify(data)
             );
             return data;
         });

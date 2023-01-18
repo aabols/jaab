@@ -12,9 +12,9 @@ export default function Register() {
         passwordConfirmation: ''
     });
 
-    const registering = useSelector(state => state.user.registering);
-    const error = useSelector(state => state.user.registerError);
-    const message = useSelector(state => state.user.registerMessage);
+    const registering = useSelector(state => state.auth.registering);
+    const error = useSelector(state => state.auth.registerError);
+    const message = useSelector(state => state.auth.registerMessage);
     const dispatch = useDispatch();
 
     const handleInputChange = (e) => {
@@ -34,7 +34,7 @@ export default function Register() {
         return (
             !!email && !!firstName && !!lastName && !!password
         ) && (
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)
         ) && (
             password === passwordConfirmation && password.length >= 8
         );

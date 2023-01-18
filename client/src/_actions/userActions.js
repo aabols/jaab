@@ -26,7 +26,7 @@ const login = (user) => {
         const handleSuccess = (response) => {
             dispatch({
                 type: userConstants.LOGIN_SUCCESS,
-                payload: response.token
+                payload: response
             });
         };
         const handleError = (response) => {
