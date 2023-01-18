@@ -4,9 +4,11 @@ let jwt = localStorage.getItem(userConstants.JWT_LOCAL_STORAGE_KEY);
 
 const initialState = {
     registering: false,
+    registerError: false,
+    registerMessage: '',
     loggingIn: false,
-    error: false,
-    message: '',
+    loginError: false,
+    loginMessage: '',
     jwt
 };
 
@@ -16,42 +18,42 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 registering: true,
-                error: false,
-                message: ''
+                registerError: false,
+                registerMessage: ''
             };
         case userConstants.REGISTER_SUCCESS:
             return {
                 ...state,
                 registering: false,
-                message: `${action.payload} has been registered`
+                registerMessage: `${action.payload} has been registered`
             };
         case userConstants.REGISTER_FAILURE:
             return {
                 ...state,
                 registering: false,
-                error: true,
-                message: action.payload
+                registerError: true,
+                registerMessage: action.payload
             };
         case userConstants.LOGIN_REQUEST:
             return {
                 ...state,
                 loggingIn: true,
-                error: false,
-                message: ''
+                loginError: false,
+                loginMessage: ''
             };
         case userConstants.LOGIN_SUCCESS:
             return {
                 ...state,
                 loggingIn: false,
                 jwt: action.payload,
-                message: 'Login successful'
+                loginMessage: 'Login successful'
             };
         case userConstants.LOGIN_FAILURE:
             return {
                 ...state,
                 loggingIn: false,
-                error: true,
-                message: action.payload
+                loginError: true,
+                loginMessage: action.payload
             };
         default:
             return state;

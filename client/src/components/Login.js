@@ -10,8 +10,8 @@ export default function Login() {
     });
 
     const loggingIn = useSelector(state => state.user.loggingIn);
-    const error = useSelector(state => state.user.error);
-    const message = useSelector(state => state.user.message);
+    const error = useSelector(state => state.user.loginError);
+    const message = useSelector(state => state.user.loginMessage);
     const dispatch = useDispatch();
 
     const handleInputChange = (e) => {

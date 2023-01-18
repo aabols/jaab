@@ -13,8 +13,8 @@ export default function Register() {
     });
 
     const registering = useSelector(state => state.user.registering);
-    const error = useSelector(state => state.user.error);
-    const message = useSelector(state => state.user.message);
+    const error = useSelector(state => state.user.registerError);
+    const message = useSelector(state => state.user.registerMessage);
     const dispatch = useDispatch();
 
     const handleInputChange = (e) => {
