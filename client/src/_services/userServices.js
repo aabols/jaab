@@ -29,6 +29,10 @@ const login = (user) => {
         });
 };
 
+const logout = () => {
+    localStorage.removeItem(userConstants.JWT_LOCAL_STORAGE_KEY);
+};
+
 const handleResponse = (response) => {
     return response.text().then((text) => {
         const data = text && JSON.parse(text);
@@ -42,5 +46,6 @@ const handleResponse = (response) => {
 
 export const userServices = {
     register,
-    login
+    login,
+    logout
 };

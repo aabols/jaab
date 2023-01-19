@@ -41,7 +41,15 @@ const login = (user) => {
     };
 };
 
+const logout = () => {
+    return (dispatch) => {
+        userServices.logout();
+        dispatch({ type: userConstants.LOGOUT_SUCCESS });
+    };
+};
+
 export const userActions = {
     register,
-    login
+    login,
+    logout
 };

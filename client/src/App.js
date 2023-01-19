@@ -1,31 +1,29 @@
-import React, { Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import './App.css';
 import ErrorPage from './components/ErrorPage';
-import ProtectedRoute from './components/ProtectedRoute';
 import Root from './components/Root';
 import Register from './components/Register';
 import Login from './components/Login';
-
-const AdminPage = React.lazy(() => import('./components/AdminPage'));
+import ProtectedRoute from './components/ProtectedRoute';
+import UserPanel from './components/UserPanel';
 
 const router = createBrowserRouter([
+    { path: 'login', element: <Login/> },
+    { path: 'register', element: <Register/> },
     {
         path: '/',
-        element: <Root/>,
+        element: <ProtectedRoute protection={user => !!user} redirectPath='/login'/>,
         errorElement: <ErrorPage/>,
         children: [
-            { path: 'login', element: <Login/> },
-            { path: 'myregister', element: <Register/> },
             {
-                path: 'admin',
-                element: <ProtectedRoute protection={user => !!user} redirectPath='/login'/>,
+                path: '/',
+                element: <Root/>,
                 children: [
-                    { path: 'page', element: <Suspense fallback={<>Loading...</>}><AdminPage/></Suspense> },
-                    { path: 'center', element: <>Hello Center</> }
+                    { path: 'lists', element: <>Hi Lists</>},
+                    { path: 'me', element: <UserPanel/>},
                 ]
-            }
+            },
         ]
     }
 ]);

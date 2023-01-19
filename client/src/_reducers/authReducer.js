@@ -55,6 +55,12 @@ const authReducer = (state = initialState, action) => {
                 loginError: true,
                 loginMessage: action.payload
             };
+        case userConstants.LOGOUT_SUCCESS:
+            return {
+                ...state,
+                loginMessage: '',
+                user: null
+            };
         default:
             return state;
     }

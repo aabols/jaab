@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Navigate, Link } from 'react-router-dom';
 
 import { userActions } from '../_actions/userActions';
 
@@ -15,7 +16,10 @@ export default function Register() {
     const registering = useSelector(state => state.auth.registering);
     const error = useSelector(state => state.auth.registerError);
     const message = useSelector(state => state.auth.registerMessage);
+    const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
+
+    if (!!user) return <Navigate to='/'/>;
 
     const handleInputChange = (e) => {
         setFormValues((oldValues) => ({
@@ -60,12 +64,15 @@ export default function Register() {
 
                 <input type="submit" disabled={registering || !validateForm(formValues)} value={`Register${registering ? 'ing...' : ''}`} />
             </form>
-            <span style={{
+            <div style={{
                 color: error ? 'red' : 'green',
                 fontWeight: 'bold'
             }}>
                 {message}
-            </span>
+            </div>
+            <div>
+                <Link to='/login'>Log in</Link>
+            </div>
         </>
     );
 };
