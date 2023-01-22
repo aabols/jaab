@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
         const token = authHeader.split(' ')[1];
         const decodedToken = jwt.verify(token, JWT_SECRET_KEY);
         //user = await User.findByPk(decodedToken.id);
-        user = await User.scope('jwt').findOne({ where: { email: decodedToken.email }});
+        user = await User.findOne({ where: { email: decodedToken.email }});
     } catch (err) {
         //console.log(err);
     } finally {

@@ -1,5 +1,4 @@
 const { DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
 
 const sequelize = require('../');
 const User = require('./User');
@@ -9,7 +8,11 @@ const List = sequelize.define(
     {
         title: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                notNull: { msg: 'List must have a name'},
+                notEmpty: { msg: 'List must have a name'}
+            }
         }
     }, {}
 );

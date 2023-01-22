@@ -7,6 +7,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserPanel from './components/UserPanel';
+import Lists from './components/Lists';
 
 const router = createBrowserRouter([
     { path: 'login', element: <Login/> },
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <Root/>,
                 children: [
-                    { path: 'lists', element: <>Hi Lists</>},
+                    { path: 'lists', element: <Lists/>},
                     { path: 'me', element: <UserPanel/>},
                 ]
             },
