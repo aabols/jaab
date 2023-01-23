@@ -8,21 +8,35 @@ import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserPanel from './components/UserPanel';
 import Lists from './components/Lists';
+import List from './components/List';
+import Group from './components/Group';
 
 const router = createBrowserRouter([
     { path: 'login', element: <Login/> },
     { path: 'register', element: <Register/> },
     {
-        path: '/',
+        path: '',
         element: <ProtectedRoute protection={user => !!user} redirectPath='/login'/>,
         errorElement: <ErrorPage/>,
         children: [
             {
-                path: '/',
+                path: '',
                 element: <Root/>,
                 children: [
-                    { path: 'lists', element: <Lists/>},
-                    { path: 'me', element: <UserPanel/>},
+                    {
+                        path: 'lists',
+                        element: <Lists/>,
+                        children: [
+                            {
+                                path: ':listId',
+                                element: <List/>,
+                                children: [
+                                    { path: ':groupId', element: <Group/>}
+                                ]
+                            }
+                        ]
+                    },
+                    { path: 'me', element: <UserPanel/> },
                 ]
             },
         ]

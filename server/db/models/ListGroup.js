@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const sequelize = require('..');
+const sequelize = require('../');
 const List = require('./List');
 
 const ListGroup = sequelize.define(
