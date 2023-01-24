@@ -39,6 +39,23 @@ const updateList = async (req, res) => {
     }
 };
 
+const deleteList = async (req, res) => {
+    try {
+        const list = await List.findOne({
+            where: {
+                '$Users.id$': req.user.id,
+                id: req.params.listId
+            },
+            include: User
+        });
+        if (!list) throw { status: 404, message: 'List not found' };
+        await list.destroy();
+        res.json({ message: 'List deleted' });
+    } catch({ status, message }) {
+        res.status(status || 400).json({ message });
+    }
+};
+
 const addListGroup = async (req, res) => {
     try {
         const list = await List.findOne({
@@ -81,6 +98,7 @@ const shareList = async (req, res) => {
 module.exports = {
     getList,
     updateList,
+    deleteList,
     addListGroup,
     shareList
 };

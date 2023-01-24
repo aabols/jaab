@@ -42,18 +42,39 @@ const updateListGroup = async (req, res) => {
     };
 };
 
+const deleteListGroup = async (req, res) => {
+    try {
+        const listGroup = await ListGroup.findOne({
+            where: {
+                '$List.Users.id$': req.user.id,
+                id: req.params.groupId
+            },
+            include: [
+                { model: List, include: User }
+            ]
+        });
+        if (!listGroup) throw { status: 404, message: 'Group not found' };
+        await listGroup.destroy();
+        res.json({ message: 'Group deleted' });
+    } catch({ status, message}) {
+        res.status(status || 500).json({ message });
+    };
+};
+
 const addListItem = async (req, res) => {
     try {
-        const list = await List.findOne({
+        const listGroup = await ListGroup.findOne({
             where: {
-                '$Users.id$': req.user.id,
-                id: req.params.listId
+                '$List.Users.id$': req.user.id,
+                id: req.params.groupId
             },
-            include: User
+            include: [
+                { model: List, include: User }
+            ]
         });
-        if (!list) throw { status: 404, message: 'Group not found' };
-        const listGroup = await list.createListGroup(req.body);
-        res.status(201).json(listGroup);
+        if (!listGroup) throw { status: 404, message: 'Group not found' };
+        const listItem = await listGroup.createListItem(req.body);
+        res.status(201).json(listItem);
     } catch({ status, message }) {
         res.status(status || 400).json({ message });
     }
@@ -62,5 +83,6 @@ const addListItem = async (req, res) => {
 module.exports = {
     getListGroup,
     updateListGroup,
-    addListItem
+    addListItem,
+    deleteListGroup
 };

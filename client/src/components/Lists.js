@@ -27,6 +27,7 @@ export default function Lists() {
         e.preventDefault();
         const list = lists.find(list => list.id === id);
         const title = prompt(`Rename ${list.title}:`, list.title);
+        if (!title) return api.delete(`/lists/${id}`).then(() => refreshLists());
         api.put(`/lists/${id}`, { title }).then((res) => {
             refreshLists();
         });

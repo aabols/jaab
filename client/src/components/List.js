@@ -39,6 +39,7 @@ export default function List() {
         e.preventDefault();
         const group = groups.find(group => group.id === id);
         const title = prompt(`Rename ${group.title}:`, group.title);
+        if (!title) return api.delete(`/lists/${listId}/${id}`).then(() => refreshGroups());
         api.put(`/lists/${listId}/${id}`, { title }).then((res) => {
             refreshGroups();
         });
@@ -58,7 +59,7 @@ export default function List() {
                     <input ref={titleInput} type='text' name='title' placeholder='New group'/>
                 </form>
                 <form onSubmit={handleSubmitShare}>
-                    <input ref={emailInput} type='text' name='email' placeholder='Share with (e-mail)'/>
+                    <input ref={emailInput} type='text' name='email' placeholder='Share list with (e-mail)'/>
                 </form>
             </div>
             <Outlet/>
