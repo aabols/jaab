@@ -41,6 +41,25 @@ const login = (user) => {
     };
 };
 
+const deleteAccount = () => {
+    return (dispatch) => {
+        const handleSuccess = (response) => {
+            dispatch({
+                type: userConstants.ACCOUNT_DELETE_SUCCESS
+            });
+            dispatch(logout());
+        };
+        const handleError = (response) => {
+            dispatch({
+                type: userConstants.ACCOUNT_DELETE_FAILURE
+            });
+        };
+        dispatch({ type: userConstants.ACCOUNT_DELETE_REQUEST });
+        userServices.deleteAccount()
+            .then(handleSuccess, handleError);
+    };
+};
+
 const logout = () => {
     return (dispatch) => {
         userServices.logout();
@@ -51,5 +70,6 @@ const logout = () => {
 export const userActions = {
     register,
     login,
-    logout
+    logout,
+    deleteAccount
 };

@@ -1,4 +1,5 @@
-import { userConstants } from "../_constants/userConstants";
+import { userConstants } from '../_constants/userConstants';
+import { api } from '../api';
 
 const register = (user) => {
     const requestOptions = {
@@ -33,6 +34,10 @@ const logout = () => {
     localStorage.removeItem(userConstants.JWT_LOCAL_STORAGE_KEY);
 };
 
+const deleteAccount = () => {
+    return api.delete('/user');
+};
+
 const handleResponse = (response) => {
     return response.text().then((text) => {
         const data = text && JSON.parse(text);
@@ -47,5 +52,6 @@ const handleResponse = (response) => {
 export const userServices = {
     register,
     login,
-    logout
+    logout,
+    deleteAccount
 };
