@@ -11,14 +11,23 @@ export default function Lists() {
     }, []);
 
     const refreshLists = () => {
-        api.get('/list').then(res => setLists(res.data));
+        api.get('/lists').then(res => setLists(res.data));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const title = titleInput.current.value;
         titleInput.current.value = '';
-        api.post('/list', { title }).then(() => {
+        api.post('/lists', { title }).then(() => {
+            refreshLists();
+        });
+    };
+
+    const handleRightClick = (e, id) => {
+        e.preventDefault();
+        const list = lists.find(list => list.id === id);
+        const title = prompt(`Rename ${list.title}:`, list.title);
+        api.put(`/lists/${id}`, { title }).then((res) => {
             refreshLists();
         });
     };
@@ -31,7 +40,7 @@ export default function Lists() {
             <div>
                 <h1>Lists</h1>
                 {lists.map(({ id, title }) => <div key={id}>
-                    <Link to={`${id}`}>{title}</Link>
+                    <Link to={`${id}`} onContextMenu={(e) => handleRightClick(e, id)}>{title}</Link>
                 </div>)}
                 <form onSubmit={handleSubmit}>
                     <input ref={titleInput} type='text' name='title' placeholder='New list'/>

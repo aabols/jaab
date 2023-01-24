@@ -12,8 +12,8 @@ export default function Group() {
     }, [groupId]);
 
     const refreshItems = () => {
-        api.get(`/list/${listId}/${groupId}`).then(res => {
-            res.data && setItems(res.data);
+        api.get(`/lists/${listId}/${groupId}`).then(res => {
+            res.data && setItems(res.data.ListItems);
         });
     };
     
@@ -21,7 +21,7 @@ export default function Group() {
         e.preventDefault();
         const title = titleInput.current.value;
         titleInput.current.value = '';
-        api.post(`/list/${listId}/${groupId}`, { title }).then(() => {
+        api.post(`/lists/${listId}/${groupId}`, { title }).then(() => {
             refreshItems();
         });
     };
