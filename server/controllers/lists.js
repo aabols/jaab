@@ -1,3 +1,6 @@
+const ListGroup = require("../db/models/ListGroup");
+const ListItem = require("../db/models/ListItem");
+
 const getLists = async (req, res) => {
     try {
         const lists = await req.user.getLists();
@@ -17,7 +20,22 @@ const addList = async (req, res) => {
     }
 };
 
+const getAllLists = async (req, res) => {
+    try {
+        const lists = await req.user.getLists({
+            include: [{
+                model: ListGroup,
+                include: ListItem
+            }]
+        });
+        res.json(lists);
+    } catch({ status, message }) {
+        res.status(status || 500).json({ message });
+    }
+};
+
 module.exports = {
     getLists,
-    addList
+    addList,
+    getAllLists
 };

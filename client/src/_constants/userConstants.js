@@ -16,6 +16,4 @@ const userConstants = {
     JWT_LOCAL_STORAGE_KEY: 'USER'
 };
 
-export {
-    userConstants
-};
+export { userConstants };

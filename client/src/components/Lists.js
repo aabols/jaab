@@ -1,18 +1,23 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, Outlet } from 'react-router-dom';
 
 import { api } from '../api';
+import { listsActions } from '../_actions/listsActions';
 
 export default function Lists() {
-    const [lists, setLists] = useState([]);
+    const lists = useSelector(state => state.lists.lists);
+    const dispatch = useDispatch();
     const titleInput = useRef();
     useEffect(() => {
         refreshLists();
     }, []);
 
     const refreshLists = () => {
-        api.get('/lists').then(res => setLists(res.data));
+        dispatch(listsActions.refreshAll());
     };
+
+    console.log('lists', lists);
 
     const handleSubmit = (e) => {
         e.preventDefault();
