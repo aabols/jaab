@@ -5,8 +5,24 @@ const initialState = {
     loading: false
 };
 
-const listsReducer = (state = initialState, action) => {
+export const listsReducer = (state = initialState, action) => {
     switch (action.type) {
+        case listsConstants.CREATE_LIST_REQUEST:
+            return {
+                ...state,
+                lists: [...state.lists, action.payload]
+            };
+        case listsConstants.CREATE_LIST_SUCCESS:
+            return {
+                ...state,
+                lists: [...state.lists.filter(list => list.id !== action.payload.temporaryId), action.payload.list]
+            };
+        case listsConstants.CREATE_LIST_FAILURE:
+            return {
+                ...state,
+                lists: state.lists.filter(list => list.id !== action.payload)
+            };
+
         case listsConstants.REFRESH_ALL_REQUEST:
             return {
                 ...state,
@@ -27,5 +43,3 @@ const listsReducer = (state = initialState, action) => {
             return state;
     };
 };
-
-export { listsReducer };

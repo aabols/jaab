@@ -12,7 +12,7 @@ const initialState = {
     user
 };
 
-const authReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case userConstants.REGISTER_REQUEST:
             return {
@@ -64,8 +64,4 @@ const authReducer = (state = initialState, action) => {
         default:
             return state;
     }
-};
-
-export {
-    authReducer
 };

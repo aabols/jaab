@@ -1,41 +1,41 @@
 import { userConstants } from '../_constants/userConstants';
 import { api } from '../api';
 
-const register = (user) => {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-    };
+export const userServices = {
+    register: (user) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user)
+        };
+        return fetch('/register', requestOptions)
+            .then(handleResponse);
+    },
 
-    return fetch('/register', requestOptions)
-        .then(handleResponse);
-};
+    login: (user) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user)
+        };
+        return fetch('/login', requestOptions)
+            .then(handleResponse)
+            .then((data) => {
+                localStorage.setItem(
+                    userConstants.JWT_LOCAL_STORAGE_KEY,
+                    JSON.stringify(data)
+                );
+                return data;
+            });
+    },
 
-const login = (user) => {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-    };
+    logout: () => {
+        localStorage.removeItem(userConstants.JWT_LOCAL_STORAGE_KEY);
+    },
 
-    return fetch('/login', requestOptions)
-        .then(handleResponse)
-        .then((data) => {
-            localStorage.setItem(
-                userConstants.JWT_LOCAL_STORAGE_KEY,
-                JSON.stringify(data)
-            );
-            return data;
-        });
-};
-
-const logout = () => {
-    localStorage.removeItem(userConstants.JWT_LOCAL_STORAGE_KEY);
-};
-
-const deleteAccount = () => {
-    return api.delete('/user');
+    deleteAccount: () => {
+        return api.delete('/user');
+    }
 };
 
 const handleResponse = (response) => {
@@ -47,11 +47,4 @@ const handleResponse = (response) => {
         }
         return data;
     });
-};
-
-export const userServices = {
-    register,
-    login,
-    logout,
-    deleteAccount
 };

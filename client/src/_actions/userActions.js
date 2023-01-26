@@ -1,75 +1,46 @@
 import { userConstants } from "../_constants/userConstants";
 import { userServices } from '../_services/userServices';
 
-const register = (user) => {
-    return (dispatch) => {
-        const handleSuccess = (response) => {
-            dispatch({
-                type: userConstants.REGISTER_SUCCESS,
-                payload: response.email
-            });
-        };
-        const handleError = (response) => {
-            dispatch({
-                type: userConstants.REGISTER_FAILURE,
-                payload: response
-            });
-        };
+export const userActions = {
+    register: (user) => dispatch => {
         dispatch({ type: userConstants.REGISTER_REQUEST });
         userServices.register(user)
-            .then(handleSuccess, handleError);
-    };
-};
-
-const login = (user) => {
-    return (dispatch) => {
-        const handleSuccess = (response) => {
-            dispatch({
-                type: userConstants.LOGIN_SUCCESS,
+            .then(response => dispatch({
+                type: userConstants.REGISTER_SUCCESS,
+                payload: response.email
+            }))
+            .catch(response => dispatch({
+                type: userConstants.REGISTER_FAILURE,
                 payload: response
-            });
-        };
-        const handleError = (response) => {
-            dispatch({
-                type: userConstants.LOGIN_FAILURE,
-                payload: response
-            });
-        };
+            }));
+    },
+    
+    login: (user) => dispatch => {
         dispatch({ type: userConstants.LOGIN_REQUEST });
         userServices.login(user)
-            .then(handleSuccess, handleError);
-    };
-};
+            .then(response => dispatch({
+                type: userConstants.LOGIN_SUCCESS,
+                payload: response
+            }))
+            .catch(response => dispatch({
+                type: userConstants.LOGIN_FAILURE,
+                payload: response
+            }));
+    },
 
-const deleteAccount = () => {
-    return (dispatch) => {
-        const handleSuccess = (response) => {
-            dispatch({
-                type: userConstants.ACCOUNT_DELETE_SUCCESS
-            });
-            dispatch(logout());
-        };
-        const handleError = (response) => {
-            dispatch({
-                type: userConstants.ACCOUNT_DELETE_FAILURE
-            });
-        };
+    deleteAccount: () => dispatch => {
         dispatch({ type: userConstants.ACCOUNT_DELETE_REQUEST });
         userServices.deleteAccount()
-            .then(handleSuccess, handleError);
-    };
-};
+            .then(response => dispatch({
+                type: userConstants.ACCOUNT_DELETE_SUCCESS
+            }))
+            .catch(response => dispatch({
+                type: userConstants.ACCOUNT_DELETE_FAILURE
+            }));
+    },
 
-const logout = () => {
-    return (dispatch) => {
+    logout: () => dispatch => {
         userServices.logout();
         dispatch({ type: userConstants.LOGOUT_SUCCESS });
-    };
-};
-
-export const userActions = {
-    register,
-    login,
-    logout,
-    deleteAccount
+    }
 };

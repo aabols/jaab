@@ -1,4 +1,4 @@
-const userConstants = {
+export const userConstants = {
     REGISTER_REQUEST: 'USERS_REGISTER_REQUEST',
     REGISTER_SUCCESS: 'USERS_REGISTER_SUCCESS',
     REGISTER_FAILURE: 'USERS_REGISTER_FAILURE',
@@ -15,5 +15,3 @@ const userConstants = {
 
     JWT_LOCAL_STORAGE_KEY: 'USER'
 };
-
-export { userConstants };

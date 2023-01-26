@@ -13,20 +13,34 @@ export default function UserPanel() {
     };
 
     const handleDelete = (e) => {
-        if (!deleteConfirm) return setDeleteConfirm(true);
-        dispatch(userActions.deleteAccount());
+        if (deleteConfirm) return dispatch(userActions.deleteAccount());
+        setDeleteConfirm(true);
+        setTimeout(() => setDeleteConfirm(false), 1000);
     };
 
     return (
         <>
             <div>
-                {user.firstName} {user.lastName}
+                { `${user.firstName} ${user.lastName}` }
             </div>
             <div>
-                {user.email}
+                { user.email }
             </div>
-            <input type='button' value='Logout' onClick={handleLogout}/>
-            <input type='button' value={deleteConfirm ? 'Confirm account delete' : 'Delete account'} onClick={handleDelete}/>
+            <div>
+                <input
+                    type='button'
+                    value='Logout'
+                    onClick={ handleLogout }
+                />
+            </div>
+            <div>
+                <input
+                    type = 'button'
+                    style = {{ backgroundColor: deleteConfirm ? '#f66' : '#faa' }}
+                    value = { deleteConfirm ? 'Confirm account delete' : 'Delete account' }
+                    onClick = { handleDelete }
+                />
+            </div>
         </>
     )
 };

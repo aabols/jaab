@@ -6,26 +6,23 @@ import { api } from '../api';
 import { listsActions } from '../_actions/listsActions';
 
 export default function Lists() {
-    const lists = useSelector(state => state.lists.lists);
     const dispatch = useDispatch();
     const titleInput = useRef();
+    const lists = useSelector(state => state.lists.lists);
+
     useEffect(() => {
-        refreshLists();
+        dispatch(listsActions.refreshAll());
     }, []);
 
     const refreshLists = () => {
         dispatch(listsActions.refreshAll());
     };
 
-    console.log('lists', lists);
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const title = titleInput.current.value;
         titleInput.current.value = '';
-        api.post('/lists', { title }).then(() => {
-            refreshLists();
-        });
+        dispatch(listsActions.createList({ title }));
     };
 
     const handleRightClick = (e, id) => {
