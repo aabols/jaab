@@ -11,7 +11,6 @@ const clientRouter = require('./routes/client');
 const authUser = require('./middleware/authUser');
 const onlyAuthUsers = require('./middleware/onlyAuthUsers');
 
-
 const app = express();
 const PORT = config.server.port;
 

@@ -6,6 +6,11 @@ const ListGroup = require('./ListGroup');
 const ListItem = sequelize.define(
     'ListItem',
     {
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
         title: {
             type: DataTypes.STRING,
             allowNull: false,

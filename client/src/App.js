@@ -9,7 +9,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import UserPanel from './components/UserPanel';
 import Lists from './components/Lists';
 import List from './components/List';
-import Group from './components/Group';
 
 const router = createBrowserRouter([
     { path: 'login', element: <Login/> },
@@ -30,9 +29,7 @@ const router = createBrowserRouter([
                             {
                                 path: ':listId',
                                 element: <List/>,
-                                children: [
-                                    { path: ':groupId', element: <Group/>}
-                                ]
+                                errorElement: <ErrorPage/>
                             }
                         ]
                     },

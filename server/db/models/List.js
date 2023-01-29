@@ -6,6 +6,11 @@ const User = require('./User');
 const List = sequelize.define(
     'List',
     {
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
         title: {
             type: DataTypes.STRING,
             allowNull: false,

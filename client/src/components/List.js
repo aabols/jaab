@@ -1,68 +1,62 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useParams, Link, Outlet } from 'react-router-dom';
-import { api } from '../api';
+import React from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { listsActions } from '../_actions/listsActions';
+import Group from './Group';
+
+const Body = ({ children }) => (
+    <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        padding: '5px',
+    }}> { children } </div>
+);
+
+const ListLayout = ({ children }) => (
+    <div style={{
+        display: 'flex',
+        flexFlow: 'row wrap',
+        justifyContent: 'space-evenly',
+        gap: '20px'
+    }}> { children } </div>
+);
 
 export default function List() {
-    const [groups, setGroups] = useState([]);
+    const dispatch = useDispatch();
     const { listId } = useParams();
-    const titleInput = useRef();
-    const emailInput = useRef();
-    useEffect(() => {
-        setGroups([]);
-        refreshGroups();
-    }, [listId]);
+    const lists = useSelector(state => state.lists.lists);
+    const allGroups = useSelector(state => state.lists.groups);
 
-    const refreshGroups = () => {
-        api.get(`/lists/${listId}`).then(res => {
-            res.data && setGroups(res.data.ListGroups);
-        });
-    };
+    const list = lists.find(list => list.id === listId);
+    if (!list) return <Navigate to='..'/>;
     
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const title = titleInput.current.value;
-        titleInput.current.value = '';
-        api.post(`/lists/${listId}`, { title }).then(() => {
-            refreshGroups();
-        });
-    };
+    const groups = allGroups.filter(group => group.listId === list.id);
 
-    const handleSubmitShare = (e) => {
-        e.preventDefault();
-        const email = emailInput.current.value;
-        emailInput.current.value = '';
-        api.put(`/lists/${listId}/share`, { email }).then((res) => {
-        });
-    };
-    
-    const handleRightClick = (e, id) => {
-        e.preventDefault();
-        const group = groups.find(group => group.id === id);
-        const title = prompt(`Rename ${group.title}:`, group.title);
-        if (!title) return api.delete(`/lists/${listId}/${id}`).then(() => refreshGroups());
-        api.put(`/lists/${listId}/${id}`, { title }).then((res) => {
-            refreshGroups();
-        });
-    };
-    
+    const createGroupButton = <input
+        type='button'
+        value='+'
+        style = {{
+            alignSelf: 'center',
+            fontSize: '2em',
+            padding: '0 30px',
+            margin: '20px',
+            color: 'orange',
+            borderColor: 'orange',
+        }}
+        onClick={e => {
+            const title = prompt(`New group in ${list.title}:`);
+            if (!title) return;
+            dispatch(listsActions.createGroupLocal({ listId: list.id, title }))
+        }}
+    />;
+    const groupComponents = groups.map(({ id }) => <Group key={id} groupId={id}/>);
+
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'row'
-        }}>
-            <div>
-                <h2>List {listId}</h2>
-                {groups.map(({ id, title }) => <div key={id}>
-                    <Link to={`${id}`} onContextMenu={(e) => handleRightClick(e, id)}>{title}</Link>
-                </div>)}
-                <form onSubmit={handleSubmit}>
-                    <input ref={titleInput} type='text' name='title' placeholder='New group'/>
-                </form>
-                <form onSubmit={handleSubmitShare}>
-                    <input ref={emailInput} type='text' name='email' placeholder='Share list with (e-mail)'/>
-                </form>
-            </div>
-            <Outlet/>
-        </div>
+        <Body>
+            { createGroupButton }
+            <ListLayout> { groupComponents } </ListLayout>
+        </Body>
     )
 };

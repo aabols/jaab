@@ -3,11 +3,19 @@ import React from 'react';
 
 import NavBar from './NavBar';
 
+const Body = ({ children }) => (
+    <div style = {{
+        backgroundColor: '#ccc',
+        height: '100vh',
+    }}>
+        { children }
+    </div>
+);
 export default function Root() {
     return (
-        <>
-            <div><NavBar/></div>
-            <div><Outlet/></div>
-        </>
+        <Body>
+            <NavBar/>
+            <Outlet/>
+        </Body>
     )
 };
