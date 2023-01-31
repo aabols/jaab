@@ -4,18 +4,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { listsActions } from '../_actions/listsActions';
 import Item from './Item';
 
-const Body = ({ children }) => (
-    <div style={{
+const Body = ({ children, theme }) => (
+    <fieldset style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
         padding: '0 10px 10px 10px',
-        backgroundColor: 'orange',
         color: '#555',
-        borderRadius: '10px 10px 5px 5px',
+        borderWidth: '2px',
+        borderStyle: 'solid',
+        borderColor: theme[0],
+        borderRadius: '7px',
     }}>
         { children }
-    </div>
+    </fieldset>
 );
 
 export default function Group({ groupId }) {
@@ -23,6 +25,7 @@ export default function Group({ groupId }) {
     const [searchQuery, setSearchQuery] = useState('');
     const groups = useSelector(state => state.lists.groups);
     const allItems = useSelector(state => state.lists.items);
+    const theme = useSelector(state => state.theme.selectedTheme);
 
     const group = groups.find(group => group.id === groupId);
     const items = allItems.filter(item => item.groupId === group.id);
@@ -37,6 +40,7 @@ export default function Group({ groupId }) {
     const handleCreateItem = (e) => {
         e.preventDefault();
         const title = searchQuery;
+        if (!title) return;
         setSearchQuery('');
         dispatch(listsActions.createItemLocal({ groupId: group.id, title, checked: false }));
     };
@@ -44,14 +48,17 @@ export default function Group({ groupId }) {
         setSearchQuery(e.target.value);
     };
 
-    const groupCaption = <div
+    const groupCaption = <legend
         onContextMenu = { handleRenameGroup }
         style = {{
             textAlign: 'center',
-            fontSize: '1.5em',
+            fontSize: '1.2em',
             marginBottom: '5px',
+            padding: '0px 10px 0.3em 10px',
+            color: theme[0],
+            borderRadius: '7px',
         }}
-    > { group.title } </div>;
+    > { group.title } </legend>;
     const searchBox = <input
         type = 'text'
         name = 'title'
@@ -60,6 +67,7 @@ export default function Group({ groupId }) {
         onChange = { handleSearchChange }
         style = {{
             fontSize: '1em',
+            color: theme[0],
         }}
     />
     const searchForm = <form
@@ -84,7 +92,7 @@ export default function Group({ groupId }) {
     > { itemComponents } </div>
     
     return (
-        <Body>
+        <Body theme={theme}>
             { groupCaption }
             { searchForm }
             { itemBox }

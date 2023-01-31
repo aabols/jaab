@@ -34,10 +34,17 @@ export default function Item({ itemId }) {
         type = 'checkbox'
         checked = { item.checked }
         onChange = { handleToggle }
+        onContextMenu = { handleRename }
+        style = {{
+            cursor: 'pointer',
+        }}
     />;
     const itemCaption = <div
         onClick = { handleToggle }
         onContextMenu = { handleRename }
+        style = {{
+            cursor: 'pointer',
+        }}
     >
         { item.title }
     </div>;

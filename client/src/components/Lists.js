@@ -62,6 +62,7 @@ export default function Lists() {
     const handleCreateList = (e) => {
         e.preventDefault();
         const title = searchQuery;
+        if (!title) return;
         setSearchQuery('');
         dispatch(listsActions.createListLocal({ title }));
     };
