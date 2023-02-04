@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate, Link } from 'react-router-dom';
 
-import { userActions } from '../_actions/userActions';
+import './Login.css';
+import { userActions } from '../../_actions/userActions';
 
 export default function Login() {
     const [formValues, setFormValues] = useState({
@@ -16,7 +17,7 @@ export default function Login() {
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
-    if (!!user) return <Navigate to='/'/>;
+    if (user) return <Navigate to='/'/>;
 
     const handleInputChange = (e) => {
         setFormValues((oldValues) => ({
@@ -41,25 +42,20 @@ export default function Login() {
     };
 
     return (
-        <>
+        <div id='Login'>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="email">E-mail:</label><br />
-                <input type="text" id="email" name="email" value={formValues.email} onChange={handleInputChange} /><br />
+                <label htmlFor="email">E-mail</label>
+                <input type="text" id="email" name="email" value={formValues.email} onChange={handleInputChange} />
 
-                <label htmlFor="password">Password:</label><br />
-                <input type="password" id="password" name="password" value={formValues.password} onChange={handleInputChange} /><br />
+                <label htmlFor="password">Password</label>
+                <input type="password" id="password" name="password" value={formValues.password} onChange={handleInputChange} />
 
-                <input type="submit" disabled={loggingIn || !validateForm(formValues)} value={`Log${loggingIn ? 'ging in...' : ' in'}`} />
+                <input type="submit" className='button' disabled={loggingIn || !validateForm(formValues)} value={`Log${loggingIn ? 'ging in...' : ' in'}`} />
             </form>
-            <div style={{
-                color: error ? 'red' : 'green',
-                fontWeight: 'bold'
-            }}>
+            <div className={`${error ? 'error' : ''}`}>
                 {message}
             </div>
-            <div>
-                <Link to='/register'>Register</Link>
-            </div>
-        </>
+            <Link to='/register'>Register</Link>
+        </div>
     )
 };

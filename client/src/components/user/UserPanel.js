@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { userActions } from '../_actions/userActions';
+import { userActions } from '../../_actions/userActions';
 
 export default function UserPanel() {
     const [deleteConfirm, setDeleteConfirm] = useState(false);

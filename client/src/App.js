@@ -3,12 +3,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 import ErrorPage from './components/ErrorPage';
 import Root from './components/Root';
-import Register from './components/Register';
-import Login from './components/Login';
+import Register from './components/user/Register';
+import Login from './components/user/Login';
 import ProtectedRoute from './components/ProtectedRoute';
-import UserPanel from './components/UserPanel';
-import Lists from './components/Lists';
-import List from './components/List';
+import UserPanel from './components/user/UserPanel';
+import Lists from './components/lists/Lists';
+import List from './components/lists/List';
 
 const router = createBrowserRouter([
     { path: 'login', element: <Login/> },
@@ -40,9 +40,17 @@ const router = createBrowserRouter([
     }
 ]);
 
+const Body = ({ children }) => <div className='theme-light' style={{
+    width: '100vw'
+}}>
+    { children }
+</div>;
+
 function App() {
     return (
-        <RouterProvider router={router}/>
+        <Body>
+            <RouterProvider router={router}/>
+        </Body>
     );
 }
 

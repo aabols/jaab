@@ -1,0 +1,14 @@
+#List div.listItem {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+#List .listItem input {
+    cursor: pointer;
+}
+
+#List .listItem div {
+    cursor: pointer;
+    font-size: 0.8em;
+}

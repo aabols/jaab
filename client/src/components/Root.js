@@ -5,7 +5,6 @@ import NavBar from './NavBar';
 
 const Body = ({ children }) => (
     <div style = {{
-        backgroundColor: '#fff',
     }}>
         { children }
     </div>

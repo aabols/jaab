@@ -1,0 +1,48 @@
+#Register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#Register form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#Register form label {
+    color: var(--color-accent1);
+    font-size: 1.2em;
+}
+
+#Register form input {
+    height: 2em;
+    margin-bottom: 10px;
+}
+
+#Register form input.button {
+    background-color: var(--color-accent1);
+    color: var(--color-background);
+    font-size: 1.1em;
+}
+
+#Register form input.button:disabled {
+    background-color: gray;
+}
+
+#Register div {
+    font-weight: bold;
+    min-height: 1.5em;
+    color: darkgreen;
+}
+
+#Register div.error {
+    color: darkred;
+}
+
+#Register a {
+    font-size: 1.2em;
+    color: var(--color-accent1);
+}
