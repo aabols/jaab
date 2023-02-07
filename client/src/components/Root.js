@@ -1,19 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import React from 'react';
 
+import './Root.css';
 import NavBar from './NavBar';
 
-const Body = ({ children }) => (
-    <div style = {{
-    }}>
-        { children }
-    </div>
-);
 export default function Root() {
     return (
-        <Body>
+        <div id='Root'>
             <NavBar/>
             <Outlet/>
-        </Body>
+        </div>
     )
 };

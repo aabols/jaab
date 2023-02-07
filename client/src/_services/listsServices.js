@@ -5,6 +5,18 @@ export const listsServices = {
         return api.get('/lists/all', { signal });
     },
 
+    getUsers: (list, signal) => {
+        return api.get(`/lists/${list.id}/users`, { signal });
+    },
+
+    shareList: (list, email, signal) => {
+        return api.put(`/lists/${list.id}/share`, { email }, { signal });
+    },
+
+    unshareList: (list, email, signal) => {
+        return api.put(`/lists/${list.id}/unshare`, { email }, { signal });
+    },
+
     createList: (list, signal) => {
         return api.post('/lists/', list, { signal });
     },

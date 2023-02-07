@@ -94,5 +94,43 @@ module.exports = {
         } catch({ status, message }) {
             res.status(status || 500).json({ message });
         }
-    }
+    },
+
+    unshareList: async (req, res) => {
+        try {
+            const list = await List.findOne({
+                where: {
+                    '$Users.id$': req.user.id,
+                    id: req.params.listId
+                },
+                include: User
+            });
+            if (!list) throw { status: 404, message: 'List not found' };
+            const user = await User.findOne({
+                where: { email: req.body.email }
+            });
+            if (!user) throw { status: 404, message: 'User not found' };
+            list.removeUser(user);
+            res.json({ message: `List ${list.title} unshared with ${user.email}` });
+        } catch({ status, message }) {
+            res.status(status || 500).json({ message });
+        }
+    },
+
+    getUsers: async (req, res) => {
+        try {
+            const list = await List.findOne({
+                where: {
+                    '$Users.id$': req.user.id,
+                    id: req.params.listId
+                },
+                include: User
+            });
+            if (!list) throw { status: 404, message: 'List not found' };
+            const users = await list.getUsers();
+            res.json(users);
+        } catch({ status, message }) {
+            res.status(status || 500).json({ message });
+        }
+    },
 };

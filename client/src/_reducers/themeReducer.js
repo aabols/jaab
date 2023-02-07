@@ -1,19 +1,20 @@
 import { themeConstants } from "../_constants/themeConstants";
 
-const defaultTheme = ['#a861a6', '#fff'];
 const initialState = {
-    selectedTheme: defaultTheme,
-    themes: {
-        Default: defaultTheme
-    }
+    selectedTheme: 'theme-light',
 };
 
 export const themeReducer = (state = initialState, action) => {
     switch (action.type) {
-        case themeConstants.SELECT_THEME:
+        case themeConstants.SELECT_THEME_LIGHT:
             return {
                 ...state,
-                selectedTheme: state.themes[action.payload]
+                selectedTheme: 'theme-light'
+            };
+        case themeConstants.SELECT_THEME_DARK:
+            return {
+                ...state,
+                selectedTheme: 'theme-dark'
             };
         default:
             return state;

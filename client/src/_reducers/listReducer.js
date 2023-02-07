@@ -1,11 +1,13 @@
 import { listsConstants } from '../_constants/listsConstants';
 import { requestControllers } from '../requestControllers';
+import { userConstants } from '../_constants/userConstants';
 
 const initialState = [];
 
 export const listReducer = (state = initialState, action) => {
-    console.log('action', action);
     switch (action.type) {
+        case userConstants.LOGOUT_SUCCESS:
+            return [];
         case listsConstants.CREATE_LIST_LOCAL:
             state = state.slice();
             state.push(action.payload);
@@ -27,17 +29,6 @@ export const listReducer = (state = initialState, action) => {
             return state;
 
         case listsConstants.REFRESH_ALL_SUCCESS:
-            //console.log('listReducer', 'refresh_all_success');
-            state = state.filter(c => {
-                const itemInServer = action.payload.lists.find(s => s.id === c.id);
-                const itemInClient = c;
-                const controller = requestControllers.get(c.id);
-                //console.log('state.filter', { itemInServer, itemInClient, controller });
-                //console.log('listReducer', 'refresh_all_success', 'filter');
-                const result = (!itemInServer && !!controller) || (controller?.type === listsConstants.UPDATE_LIST_REQUEST);
-                //console.log('state.filter', { itemInServer, itemInClient, controller, result });
-                return true;
-            });
             state = state.filter(c => (
                 (!action.payload.lists.find(s => s.id === c.id) && requestControllers.has(c.id)) || (requestControllers.get(c.id)?.type === listsConstants.UPDATE_LIST_REQUEST)
             ));

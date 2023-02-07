@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { BsCheckSquare, BsSquare } from 'react-icons/bs';
 
 import './Item.css';
 import { listsActions } from '../../_actions/listsActions';
@@ -24,12 +25,9 @@ export default function Item({ itemId }) {
 
     return (
         <div className='listItem'>
-            <input
-                type = 'checkbox'
-                checked = { item.checked }
-                onChange = { handleToggle }
-                onContextMenu = { handleRename }
-            />
+            <div className = 'checkBox' onClick = { handleToggle }>
+                { item.checked ? <BsCheckSquare/> : <BsSquare/> }
+            </div>
             <div onClick = { handleToggle } onContextMenu = { handleRename } >
                 { item.title }
             </div>

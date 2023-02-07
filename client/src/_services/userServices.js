@@ -35,7 +35,11 @@ export const userServices = {
 
     deleteAccount: () => {
         return api.delete('/user');
-    }
+    },
+
+    searchUsers: (searchString, signal) => {
+        return api.get('/user', { params: {searchString}, signal });
+    },
 };
 
 const handleResponse = (response) => {

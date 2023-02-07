@@ -1,0 +1,5 @@
+#Root {
+    background-color: var(--color-background);
+    min-width: 100vw;
+    min-height: 100vh;
+}

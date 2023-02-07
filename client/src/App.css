@@ -1,4 +1,11 @@
 .theme-light {
-        --color-background: #fff;
-        --color-accent1: #a861a6;
+    --color-background: #fff;
+    --color-accent1: #a861a6;
+    --color-accent2: #fff;
+}
+
+.theme-dark {
+    --color-background: #111;
+    --color-accent1: #a861a6;
+    --color-accent2: #fff;
 }

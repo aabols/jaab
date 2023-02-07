@@ -1,18 +1,24 @@
+import { BsSortAlphaDownAlt, BsSortAlphaDown, BsSortDownAlt, BsSortDown } from 'react-icons/bs';
+
 export const sortOptions = {
     titleAZ: {
         title: 'Sort by title A-Z',
-        fn: (a,b) => a.title.localeCompare(b.title)
+        fn: (a,b) => a.title.localeCompare(b.title),
+        icon: BsSortAlphaDown,
     },
     titleZA: {
         title: 'Sort by title Z-A',
-        fn: (a,b) => b.title.localeCompare(a.title)
+        fn: (a,b) => b.title.localeCompare(a.title),
+        icon: BsSortAlphaDownAlt,
     },
     lengthAscending: {
         title: 'Sort by shortest first',
-        fn: (a,b) => a.itemCount - b.itemCount
+        fn: (a,b) => a.itemCount - b.itemCount,
+        icon: BsSortDownAlt,
     },
     lengthDescending: {
         title: 'Sort by longest first',
-        fn: (a,b) => b.itemCount - a.itemCount
+        fn: (a,b) => b.itemCount - a.itemCount,
+        icon: BsSortDown,
     },
 };

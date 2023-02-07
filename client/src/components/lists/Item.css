@@ -1,14 +1,12 @@
 #List div.listItem {
     display: flex;
     flex-direction: row;
-    align-items: baseline;
-}
-
-#List .listItem input {
-    cursor: pointer;
+    align-items: center;
+    gap: 1ch;
+    font-size: 0.8em;
 }
 
 #List .listItem div {
     cursor: pointer;
-    font-size: 0.8em;
+    color: var(--color-accent1);
 }

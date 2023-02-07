@@ -9,12 +9,20 @@
     border-radius: 7px;
 }
 
+#List fieldset.collapsed {
+    border-color: #aaa;
+}
+
 #List fieldset legend {
     text-align: center;
     margin-bottom: 5px;
     padding: 0 10px 0.3em 10px;
     color: var(--color-accent1);
     cursor: pointer;
+}
+
+#List fieldset.collapsed legend {
+    color: #aaa;
 }
 
 #List fieldset form {
@@ -30,6 +38,10 @@
     box-sizing: border-box;
     width: 0;
     min-width: 100%;
+    background-color: var(--color-background);
+    border-color: var(--color-accent1);
+    border-style: solid;
+    border-width: 1px;
 }
 
 #List .listItems {

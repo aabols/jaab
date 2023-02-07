@@ -1,9 +1,20 @@
 const User = require('../db/models/User');
+const { Op } = require('sequelize');
 
 module.exports = {
     getUsers: async (req, res) => {
         try {
-            const users = await User.findAll();
+            const q = req.query;
+            const users = await User.findAll({
+                where: {
+                    [Op.or]: [
+                        {email: {[Op.substring]: q.searchString}},
+                        {firstName: {[Op.substring]: q.searchString}},
+                        {lastName: {[Op.substring]: q.searchString}},
+                    ]
+                }
+            });
+            if (users.length > 10) throw { status: 400, message: 'Too many results returned' };
             res.json(users);
         } catch({ status, message }) {
             res.status(status || 500).json({ message });

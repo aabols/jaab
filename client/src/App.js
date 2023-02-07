@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { classNames } from 'classnames';
 
 import './App.css';
 import ErrorPage from './components/ErrorPage';
@@ -9,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import UserPanel from './components/user/UserPanel';
 import Lists from './components/lists/Lists';
 import List from './components/lists/List';
+import { useSelector } from 'react-redux';
 
 const router = createBrowserRouter([
     { path: 'login', element: <Login/> },
@@ -40,17 +42,13 @@ const router = createBrowserRouter([
     }
 ]);
 
-const Body = ({ children }) => <div className='theme-light' style={{
-    width: '100vw'
-}}>
-    { children }
-</div>;
-
 function App() {
+    const selectedTheme = useSelector(state => state.theme.selectedTheme);
+
     return (
-        <Body>
+        <div className={selectedTheme}>
             <RouterProvider router={router}/>
-        </Body>
+        </div>
     );
 }
 

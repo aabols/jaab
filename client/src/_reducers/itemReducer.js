@@ -1,10 +1,13 @@
 import { listsConstants } from '../_constants/listsConstants';
 import { requestControllers } from '../requestControllers';
+import { userConstants } from '../_constants/userConstants';
 
 const initialState = [];
 
 export const itemReducer = (state = initialState, action) => {
     switch (action.type) {
+        case userConstants.LOGOUT_SUCCESS:
+            return [];
         case listsConstants.CREATE_ITEM_LOCAL:
             state = state.slice();
             state.push(action.payload);

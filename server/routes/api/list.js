@@ -6,10 +6,16 @@ const {
     updateList,
     deleteList,
     addListGroup,
-    shareList
+    shareList,
+    unshareList,
+    getUsers
 } = require('../../controllers/list');
 
 const router = express.Router({ mergeParams: true });
+
+router.get('/users', getUsers);
+router.put('/share', shareList);
+router.put('/unshare', unshareList);
 
 router.use('/:groupId', groupRoute);
 
@@ -17,6 +23,5 @@ router.get('/', getList);
 router.put('/', updateList);
 router.delete('/', deleteList);
 router.post('/', addListGroup);
-router.put('/share', shareList);
 
 module.exports = router;
