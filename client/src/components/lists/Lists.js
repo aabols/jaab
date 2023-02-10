@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-
 import { listsActions } from '../../_actions/listsActions';
 import ListNavigation from './ListNavigation';
-import './Lists.css';
 
 export default function Lists() {
     const dispatch = useDispatch();
@@ -17,9 +15,13 @@ export default function Lists() {
     }, [refreshRate]);
 
     return (
-        <div id='Lists'>
-            <ListNavigation/>
-            <Outlet/>
+        <div id='lists' className='columnLayout'>
+            <div className='columnLayout__fixedColumn'>
+                <ListNavigation/>
+            </div>
+            <div className='columnLayout__growColumn'>
+                <Outlet/>
+            </div>
         </div>
     )
 };

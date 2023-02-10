@@ -6,9 +6,9 @@ import NavBar from './NavBar';
 
 export default function Root() {
     return (
-        <div id='Root'>
+        <>
             <NavBar/>
             <Outlet/>
-        </div>
+        </>
     )
 };

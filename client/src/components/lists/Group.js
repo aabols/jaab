@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-import './Group.css';
-import Item from './Item';
+import classNames from 'classnames';
 import { listsActions } from '../../_actions/listsActions';
 import { sortOptions } from '../../utils/sortFunctions';
+import Item from './Item';
+import If from '../If';
 
 export default function Group({ groupId }) {
     const dispatch = useDispatch();
@@ -49,26 +49,27 @@ export default function Group({ groupId }) {
     };
 
     return (
-        <fieldset className={collapsed ? 'collapsed' : ''}>
-            <legend onContextMenu={ handleRenameGroup } onClick={ handleCollapse }>
+        <fieldset className={classNames({
+            'group': true,
+            'group--collapsed': collapsed,
+        })}>
+            <legend className='group__caption' onContextMenu={ handleRenameGroup } onClick={ handleCollapse }>
                 { group.title }
             </legend>
-            { collapsed ? null : (
-                <>
-                    <form onSubmit = { handleCreateItem }>
+                <If condition={!collapsed}>
+                    <form className='form' onSubmit = { handleCreateItem }>
                         <input
+                            className = 'form__input'
                             type = 'text'
                             name = 'title'
-                            placeholder = 'Filter or create'
                             value = { searchQuery }
                             onChange = { handleSearchChange }
                             />
                     </form>
-                    <div className='listItems'>
+                    <div className='group__items'>
                         { items }
                     </div>
-                </>
-            ) }
+                </If>
         </fieldset>
         )
     };

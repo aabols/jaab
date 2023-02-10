@@ -2,7 +2,6 @@ import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import './List.css';
 import Group from './Group';
 import ListToolbar from './ListToolbar';
 import { sortOptions } from '../../utils/sortFunctions';
@@ -25,14 +24,14 @@ export default function List() {
     const groupComponents = groups
         .map(group => ({...group, itemCount: items.filter(item => item.groupId === group.id && (!shoppingMode || !item.checked)).length}))
         .filter(({ itemCount }) => !shoppingMode || itemCount > 0)
-        .filter(({ id }) => items.some(({ groupId, title }) => groupId === id && title.toLowerCase().includes(globalSearch.toLowerCase())))
+        .filter(({ id }) => !globalSearch || items.some(({ groupId, title }) => groupId === id && title.toLowerCase().includes(globalSearch.toLowerCase())))
         .sort(sortFunction)
         .map(({ id }) => <Group key={id} groupId={id}/>);
 
     return (
         <div id='List'>
             <ListToolbar list={list}/>
-            <div id='ListGroups'>
+            <div className='boardLayout'>
                 { groupComponents }
             </div>
         </div>

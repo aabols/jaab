@@ -3,17 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { listsActions } from '../../_actions/listsActions';
 
-import './ListNavigation.css';
-
 export default function ListNavigation() {
     const [searchQuery, setSearchQuery] = useState('');
     const dispatch = useDispatch();
 
-    const lists = useSelector(state => state.lists.lists)
-        .filter(list => list.title.toLowerCase().includes(searchQuery.toLowerCase()))
-        .sort((a, b) => a.title.localeCompare(b.title))
-        .map(list => <NavLink key={list.id} to={list.id} onContextMenu={ (e) => handleRenameList(e, list)}>{ list.title }</NavLink>);
-    
     const handleSearchChange = (e) => {
         e.preventDefault();
         setSearchQuery(e.target.value);
@@ -33,10 +26,25 @@ export default function ListNavigation() {
         dispatch(listsActions.updateList({ ...list, title }));
     }
 
+    const lists = useSelector(state => state.lists.lists)
+        .filter(list => list.title.toLowerCase().includes(searchQuery.toLowerCase()))
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .map(list => (
+            <NavLink
+                className = 'linkButton linkButton--border'
+                key = {list.id}
+                to = {list.id}
+                onContextMenu = { (e) => handleRenameList(e, list) }
+            >
+                { list.title }
+            </NavLink>
+        ));
+    
     return (
-        <div id='ListNavigation'>
-            <form onSubmit={handleCreateList}>
+        <div id='list-navigation' className='justifiedColumn'>
+            <form className='form form--medium' onSubmit={handleCreateList}>
                 <input
+                    className = 'form__input'
                     type = 'text'
                     name = 'title'
                     placeholder = 'Find or create'

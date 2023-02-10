@@ -1,13 +1,34 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.theme-light {
+    --color-background: #fff;
+    --color-accent1: #a861a6;
+    --color-accent2: #fff;
+    --color-menu-separator: #a861a6;
+    --color-menu-hover: #eee;
+    --color-disabled: #999;
+    --color-disabled-accent: #777;
+    --color-error: darkred;
+    --color-success: darkgreen;
+    --color-inactive: #aaa;
+}
+
+.theme-dark {
+    --color-background: #111;
+    --color-accent1: #a861a6;
+    --color-accent2: #fff;
+    --color-menu-separator: #a861a6;
+    --color-menu-hover: #222;
+    --color-disabled: #999;
+    --color-disabled-accent: #777;
+    --color-error: darkred;
+    --color-success: darkgreen;
+    --color-inactive: #aaa;
 }

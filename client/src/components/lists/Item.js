@@ -1,9 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsCheckSquare, BsSquare } from 'react-icons/bs';
-
-import './Item.css';
 import { listsActions } from '../../_actions/listsActions';
+import If from '../If';
 
 export default function Item({ itemId }) {
     const dispatch = useDispatch();
@@ -24,11 +23,16 @@ export default function Item({ itemId }) {
     };
 
     return (
-        <div className='listItem'>
-            <div className = 'checkBox' onClick = { handleToggle }>
-                { item.checked ? <BsCheckSquare/> : <BsSquare/> }
+        <div className='item'>
+            <div className='item__handle' onClick={ handleToggle }>
+                <If condition={ !item.checked }>
+                    <BsSquare/>
+                </If>
+                <If condition={ item.checked }>
+                    <BsCheckSquare/>
+                </If>
             </div>
-            <div onClick = { handleToggle } onContextMenu = { handleRename } >
+            <div className='item__caption' onClick={ handleToggle } onContextMenu={ handleRename }>
                 { item.title }
             </div>
         </div>

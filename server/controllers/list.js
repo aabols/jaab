@@ -88,9 +88,12 @@ module.exports = {
                 where: { email: req.body.email }
             });
             if (!user) throw { status: 404, message: 'User not found' };
-            if (await list.hasUser(user)) throw { status: 200, message: `List ${list.title} is already shared with ${user.email}` }
+            if (await list.hasUser(user)) {
+                res.json();
+                return;
+            }
             await list.addUser(user);
-            res.json({ message: `List ${list.title} shared with ${user.email}` });
+            res.json(user);
         } catch({ status, message }) {
             res.status(status || 500).json({ message });
         }

@@ -1,11 +1,319 @@
-.theme-light {
-    --color-background: #fff;
-    --color-accent1: #a861a6;
-    --color-accent2: #fff;
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    font-size: 1.2em;
+    color: var(--color-accent1);
 }
 
-.theme-dark {
-    --color-background: #111;
-    --color-accent1: #a861a6;
-    --color-accent2: #fff;
+.toolbar__group {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-grow: 1;
+}
+
+.toolbar__group--justify-left {
+    justify-content: flex-start;
+}
+
+.toolbar__group--justify-right {
+    justify-content: flex-end;
+}
+
+.link {
+    color: inherit;
+}
+
+.linkButton {
+    color: var(--color-accent1);
+    background-color: var(--color-background);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 5px 20px;
+}
+
+.linkButton--border {
+    border: 1px solid var(--color-accent1);
+}
+
+.linkButton.active {
+    background-color: var(--color-accent1);
+    color: var(--color-accent2);
+}
+
+.linkButton--rounded {
+    border-radius: 5px;
+}
+
+.toolbar__button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 5px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    color: var(--color-accent1);
+    border: 2px solid var(--color-accent1);
+    background-color: var(--color-background);
+    box-shadow: 0 0 0.5em;
+}
+
+.menu__popup-overlay {
+    display: none;
+}
+
+.menu__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 2em;
+    padding: 2px 5px;
+}
+
+.menu__item--centered {
+    align-items: center;
+}
+
+.menu__item--clickable {
+    cursor: pointer;
+}
+
+.menu__item--hoverable:hover {
+    background-color: var(--color-menu-hover);
+}
+
+.menu__item--confirm {
+    background-color: var(--color-accent1);
+    color: var(--color-background);
+}
+
+.menu__divider {
+    height: 1px;
+    background-color: var(--color-accent1);
+}
+
+.userCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userCard__avatar {
+    font-size: 3em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userCard__fullName {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.userCard__email {
+    font-size: 0.7em;
+    font-style: italic;
+}
+
+.frame {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    color: var(--color-accent1);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.form--wide {
+    min-width: 250px;
+}
+
+.form--medium {
+    min-width: 120px;
+}
+
+.form--narrow {
+    min-width: 100px;
+}
+
+.form__field {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.2em;
+}
+
+.form__input {
+    width: 0;
+    box-sizing: border-box;
+    min-width: 100%;
+    height: 2.0em;
+    border-style: solid;
+    border-color: var(--color-accent1);
+    color: var(--color-accent1);
+}
+
+.form__input--button {
+    background-color: var(--color-accent1);
+    height: 2em;
+    color: var(--color-background);
+    font-size: inherit;
+}
+
+.form__input--button:disabled {
+    background-color: var(--color-disabled);
+    border-color: var(--color-disabled-accent);
+}
+
+.alert {
+    font-weight: bold;
+    min-height: 1.5em;
+}
+
+.alert--error {
+    color: var(--color-error);
+}
+
+.alert--success {
+    color: var(--color-success);
+}
+
+.columnLayout {
+    display: flex;
+    flex-direction: row;
+}
+
+.columnLayout__fixedColumn {
+    flex-grow: 0;
+}
+
+.columnLayout__growColumn {
+    flex-grow: 1;
+}
+
+.justifiedColumn {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.boardLayout {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5em;
+    padding: 0 10px 10px 10px;
+    border: 2px solid var(--color-accent1);
+    border-radius: 7px;
+    color: var(--color-accent1);
+}
+
+.group--collapsed {
+    border-color: var(--color-inactive);
+    color: var(--color-inactive);
+}
+
+.group__caption {
+    text-align: center;
+    margin-bottom: 5px;
+    padding: 0 10px 0.3em 10px;
+    color: inherit;
+    cursor: pointer;
+}
+
+.group__items {}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 0.8em;
+}
+
+.item__handle {
+    cursor: pointer;
+}
+
+.item__caption {
+    cursor: pointer;
+}
+
+.icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.2em;
+}
+
+.icon--120 {
+    font-size: 1.2em;
+}
+
+.icon--inverted {
+    background-color: var(--color-accent1);
+    color: var(--color-background);
+}
+
+.icon--disabled {
+    cursor: default;
+    color: var(--color-disabled);
+}
+
+.icon--spinning {
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.floater {
+    position: relative;
+}
+
+.floater__content {
+    position: absolute;
+    width: 100%;
 }

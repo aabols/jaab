@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { classNames } from 'classnames';
-
+import classNames from 'classnames';
 import './App.css';
 import ErrorPage from './components/ErrorPage';
 import Root from './components/Root';
@@ -44,10 +43,12 @@ const router = createBrowserRouter([
 
 function App() {
     const selectedTheme = useSelector(state => state.theme.selectedTheme);
+    const className = classNames( `${selectedTheme}` );
 
     return (
-        <div className={selectedTheme}>
+        <div id='navigation-root' className={className}>
             <RouterProvider router={router}/>
+            <div id='popup-root'/>
         </div>
     );
 }

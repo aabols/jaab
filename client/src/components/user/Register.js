@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 import { Navigate, Link } from 'react-router-dom';
-
-import './Register.css';
-import { userActions } from '../../_actions/userActions';
+import { userServices } from '../../_services/userServices';
 
 export default function Register() {
+    const user = useSelector(state => state.auth.user);
+    const firstFieldRef = useRef();
+    const [registering, setRegistering] = useState(false);
+    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
     const [formValues, setFormValues] = useState({
         email: '',
         firstName: '',
@@ -14,11 +18,7 @@ export default function Register() {
         passwordConfirmation: ''
     });
 
-    const registering = useSelector(state => state.auth.registering);
-    const error = useSelector(state => state.auth.registerError);
-    const message = useSelector(state => state.auth.registerMessage);
-    const user = useSelector(state => state.auth.user);
-    const dispatch = useDispatch();
+    useEffect(() => { firstFieldRef.current.focus() }, []);
 
     if (user) return <Navigate to='/'/>;
 
@@ -29,10 +29,22 @@ export default function Register() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
+        setRegistering(true);
+        setMessage('');
+        setError(false);
         const { passwordConfirmation, ...registrationData } = formValues;
-        dispatch(userActions.register(registrationData));
+        userServices.register(registrationData)
+            .then(res => {
+                setRegistering(false);
+                setMessage(`${res.email} registered successfully!`);
+            })
+            .catch(err => {
+                setRegistering(false);
+                setError(true);
+                setMessage(err);
+            });
     };
 
     const validateForm = ({ email, firstName, lastName, password, passwordConfirmation }) => {
@@ -46,29 +58,86 @@ export default function Register() {
     };
 
     return (
-        <div id='Register'>
-            <form onSubmit = { handleSubmit }>
-                <label htmlFor='email'>E-mail:</label>
-                <input type="text" id="email" name="email" value={formValues.email} onChange={handleInputChange} />
+        <div id='register' className='frame'>
+            <form onSubmit={ handleRegister } className='form form--wide'>
+                <div className='form__field'>
+                    <label htmlFor='email'>E-mail:</label>
+                    <input
+                        className = 'form__input'
+                        ref = { firstFieldRef }
+                        type = 'text'
+                        id = 'email'
+                        name = 'email'
+                        value = {formValues.email}
+                        onChange = {handleInputChange}
+                    />
+                </div>
 
-                <label htmlFor="firstName">Name:</label>
-                <input type="text" id="firstName" name="firstName" value={formValues.firstName} onChange={handleInputChange} />
+                <div className='form__field'>
+                    <label htmlFor='firstName'>Name:</label>
+                    <input
+                        className = 'form__input'
+                        type = 'text'
+                        id = 'firstName'
+                        name = 'firstName'
+                        value = {formValues.firstName}
+                        onChange = {handleInputChange}
+                    />
+                </div>
 
-                <label htmlFor="lastName">Surname:</label>
-                <input type="text" id="lastName" name="lastName" value={formValues.lastName} onChange={handleInputChange} />
+                <div className='form__field'>
+                    <label htmlFor='lastName'>Surname:</label>
+                    <input
+                        className = 'form__input'
+                        type = 'text'
+                        id = 'lastName'
+                        name = 'lastName'
+                        value = {formValues.lastName}
+                        onChange = {handleInputChange}
+                    />
+                </div>
 
-                <label htmlFor="password">Password (at least 8 characters):</label>
-                <input type="password" id="password" name="password" value={formValues.password} onChange={handleInputChange} />
+                <div className='form__field'>
+                    <label htmlFor='password'>Password (at least 8 characters):</label>
+                    <input
+                        className = 'form__input'
+                        type='password'
+                        id='password'
+                        name='password'
+                        value={formValues.password}
+                        onChange={handleInputChange}
+                    />
+                </div>
 
-                <label htmlFor="passwordConfirmation">Confirm password:</label>
-                <input type="password" id="passwordConfirmation" name="passwordConfirmation" value={formValues.passwordConfirmation} onChange={handleInputChange} />
+                <div className='form__field'>
+                    <label htmlFor='passwordConfirmation'>Confirm password:</label>
+                    <input
+                        className = 'form__input'
+                        type = 'password'
+                        id = 'passwordConfirmation'
+                        name = 'passwordConfirmation'
+                        value = {formValues.passwordConfirmation}
+                        onChange = {handleInputChange}
+                    />
+                </div>
 
-                <input type="submit" className='button' disabled={registering || !validateForm(formValues)} value={`Register${registering ? 'ing...' : ''}`} />
+                <input
+                    className = 'form__input form__input--button'
+                    type = 'submit'
+                    disabled = { registering || !validateForm(formValues) }
+                    value = { registering ? 'Registering' : 'Register' }
+                />
             </form>
-            <div className={error ? 'error' : ''}>
-                {message}
+            <div
+                className={classNames({
+                    'alert': true,
+                    'alert--error': error,
+                    'alert--success': !error
+                })}
+            >
+                { message }
             </div>
-            <Link to='/login'>Log in</Link>
+            <Link className='link' to='/login'>Log in</Link>
         </div>
     );
 };

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
+import classNames from 'classnames';
+import Popup from 'reactjs-popup';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMenuSharp, IoPersonSharp } from 'react-icons/io5';
-import Popup from 'reactjs-popup';
-
 import { userActions } from '../../_actions/userActions';
 import { themeConstants } from '../../_constants/themeConstants';
-import './UserMenu.css';
 
 export default function UserMenu() {
     const [confirmAccountDelete, setConfirmAccountDelete] = useState(false);
@@ -22,6 +21,7 @@ export default function UserMenu() {
     };
 
     const handleLogout = (e) => {
+        e.preventDefault();
         dispatch(userActions.logout());
     };
 
@@ -30,32 +30,51 @@ export default function UserMenu() {
         if (confirmAccountDelete) return dispatch(userActions.deleteAccount());
         setConfirmAccountDelete(true);
         setTimeout(() => setConfirmAccountDelete(false), 1000);
-    }
+    };
+
+    const trigger = <div className='toolbar__button'>
+        <IoMenuSharp/>
+    </div>;
 
     return (
-        <div id='UserMenu'>
-            <Popup
-                trigger={
-                    <div id='UserMenuButton'>
-                        <IoMenuSharp title='Settings' size='1.9em' color='var(--color-accent1)'/>
-                    </div>
-                }
-                position='bottom right'
-                arrow={false}
-                overlayStyle={{display: 'none'}}
-                closeOnDocumentClick={true}
-            >
-                <div id='UserMenuContent'>
-                    <div> <IoPersonSharp size='2.5em'/> </div>
-                    <div className='name'>{ `${user.firstName} ${user.lastName}` }</div>
-                    <div className='email'>{ user.email }</div>
-                    <div className='menuRow menuItem' onClick={handleChangeTheme}>{selectedTheme === 'theme-light' ? 'Dark mode' : 'Light mode'}</div>
-                    <div className='menuRow menuItem' onClick={handleLogout}>Log out</div>
-                    <div className={`menuRow menuItem${confirmAccountDelete ? ' confirm' : ''}`} onClick={handleAccountDelete}>
-                        {confirmAccountDelete ? 'Confirm delete?' : 'Delete account'}
+        <Popup
+            trigger = { trigger }
+            position = 'bottom right'
+            offsetX = { -10 }
+            arrow = { false }
+            closeOnDocumentClick = { true }
+            className = 'menu__popup'
+        >
+            <div id='user-menu' className='menu'>
+                <div className='menu__item menu__item--centered'>
+                    <div className='userCard'>
+                        <div className='userCard__avatar'> <IoPersonSharp/> </div>
+                        <div className='userCard__fullName'>{ `${user.firstName} ${user.lastName}` }</div>
+                        <div className='userCard__email'>{ user.email }</div>
                     </div>
                 </div>
-            </Popup>
-        </div>
+                <div className='menu__divider'/>
+                <div className='menu__item menu__item--centered menu__item--clickable menu__item--hoverable' onClick={ handleChangeTheme }>
+                    { selectedTheme === 'theme-light' ? 'Dark mode' : 'Light mode' }
+                </div>
+                <div className='menu__divider'/>
+                <div className='menu__item menu__item--centered menu__item--clickable menu__item--hoverable' onClick={ handleLogout }>
+                    Log out
+                </div>
+                <div className='menu__divider'/>
+                <div
+                    className = {classNames({
+                        'menu__item': true,
+                        'menu__item--centered': true,
+                        'menu__item--clickable': true,
+                        'menu__item--hoverable': !confirmAccountDelete,
+                        'menu__item--confirm': confirmAccountDelete,
+                    })}
+                    onClick={handleAccountDelete}
+                >
+                    { confirmAccountDelete ? 'Confirm delete?' : 'Delete account' }
+                </div>
+            </div>
+        </Popup>
     )
 };
