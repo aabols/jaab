@@ -1,17 +1,88 @@
+### API URL
+@api = http://localhost:3001/api
+### USER TOKENS
+@token1 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdXNlcjEuY29tIiwiZmlyc3ROYW1lIjoiVGVzdCIsImxhc3ROYW1lIjoiVXNlciIsImlhdCI6MTY3NjcxODQyOH0.aKP5Z-kACd5P6DqGN-Gw3G14PbBLNCGsYeaKm6i7Sso
+@token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdXNlcjIuY29tIiwiZmlyc3ROYW1lIjoiVGVzdCIsImxhc3ROYW1lIjoiVXNlciIsImlhdCI6MTY3Njc0NDUzN30.JCvzHpTJC2udRr5P0qXn64OLPa_SxfKU9yKGDt7Kfao
+### USER
+@token = {{token1}}
+### GET ALL LISTS
+GET {{api}}/lists/all
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
 ### GET LISTS
-GET http://localhost:3001/api/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU0NjA5MzYwfQ.Ev7t-7O6LEmZ2OuNSth1bqamsAPIuvzFOFpbs_2ltNg
+GET {{api}}/lists
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
 ### CREATE LIST
-POST http://localhost:3001/api/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU0NjA5MzYwfQ.Ev7t-7O6LEmZ2OuNSth1bqamsAPIuvzFOFpbs_2ltNg
+POST {{api}}/lists
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{ "title": "mySampleList" }
+{ "title": "Test List 1" }
 
-### SHARE LIST
-POST http://localhost:3001/api/list/share
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU0NjA5MzYwfQ.Ev7t-7O6LEmZ2OuNSth1bqamsAPIuvzFOFpbs_2ltNg
+
+### LIST
+@listId = 402bb753-bdcd-452d-b313-cc342b858604
+### GET LIST
+GET {{api}}/lists/{{listId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+### DELETE LIST
+DELETE {{api}}/lists/{{listId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+### UPDATE LIST
+PUT {{api}}/lists/{{listId}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{ "userId": 2, "listId": 1}
+{ "title": "rename hopefully working" }
+### CREATE GROUP
+POST {{api}}/lists/{{listId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "title": "Test Group 2" }
+
+
+### GROUP
+@groupId = 465c9f67-3560-4177-9a98-e0fb8ec52292
+### DELETE GROUP
+DELETE {{api}}/lists/{{listId}}/{{groupId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+### GET GROUP
+GET {{api}}/lists/{{listId}}/{{groupId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+### UPDATE GROUP
+PUT {{api}}/lists/{{listId}}/{{groupId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "title": "Renamed group 1" }
+### CREATE ITEM
+POST {{api}}/lists/{{listId}}/{{groupId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "title": "Test item 6" }
+
+### ITEM
+@itemId = 40b46495-483a-4107-8ca2-b28986314c13
+### GET ITEM
+GET {{api}}/lists/{{listId}}/{{groupId}}/{{itemId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+### UPDATE ITEM
+PUT {{api}}/lists/{{listId}}/{{groupId}}/{{itemId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "checked": "false" }
+### DELETE ITEM
+DELETE {{api}}/lists/{{listId}}/{{groupId}}/{{itemId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json

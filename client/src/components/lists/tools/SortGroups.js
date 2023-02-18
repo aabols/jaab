@@ -18,7 +18,7 @@ export default function SortGroups() {
             key={sortOption}
             title={sortOptions[sortOption].title}
         >
-            { sortOptions[sortOption].icon() }
+            {sortOptions[sortOption].icon()}
         </div>
     );
 
@@ -40,21 +40,22 @@ export default function SortGroups() {
                     });
                 }}
             >
-                { sortOptions[opt].icon() }
+                {sortOptions[opt].icon()}
             </div>
         ));
 
     return (
         <Popup
-            className = 'menu__popup'
-            trigger = { currentSortIcon }
-            ref = {sortMenuRef}
-            arrow = { false }
-            overlayStyle = {{ display: 'none' }}
-            position = 'bottom center'
+            className='menu__popup'
+            trigger={currentSortIcon}
+            ref={sortMenuRef}
+            arrow={false}
+            overlayStyle={{ display: 'none' }}
+            position='bottom center'
+            keepTooltipInside={true}
         >
             <div className='menu'>
-                { sortIcons }
+                {sortIcons}
             </div>
         </Popup>
     )

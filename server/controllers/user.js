@@ -1,37 +1,39 @@
-const User = require('../db/models/User');
 const { Op } = require('sequelize');
+const User = require('../db/models/User');
 
 module.exports = {
     getUsers: async (req, res) => {
         try {
-            const q = req.query;
+            const query = req.query.q;
+            if (!query) throw { status: 400, message: 'Missing search query' };
             const users = await User.findAll({
+                limit: 10,
                 where: {
                     [Op.or]: [
-                        {email: {[Op.substring]: q.searchString}},
-                        {firstName: {[Op.substring]: q.searchString}},
-                        {lastName: {[Op.substring]: q.searchString}},
-                    ]
+                        { username: { [Op.substring]: query } },
+                        { firstName: { [Op.substring]: query } },
+                        { lastName: { [Op.substring]: query } },
+                    ],
+                    id: { [Op.ne]: req.user.id }
                 }
             });
-            if (users.length > 10) throw { status: 400, message: 'Too many results returned' };
             res.json(users);
-        } catch({ status, message }) {
+        } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
     },
 
     addUser: async (req, res) => {
-        const { email, ...rest } = req.body;
         try {
+            const { username, ...rest } = req.body;
             const [user, created] = await User.findOrCreate({
-                where: { email },
-                defaults: rest
+                where: { username },
+                defaults: rest,
             });
-            if (!created) throw { status: 409, message: 'E-mail already in use' };
-            await user.reload();
-            res.status(201).json(user);
-        } catch({ status, message}) {
+            if (!created) throw { status: 409, message: 'Username already in use' };
+            const { firstName, lastName } = user.toJSON();
+            res.status(201).json({ username, firstName, lastName });
+        } catch ({ status, message }) {
             res.status(status || 400).json({ message });
         }
     },
@@ -40,8 +42,8 @@ module.exports = {
         try {
             await req.user.destroy();
             res.json('Account deleted');
-        } catch({ status, message }) {
+        } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
-    }
+    },
 };

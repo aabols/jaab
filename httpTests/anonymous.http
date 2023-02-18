@@ -3,31 +3,33 @@ POST http://localhost:3001/register
 Content-Type: application/json
 
 {
-    "email": "janis@abols.com",
+    "username": "testuser1",
+    "email": "test@user1.com",
     "password": "password",
-    "firstName": "Janis",
-    "lastName": "Abols"
+    "firstName": "Test",
+    "lastName": "User"
 }
 
 ### LOGIN USER 1
 POST http://localhost:3001/login
 Content-Type: application/json
 
-{ "email": "janis@abols.com", "password": "password" }
+{ "username": "testuser1", "password": "password" }
 
 ### REGISTER USER 2
 POST http://localhost:3001/register
 Content-Type: application/json
 
 {
-    "email": "juris@valdis.com",
-    "password": "juris123",
-    "firstName": "Juris",
-    "lastName": "Valdis"
+    "username": "testuser2",
+    "email": "test@user2.com",
+    "password": "password",
+    "firstName": "Test",
+    "lastName": "User"
 }
 
 ### LOGIN USER 2
 POST http://localhost:3001/login
 Content-Type: application/json
 
-{ "email": "juris@valdis.com", "password": "juris123" }
+{ "username": "testuser2", "password": "password" }

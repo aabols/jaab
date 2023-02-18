@@ -32,5 +32,14 @@
 			"    payload: $1",
 			"});"
 		]
+	},
+	"Event handler": {
+		"scope": "javascript",
+		"prefix": "evh",
+		"body": [
+			"const $1 = (e) => {",
+			"    e.preventDefault();""    $0",
+			"};"
+		]
 	}
 }

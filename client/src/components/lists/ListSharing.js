@@ -35,16 +35,16 @@ export default function ListSharing({ list }) {
     }, [shareInput]);
 
     const loadingPlaceholder = <div>Loading...</div>;
-    
+
     const handleShareInputChange = (e) => {
         e.preventDefault();
         setShareInput(e.target.value);
     };
-    
-    const handleShare = (e, email) => {
+
+    const handleShare = (e, username) => {
         e.preventDefault();
         setErrorMessage('');
-        listsServices.shareList(list, email || shareInput)
+        listsServices.shareList(list, username || shareInput)
             .then(res => {
                 listsServices.getUsers(list)
                     .then(res => setSharedWith(res.data));
@@ -55,9 +55,9 @@ export default function ListSharing({ list }) {
         setShareInput('');
     };
 
-    const handleUnshare = (e, email) => {
+    const handleUnshare = (e, username) => {
         e.preventDefault();
-        listsServices.unshareList(list, email)
+        listsServices.unshareList(list, username)
             .then(() => {
                 listsServices.getUsers(list)
                     .then(res => setSharedWith(res.data));
@@ -65,36 +65,38 @@ export default function ListSharing({ list }) {
     };
 
     const userSuggestions = usersFound
-        .map(({ email, firstName, lastName }) => (
-            <div key={email} onClick={(e) => handleShare(e, email)}>
-                {`${firstName} ${lastName} (${email})`}
+        .map(({ username, firstName, lastName }) => (
+            <div key={username} onClick={(e) => handleShare(e, username)}>
+                {`${firstName} ${lastName} (${username})`}
             </div>
         ));
-    
+
     const users = sharedWith
-        .map(({ firstName, lastName, email }) => <div className='user' key={email}>
-            <span className='remove' onClick={e => handleUnshare(e, email)}> &times; </span>
-            <span> {firstName} {lastName} ({email}) </span>
-        </div>);
-    
+        .map(({ firstName, lastName, username }) => (
+            <div className='user' key={username}>
+                <span className='remove' onClick={e => handleUnshare(e, username)}> &times; </span>
+                <span> {firstName} {lastName} ({username}) </span>
+            </div>
+        ));
+
     return (
         <div id='ListSharing'>
             <h2>{list.title}</h2>
             <form onSubmit={handleShare}>
-                <input type='text' placeholder='Share with (email)...' onChange={handleShareInputChange} value={shareInput}/>
+                <input type='text' placeholder='Share with (username)...' onChange={handleShareInputChange} value={shareInput} />
             </form>
             {
                 userSuggestions.length > 0 ? (
                     <div className='suggestionWrapper'>
                         <div className='suggestions'>
-                            { userSuggestions }
+                            {userSuggestions}
                         </div>
                     </div>
                 ) : null
             }
-            <div className='error'>{ errorMessage }</div>
+            <div className='error'>{errorMessage}</div>
             <h3>Shared with:</h3>
-            { loading ? loadingPlaceholder : users }
+            {loading ? loadingPlaceholder : users}
         </div>
     )
 };

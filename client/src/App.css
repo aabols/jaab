@@ -96,7 +96,7 @@
 
 .menu__item--confirm {
     background-color: var(--color-accent1);
-    color: var(--color-background);
+    color: var(--color-accent2);
 }
 
 .menu__divider {
@@ -174,21 +174,53 @@
     color: var(--color-accent1);
 }
 
-.form__input--button {
-    background-color: var(--color-accent1);
+.form__button {
     height: 2em;
-    color: var(--color-background);
+    background-color: var(--color-accent1);
+    border-style: solid;
+    border-color: var(--color-accent1);
+    color: var(--color-accent2);
+    font-size: inherit;
+    cursor: pointer;
+}
+
+.form__button:hover {
+    background-color: var(--color-button-hover);
+}
+
+.form__button:disabled {
+    background-color: var(--color-disabled);
+    border-color: var(--color-disabled-accent);
+    color: var(--color-disabled-accent);
+    cursor: default;
+}
+
+.form__confirmButton {
+    height: 2em;
+    border-style: solid;
+    background-color: inherit;
+    border-color: var(--color-accent1);
+    color: var(--color-accent1);
     font-size: inherit;
 }
 
-.form__input--button:disabled {
-    background-color: var(--color-disabled);
-    border-color: var(--color-disabled-accent);
+.form__confirmButton--hover:hover {
+    background-color: var(--color-menu-hover);
+}
+
+.form__confirmButton--confirm {
+    background-color: var(--color-accent1);
+    color: var(--color-accent2);
+}
+
+.form__confirmButton--confirm:hover {
+    background-color: var(--color-button-hover);
 }
 
 .alert {
     font-weight: bold;
     min-height: 1.5em;
+    width: 250px;
 }
 
 .alert--error {
@@ -256,17 +288,25 @@
 .item {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     gap: 0.5em;
     font-size: 0.8em;
 }
 
 .item__handle {
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .item__caption {
     cursor: pointer;
+    flex-grow: 1;
+}
+
+.item__caption--checked {
+    text-decoration: line-through;
 }
 
 .icon {
@@ -296,7 +336,7 @@
     animation-name: spin;
     animation-duration: 1000ms;
     animation-iteration-count: infinite;
-    animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    animation-timing-function: cubic-bezier(1, 0, 0, 1);
 }
 
 @keyframes spin {
@@ -316,4 +356,14 @@
 .floater__content {
     position: absolute;
     width: 100%;
+}
+
+.modal-popup-overlay {
+    background-color: rgba(0, 0, 0, 0.679);
+}
+
+.modal-popup-content {
+    background-color: var(--color-background);
+    padding: 5px;
+    color: var(--color-accent1);
 }

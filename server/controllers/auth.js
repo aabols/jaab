@@ -9,17 +9,11 @@ const JWT_SECRET_KEY = config.server.jwtKey;
 module.exports = {
     loginUser: async (req, res) => {
         try {
-            const userWithPassword = await User.scope('withPassword').findOne({ where: { email: req.body.email }});
-            if (userWithPassword === null) {
-                res.status(404).json({ message: 'User not found' });
-                return;
-            };
+            const userWithPassword = await User.scope('auth').findOne({ where: { username: req.body.username } });
+            if (!userWithPassword) throw { status: 404, message: 'User not found' };
 
             const passwordsMatch = await bcrypt.compare(req.body.password, userWithPassword.password);
-            if (!passwordsMatch) {
-                res.status(404).json({ message: 'Password incorrect' });
-                return;
-            };
+            if (!passwordsMatch) throw { status: 404, message: 'Password incorrect' };
 
             const user = await User.scope('jwt').findByPk(userWithPassword.id).then(user => user.toJSON());
             const token = jwt.sign(user, JWT_SECRET_KEY);
@@ -27,8 +21,8 @@ module.exports = {
                 ...user,
                 token
             });
-        } catch(err) {
-            res.status(500).json({ message: err.message });
+        } catch ({ status, message }) {
+            res.status(status || 500).json({ message });
         }
     }
 };

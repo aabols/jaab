@@ -1,19 +1,21 @@
 import { isCancel } from 'axios';
-import React, { useEffect, useState } from 'react';
-import { BsFillPersonPlusFill, BsPersonDashFill, BsPersonFill } from 'react-icons/bs';
+import React, { useEffect, useRef, useState } from 'react';
+import { BsFillPersonPlusFill, BsPersonDashFill } from 'react-icons/bs';
+import { SiSpinrilla } from 'react-icons/si';
 import Popup from 'reactjs-popup';
 import classNames from 'classnames';
-import { validators } from '../../../utils/validators';
 import { listsServices } from '../../../_services/listsServices';
 import { userServices } from '../../../_services/userServices';
 import If from '../../If';
+import { useSelector } from 'react-redux';
 
 export default function ShareList({ list }) {
     const [sharedUsers, setSharedUsers] = useState([]);
     const [loadingUsers, setLoadingUsers] = useState(false);
-    const [loadingCount, setLoadingCount] = useState(1);
     const [userSearchQuery, setUserSearchQuery] = useState('');
     const [suggestedUsers, setSuggestedUsers] = useState([]);
+    const user = useSelector(state => state.auth.user);
+    const popupRef = useRef();
 
     useEffect(() => {
         if (!userSearchQuery) {
@@ -31,17 +33,8 @@ export default function ShareList({ list }) {
         return () => controller.abort();
     }, [userSearchQuery]);
 
-    useEffect(() => {
-        if (!loadingUsers) return;
-        const loadingInterval = setInterval(() => {
-            setLoadingCount(count => (count % 3) + 1);
-        }, 400);
-        return () => clearInterval(loadingInterval);
-    }, [loadingUsers]);
-
-    const shareList = (email) => {
-        if (!validators.isEmail(email)) return;
-        listsServices.shareList(list, email)
+    const shareList = (username) => {
+        listsServices.shareList(list, username)
             .then(res => {
                 const newUser = res.data;
                 if (newUser) setSharedUsers(users => [...users, newUser]);
@@ -50,8 +43,8 @@ export default function ShareList({ list }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const email = suggestedUsers[0]?.email || userSearchQuery;
-        shareList(email);
+        const username = suggestedUsers[0]?.username || userSearchQuery;
+        shareList(username);
     };
 
     const handleOpening = () => {
@@ -70,12 +63,27 @@ export default function ShareList({ list }) {
     const handleClosing = () => {
         setUserSearchQuery('');
         setSharedUsers([]);
-        setLoadingCount(1);
     };
 
     const handleUserSearch = (e) => {
         e.preventDefault();
         setUserSearchQuery(e.target.value);
+    };
+
+    const handleMakePrivate = (e) => {
+        e.preventDefault();
+        sharedUsers.forEach(user => {
+            listsServices.unshareList(list, user.username)
+                .then(res => {
+                    setSharedUsers(users => users.filter(u => u.username !== user.username));
+                });
+        });
+    };
+
+    const handleUnsubscribe = (e) => {
+        e.preventDefault();
+        listsServices.unshareList(list, user.username);
+        popupRef.current.close();
     };
 
     const trigger = (
@@ -85,46 +93,46 @@ export default function ShareList({ list }) {
     );
 
     const users = sharedUsers
-        .map(({ firstName, lastName, email }) => {
+        .map(({ firstName, lastName, username }) => {
             const handleUnshare = (e) => {
                 e.preventDefault();
-                listsServices.unshareList(list, email)
+                listsServices.unshareList(list, username)
                     .then(res => {
-                        setSharedUsers(users => users.filter(u => u.email !== email));
+                        setSharedUsers(users => users.filter(u => u.username !== username));
                     });
             };
             return (
-                <div className='item' key={email}>
+                <div className='item' key={username}>
                     <div className='item__handle' title='Unshare' onClick={handleUnshare}>
                         <BsPersonDashFill />
                     </div>
                     <div className='item__caption'>
-                        {`${firstName} ${lastName} (${email})`}
+                        {`${firstName} ${lastName} (${username})`}
                     </div>
                 </div>
             );
         });
 
     const suggestions = suggestedUsers
-        .filter(suggestedUser => !sharedUsers.some(sharedUser => sharedUser.email === suggestedUser.email))
-        .flatMap(({ firstName, lastName, email }) => [
+        .filter(suggestedUser => !sharedUsers.some(sharedUser => sharedUser.username === suggestedUser.username))
+        .flatMap(({ firstName, lastName, username }) => [
             <div
                 className={classNames({
                     'menu__item': true,
                     'menu__item--hoverable': true,
                     'menu__item--clickable': true,
                 })}
-                key={email}
-                onClick={(e) => shareList(email)}
+                key={username}
+                onClick={(e) => shareList(username)}
             >
                 <div>
                     {`${firstName} ${lastName}`}
                 </div>
                 <div className='userCard__email'>
-                    {email}
+                    {username}
                 </div>
             </div>,
-            <div className='menu__divider' key={`${email}_div`} />
+            <div className='menu__divider' key={`${username}_div`} />
         ])
         .slice(0, -1);
 
@@ -135,15 +143,32 @@ export default function ShareList({ list }) {
                     <div className='form__field'>
                         <label>Shared with</label>
                         <If condition={loadingUsers}>
-                            <div className='icon icon--disabled'>
-                                <span>
-                                    {Array(loadingCount).fill().map(i => <BsPersonFill />)}
-                                </span>
+                            <div className='icon icon--spinning'>
+                                <SiSpinrilla />
                             </div>
                         </If>
-                        <If condition={!loadingUsers}>
+                        <If condition={!loadingUsers && users.length}>
                             {users}
                         </If>
+                        <If condition={!loadingUsers && !users.length}>
+                            <span style={{ fontStyle: 'italic' }}>Nobody</span>
+                        </If>
+                    </div>
+                    <div className='form__field'>
+                        <input
+                            className='form__button'
+                            type='button'
+                            value='Make private'
+                            disabled={!users.length}
+                            onClick={handleMakePrivate}
+                        />
+                        <input
+                            className='form__button'
+                            type='button'
+                            value='Unsubscribe'
+                            disabled={!users.length}
+                            onClick={handleUnsubscribe}
+                        />
                     </div>
                     <div className='form__field'>
                         <label htmlFor='user'>Share with</label>
@@ -175,6 +200,7 @@ export default function ShareList({ list }) {
             className='menu__popup'
             trigger={trigger}
             children={body}
+            ref={popupRef}
             onOpen={handleOpening}
             onClose={handleClosing}
             position='bottom center'

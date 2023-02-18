@@ -21,24 +21,24 @@ export default function UserPanel() {
     return (
         <>
             <div>
-                { `${user.firstName} ${user.lastName}` }
+                {`${user.firstName} ${user.lastName}`}
             </div>
             <div>
-                { user.email }
+                {user.username}
             </div>
             <div>
                 <input
                     type='button'
                     value='Logout'
-                    onClick={ handleLogout }
+                    onClick={handleLogout}
                 />
             </div>
             <div>
                 <input
-                    type = 'button'
-                    style = {{ backgroundColor: deleteConfirm ? '#f66' : '#faa' }}
-                    value = { deleteConfirm ? 'Confirm account delete' : 'Delete account' }
-                    onClick = { handleDelete }
+                    type='button'
+                    style={{ backgroundColor: deleteConfirm ? '#f66' : '#faa' }}
+                    value={deleteConfirm ? 'Confirm account delete' : 'Delete account'}
+                    onClick={handleDelete}
                 />
             </div>
         </>

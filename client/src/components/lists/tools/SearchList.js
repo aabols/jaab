@@ -27,6 +27,7 @@ export default function SearchList({ list }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!globalSearch) return;
         const matchingItems = allItems
             .filter(({ listId, title }) => listId === list.id && title.toLowerCase().includes(globalSearch.toLowerCase()));
         const checked = matchingItems.some(({ checked }) => checked) ? false : true;
@@ -72,6 +73,7 @@ export default function SearchList({ list }) {
             position='center center'
             onClose={handleClosing}
             closeOnDocumentClick={!globalSearch}
+            keepTooltipInside={true}
         />
     )
 };

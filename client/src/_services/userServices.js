@@ -37,8 +37,8 @@ export const userServices = {
         return api.delete('/user');
     },
 
-    searchUsers: (searchString, signal) => {
-        return api.get('/user', { params: {searchString}, signal });
+    searchUsers: (q, signal) => {
+        return api.get('/user', { params: { q }, signal });
     },
 };
 

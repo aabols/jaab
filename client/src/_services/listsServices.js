@@ -9,12 +9,12 @@ export const listsServices = {
         return api.get(`/lists/${list.id}/users`, { signal });
     },
 
-    shareList: (list, email, signal) => {
-        return api.put(`/lists/${list.id}/share`, { email }, { signal });
+    shareList: (list, username, signal) => {
+        return api.put(`/lists/${list.id}/share`, { username }, { signal });
     },
 
-    unshareList: (list, email, signal) => {
-        return api.put(`/lists/${list.id}/unshare`, { email }, { signal });
+    unshareList: (list, username, signal) => {
+        return api.put(`/lists/${list.id}/unshare`, { username }, { signal });
     },
 
     createList: (list, signal) => {

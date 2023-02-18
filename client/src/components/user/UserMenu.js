@@ -33,37 +33,37 @@ export default function UserMenu() {
     };
 
     const trigger = <div className='toolbar__button'>
-        <IoMenuSharp/>
+        <IoMenuSharp />
     </div>;
 
     return (
         <Popup
-            trigger = { trigger }
-            position = 'bottom right'
-            offsetX = { -10 }
-            arrow = { false }
-            closeOnDocumentClick = { true }
-            className = 'menu__popup'
+            trigger={trigger}
+            position='bottom right'
+            offsetX={-10}
+            arrow={false}
+            closeOnDocumentClick={true}
+            className='menu__popup'
         >
             <div id='user-menu' className='menu'>
                 <div className='menu__item menu__item--centered'>
                     <div className='userCard'>
-                        <div className='userCard__avatar'> <IoPersonSharp/> </div>
-                        <div className='userCard__fullName'>{ `${user.firstName} ${user.lastName}` }</div>
-                        <div className='userCard__email'>{ user.email }</div>
+                        <div className='userCard__avatar'> <IoPersonSharp /> </div>
+                        <div className='userCard__fullName'>{`${user.firstName} ${user.lastName}`}</div>
+                        <div className='userCard__email'>{user.username}</div>
                     </div>
                 </div>
-                <div className='menu__divider'/>
-                <div className='menu__item menu__item--centered menu__item--clickable menu__item--hoverable' onClick={ handleChangeTheme }>
-                    { selectedTheme === 'theme-light' ? 'Dark mode' : 'Light mode' }
+                <div className='menu__divider' />
+                <div className='menu__item menu__item--centered menu__item--clickable menu__item--hoverable' onClick={handleChangeTheme}>
+                    {selectedTheme === 'theme-light' ? 'Dark mode' : 'Light mode'}
                 </div>
-                <div className='menu__divider'/>
-                <div className='menu__item menu__item--centered menu__item--clickable menu__item--hoverable' onClick={ handleLogout }>
+                <div className='menu__divider' />
+                <div className='menu__item menu__item--centered menu__item--clickable menu__item--hoverable' onClick={handleLogout}>
                     Log out
                 </div>
-                <div className='menu__divider'/>
+                <div className='menu__divider' />
                 <div
-                    className = {classNames({
+                    className={classNames({
                         'menu__item': true,
                         'menu__item--centered': true,
                         'menu__item--clickable': true,
@@ -72,7 +72,7 @@ export default function UserMenu() {
                     })}
                     onClick={handleAccountDelete}
                 >
-                    { confirmAccountDelete ? 'Confirm delete?' : 'Delete account' }
+                    {confirmAccountDelete ? 'Confirm delete?' : 'Delete account'}
                 </div>
             </div>
         </Popup>

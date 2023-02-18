@@ -6,6 +6,16 @@ const sequelize = require('../');
 const User = sequelize.define(
     'User',
     {
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                notNull: { msg: 'Username required' },
+                notEmpty: { msg: 'Username required' },
+                isAlphanumeric: { msg: 'Only letters and numbers in username' },
+            },
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -13,8 +23,8 @@ const User = sequelize.define(
             validate: {
                 notNull: { msg: 'E-mail address required' },
                 notEmpty: { msg: 'E-mail address required' },
-                isEmail: { msg: 'Invalid e-mail address' }
-            }
+                isEmail: { msg: 'Invalid e-mail address' },
+            },
         },
         firstName: {
             type: DataTypes.STRING,
@@ -22,8 +32,7 @@ const User = sequelize.define(
             validate: {
                 notNull: { msg: 'First name required' },
                 notEmpty: { msg: 'First name required' },
-                isAlpha: { msg: 'First name can only contain letters' }
-            }
+            },
         },
         lastName: {
             type: DataTypes.STRING,
@@ -31,8 +40,7 @@ const User = sequelize.define(
             validate: {
                 notNull: { msg: 'Last name required' },
                 notEmpty: { msg: 'Last name required' },
-                isAlpha: { msg: 'Last name can only contain letters' }
-            }
+            },
         },
         password: {
             type: DataTypes.STRING,
@@ -48,21 +56,23 @@ const User = sequelize.define(
                     'password',
                     bcrypt.hashSync(password, 10)
                 );
-            }
-        }
-    }, {
-        defaultScope: {
-            attributes: { exclude: ['password'] }
-        },
-        scopes: {
-            withPassword: {
-                attributes: {}
             },
-            jwt: {
-                attributes: ['email', 'firstName', 'lastName']
-            }
-        }
-    }
-);
+        },
+    }, {
+    defaultScope: {
+        attributes: ['username', 'firstName', 'lastName']
+    },
+    scopes: {
+        auth: {
+            attributes: {}
+        },
+        id: {
+            attributes: ['id', 'username', 'firstName', 'lastName']
+        },
+        jwt: {
+            attributes: ['username', 'firstName', 'lastName']
+        },
+    },
+});
 
 module.exports = User;

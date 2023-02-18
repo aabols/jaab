@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
+import Popup from 'reactjs-popup';
 import { listsActions } from '../../_actions/listsActions';
 import { sortOptions } from '../../utils/sortFunctions';
 import Item from './Item';
 import If from '../If';
+import GroupForm from './GroupForm';
 
 export default function Group({ groupId }) {
     const dispatch = useDispatch();
+    const [edit, setEdit] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [collapsed, setCollapsed] = useState(false);
     const groups = useSelector(state => state.lists.groups);
-    // items should be props?
     const allItems = useSelector(state => state.lists.items);
     const shoppingMode = useSelector(state => state.lists.settings.shoppingMode);
     const globalSearch = useSelector(state => state.lists.settings.globalSearch);
@@ -22,15 +24,7 @@ export default function Group({ groupId }) {
         .filter(({ title }) => title.toLowerCase().includes(searchQuery.toLowerCase()))
         .filter(({ title }) => title.toLowerCase().includes(globalSearch.toLowerCase()))
         .sort(sortOptions.titleAZ.fn)
-        .map(({ id }) => <Item key={id} itemId={id}/>);
-
-    const handleRenameGroup = (e) => {
-        e.preventDefault();
-        const title = prompt(`Rename ${group.title}:`, group.title);
-        if (title === null) return;
-        if (!title) return dispatch(listsActions.deleteGroup(group));
-        dispatch(listsActions.updateGroup({ ...group, title }, group));
-    };
+        .map(({ id }) => <Item key={id} itemId={id} />);
 
     const handleCreateItem = (e) => {
         e.preventDefault();
@@ -43,33 +37,52 @@ export default function Group({ groupId }) {
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
-    
+
     const handleCollapse = (e) => {
         setCollapsed(collapsed => !collapsed);
     };
+
+    const handleEdit = (e) => {
+        e.preventDefault();
+        setEdit(true);
+    };
+
+    const groupPopup = (
+        <Popup
+            className='modal-popup'
+            open={edit}
+            onClose={() => setEdit(false)}
+            children={<GroupForm
+                group={group}
+                onUpdate={() => setEdit(false)}
+                onDelete={() => setEdit(false)}
+            />}
+        />
+    );
 
     return (
         <fieldset className={classNames({
             'group': true,
             'group--collapsed': collapsed,
         })}>
-            <legend className='group__caption' onContextMenu={ handleRenameGroup } onClick={ handleCollapse }>
-                { group.title }
+            <legend className='group__caption' onClick={handleCollapse} onContextMenu={handleEdit}>
+                {group.title}
             </legend>
-                <If condition={!collapsed}>
-                    <form className='form' onSubmit = { handleCreateItem }>
-                        <input
-                            className = 'form__input'
-                            type = 'text'
-                            name = 'title'
-                            value = { searchQuery }
-                            onChange = { handleSearchChange }
-                            />
-                    </form>
-                    <div className='group__items'>
-                        { items }
-                    </div>
-                </If>
+            <If condition={!collapsed}>
+                <form className='form' onSubmit={handleCreateItem}>
+                    <input
+                        className='form__input'
+                        type='text'
+                        name='title'
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
+                </form>
+                <div className='group__items'>
+                    {items}
+                </div>
+            </If>
+            {groupPopup}
         </fieldset>
-        )
-    };
+    )
+};

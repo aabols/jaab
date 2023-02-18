@@ -1,23 +1,30 @@
+const { Op } = require('sequelize');
 const List = require('../db/models/List');
 const User = require('../db/models/User');
 const ListGroup = require('../db/models/ListGroup');
+const db = require('../db/');
+const UserLists = db.models.UserLists;
 
 module.exports = {
     getList: async (req, res) => {
         try {
             const list = await List.findOne({
                 where: {
-                    '$Users.id$': req.user.id,
-                    id: req.params.listId
+                    id: req.params.listId,
                 },
                 include: [
-                    User,
-                    ListGroup
+                    {
+                        model: User,
+                        where: { id: req.user.id },
+                        required: true,
+                        attributes: [],
+                    },
+                    ListGroup,
                 ]
             });
             if (!list) throw { status: 404, message: 'List not found' };
             res.json(list);
-        } catch({ status, message }) {
+        } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
     },
@@ -26,16 +33,21 @@ module.exports = {
         try {
             const list = await List.findOne({
                 where: {
-                    '$Users.id$': req.user.id,
-                    id: req.params.listId
+                    id: req.params.listId,
                 },
-                include: User
+                include: {
+                    model: User,
+                    where: { id: req.user.id },
+                    required: true,
+                    attributes: [],
+                },
             });
             if (!list) throw { status: 404, message: 'List not found' };
             list.set(req.body);
             await list.save({ fields: ['title'] });
-            res.json(list);
-        } catch({ status, message }) {
+            const { id, title } = list.toJSON();
+            res.json({ id, title });
+        } catch ({ status, message }) {
             res.status(status || 400).json({ message });
         }
     },
@@ -44,15 +56,19 @@ module.exports = {
         try {
             const list = await List.findOne({
                 where: {
-                    '$Users.id$': req.user.id,
-                    id: req.params.listId
+                    id: req.params.listId,
                 },
-                include: User
+                include: {
+                    model: User,
+                    where: { id: req.user.id },
+                    required: true,
+                    attributes: [],
+                },
             });
             if (!list) throw { status: 404, message: 'List not found' };
             await list.destroy();
             res.json({ message: 'List deleted' });
-        } catch({ status, message }) {
+        } catch ({ status, message }) {
             res.status(status || 400).json({ message });
         }
     },
@@ -61,15 +77,20 @@ module.exports = {
         try {
             const list = await List.findOne({
                 where: {
-                    '$Users.id$': req.user.id,
-                    id: req.params.listId
+                    id: req.params.listId,
                 },
-                include: User
+                include: {
+                    model: User,
+                    where: { id: req.user.id },
+                    required: true,
+                    attributes: [],
+                },
             });
             if (!list) throw { status: 404, message: 'List not found' };
             const listGroup = await list.createListGroup(req.body);
-            res.status(201).json(listGroup);
-        } catch({ status, message }) {
+            const { id, title } = listGroup.toJSON();
+            res.status(201).json({ id, title });
+        } catch ({ status, message }) {
             res.status(status || 400).json({ message });
         }
     },
@@ -78,23 +99,23 @@ module.exports = {
         try {
             const list = await List.findOne({
                 where: {
-                    '$Users.id$': req.user.id,
-                    id: req.params.listId
+                    id: req.params.listId,
                 },
-                include: User
+                include: {
+                    model: User.scope('id'),
+                    where: { id: req.user.id },
+                    required: true,
+                },
             });
             if (!list) throw { status: 404, message: 'List not found' };
-            const user = await User.findOne({
-                where: { email: req.body.email }
+            const user = await User.scope('id').findOne({
+                where: { username: req.body.username }
             });
             if (!user) throw { status: 404, message: 'User not found' };
-            if (await list.hasUser(user)) {
-                res.json();
-                return;
-            }
             await list.addUser(user);
-            res.json(user);
-        } catch({ status, message }) {
+            const { id, ...newUser } = user.toJSON();
+            res.json(newUser);
+        } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
     },
@@ -103,36 +124,42 @@ module.exports = {
         try {
             const list = await List.findOne({
                 where: {
-                    '$Users.id$': req.user.id,
-                    id: req.params.listId
+                    id: req.params.listId,
                 },
-                include: User
+                include: User.scope('id'),
             });
             if (!list) throw { status: 404, message: 'List not found' };
-            const user = await User.findOne({
-                where: { email: req.body.email }
-            });
+            if (!list.Users.some(usr => usr.id === req.user.id)) throw { status: 400, message: 'List not found' };
+            const user = list.Users.find(usr => usr.username === req.body.username);
             if (!user) throw { status: 404, message: 'User not found' };
-            list.removeUser(user);
-            res.json({ message: `List ${list.title} unshared with ${user.email}` });
-        } catch({ status, message }) {
+            if (list.Users.length < 2) throw { status: 400, message: 'No other list owners' };
+            await list.removeUser(user);
+            res.json({ message: `List ${list.title} unshared with ${user.username}` });
+            return;
+        } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
     },
 
     getUsers: async (req, res) => {
         try {
-            const list = await List.findOne({
-                where: {
-                    '$Users.id$': req.user.id,
-                    id: req.params.listId
-                },
-                include: User
+            const listUsers = await User.findAll({
+                where: { id: { [Op.ne]: req.user.id } },
+                include: {
+                    model: List,
+                    where: { id: req.params.listId },
+                    required: true,
+                    attributes: [],
+                    include: {
+                        model: User,
+                        where: { id: req.user.id },
+                        required: true,
+                        attributes: [],
+                    },
+                }
             });
-            if (!list) throw { status: 404, message: 'List not found' };
-            const users = await list.getUsers();
-            res.json(users);
-        } catch({ status, message }) {
+            res.json(listUsers);
+        } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
     },

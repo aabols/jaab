@@ -13,6 +13,7 @@ body {
     --color-accent2: #fff;
     --color-menu-separator: #a861a6;
     --color-menu-hover: #eee;
+    --color-button-hover: #cb98ca;
     --color-disabled: #999;
     --color-disabled-accent: #777;
     --color-error: darkred;
@@ -26,6 +27,7 @@ body {
     --color-accent2: #fff;
     --color-menu-separator: #a861a6;
     --color-menu-hover: #222;
+    --color-button-hover: #ce87cc;
     --color-disabled: #999;
     --color-disabled-accent: #777;
     --color-error: darkred;

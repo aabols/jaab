@@ -1,0 +1,23 @@
+{
+    "id": "d8db8e7c-ab59-4d89-807b-8235e0083caa",
+    "title": "Iepirkšanās saraksts",
+    "createdAt": "2023-02-09T18:31:15.842Z",
+    "updatedAt": "2023-02-16T10:42:31.270Z",
+    "Users": [
+        {
+            "email": "janis@abols.com",
+            "firstName": "Janis",
+            "lastName": "Abols"
+        },
+        {
+            "email": "lucy@major.com",
+            "firstName": "Lucy",
+            "lastName": "Major"
+        },
+        {
+            "email": "simon@major.com",
+            "firstName": "Simon",
+            "lastName": "Major"
+        }
+    ]
+}

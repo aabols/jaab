@@ -12,7 +12,7 @@ export default function Login() {
     const [loggingIn, setLoggingIn] = useState(false);
     const [error, setError] = useState('');
     const [formValues, setFormValues] = useState({
-        email: '',
+        username: '',
         password: ''
     });
 
@@ -45,28 +45,24 @@ export default function Login() {
             });
     };
 
-    const validateForm = ({ email, password }) => {
-        return (
-            !!email && !!password
-        ) && (
-                /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)
-            ) && (
-                password.length >= 8
-            );
+    const validateForm = ({ username, password }) => {
+        if (!username || !password) return false;
+        if (password.length < 8) return false;
+        return true;
     };
 
     return (
         <div id='login' className='frame'>
             <form className='form form--wide' onSubmit={handleLogin}>
                 <div className='form__field'>
-                    <label htmlFor='email'>E-mail</label>
+                    <label htmlFor='username'>Username</label>
                     <input
                         className='form__input'
                         ref={firstFieldRef}
                         type='text'
-                        id='email'
-                        name='email'
-                        value={formValues.email}
+                        id='username'
+                        name='username'
+                        value={formValues.username}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -84,7 +80,7 @@ export default function Login() {
                 </div>
 
                 <input
-                    className='form__input form__input--button'
+                    className='form__button'
                     type='submit'
                     disabled={loggingIn || !validateForm(formValues)}
                     value={loggingIn ? 'Logging in...' : 'Log in'}
