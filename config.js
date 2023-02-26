@@ -15,7 +15,19 @@ module.exports = {
             dialect: 'sqlite',
             storage: './dev_db.sqlite3',
         },
-        test: {},
-        production: {}
+        test: {
+            database: process.env.NODE_DB_TEST_NAME,
+            username: process.env.NODE_DB_TEST_USERNAME,
+            password: process.env.NODE_DB_TEST_PASSWORD,
+            host: process.env.NODE_DB_TEST_HOST,
+            dialect: process.env.NODE_DB_TEST_DIALECT,
+        },
+        production: {
+            database: process.env.NODE_DB_PRODUCTION_NAME,
+            username: process.env.NODE_DB_PRODUCTION_USERNAME,
+            password: process.env.NODE_DB_PRODUCTION_PASSWORD,
+            host: process.env.NODE_DB_PRODUCTION_HOST,
+            dialect: process.env.NODE_DB_PRODUCTION_DIALECT,
+        }
     }
 };

@@ -1,4 +1,4 @@
-### REGISTER USER 1
+### REGISTER USER 1 s
 POST http://localhost:3001/register
 Content-Type: application/json
 
