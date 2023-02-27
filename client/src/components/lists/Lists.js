@@ -12,15 +12,15 @@ export default function Lists() {
         if (refreshRate < 1) return;
         dispatch(listsActions.reloadLists(Math.floor(10000 / refreshRate)));
         return () => dispatch(listsActions.stopReloadLists());
-    }, [refreshRate]);
+    }, [refreshRate, dispatch]);
 
     return (
         <div id='lists' className='columnLayout'>
             <div className='columnLayout__fixedColumn'>
-                <ListNavigation/>
+                <ListNavigation />
             </div>
             <div className='columnLayout__growColumn'>
-                <Outlet/>
+                <Outlet />
             </div>
         </div>
     )
