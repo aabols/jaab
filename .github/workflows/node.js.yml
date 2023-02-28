@@ -34,7 +34,15 @@ jobs:
       run: mkdir -p ~/deployment/client
     
     - name: Include built app in the deployment package
-      run: cp -r client/build ~/deployment/client
+      run: cp -r client/build ~/deployment/client/
+    
+    - name: Include server app in the deployment package
+      run: cp -r server ~/deployment/
+    
+    - name: Include package files in the deployment package
+      run: |
+        cp package.json ~/deployment/
+        cp package-lock.json ~/deployment/
 
     - name: Save private key
       run: |
@@ -45,5 +53,5 @@ jobs:
 
     - name: Deploy to server
       run: |
-        rsync -av --exclude='.env' ./ github@jaab.dev:/var/www/test.jaab.dev/
+        rsync -av --exclude='.env' ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/
 #        scp -i ~/.ssh/id_rsa -r ./ github@jaab.dev:/var/www/test.jaab.dev/
