@@ -8,7 +8,7 @@ export const userServices = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
         };
-        return fetch('/register', requestOptions)
+        return fetch('/testlists/register', requestOptions)
             .then(handleResponse);
     },
 
@@ -18,7 +18,7 @@ export const userServices = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
         };
-        return fetch('/login', requestOptions)
+        return fetch('/testlists/login', requestOptions)
             .then(handleResponse)
             .then((data) => {
                 localStorage.setItem(
