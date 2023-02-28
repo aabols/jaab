@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const config = require('../config.js');
+const config = require('./config.js');
 const sequelize = require('./db');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');

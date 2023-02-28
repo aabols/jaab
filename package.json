@@ -2,7 +2,7 @@
   "name": "jaab",
   "version": "1.0.0",
   "description": "jaab.dev website",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
     "dev": "concurrently npm:dev-*",

@@ -1,6 +1,7 @@
 node_modules
+/.vscode
 
-/.env
+.env
 
 /dev_db.sqlite3
 
