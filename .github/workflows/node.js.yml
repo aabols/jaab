@@ -38,6 +38,7 @@ jobs:
         mkdir ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
 
     - name: Deploy to server
       run: |
