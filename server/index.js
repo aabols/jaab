@@ -13,20 +13,20 @@ const onlyAuthUsers = require('./middleware/onlyAuthUsers');
 
 const app = express();
 const PORT = config.server.port;
+const homepage = config.server.root;
 
 // MIDDLEWARE
 app.use(cors());
 app.use(bodyParser.json());
 app.use(authUser);
 
-// HOMEPAGE
-const homepage = '/testlists';
-
 // ROUTES
-app.use(`${homepage}/register`, registerRouter);
-app.use(`${homepage}/login`, loginRouter);
-app.use(`${homepage}/api`, onlyAuthUsers, apiRouter);
-app.use(`${homepage}/`, clientRouter);
+const root = express.Router();
+root.use('/register', registerRouter);
+root.use('/login', loginRouter);
+root.use('/api', onlyAuthUsers, apiRouter);
+root.use('/', clientRouter);
+app.use(homepage, root);
 
 sequelize.sync({ force: false });
 

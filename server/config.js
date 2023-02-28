@@ -4,6 +4,7 @@ module.exports = {
     env: process.env.NODE_ENV || 'development',
     server: {
         port: process.env.NODE_PORT || 3001,
+        root: process.env.NODE_ROOT || '',
         jwtKey: process.env.NODE_JWT_SECRET_KEY || 'pleb'
     },
     db: {
