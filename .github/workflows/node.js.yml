@@ -55,4 +55,6 @@ jobs:
     - name: Deploy to server
       run: |
         rsync -av --delete --exclude='server/.env' ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/
-#        scp -i ~/.ssh/id_rsa -r ./ github@jaab.dev:/var/www/test.jaab.dev/
+    
+    - name: Install dependencies on server
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm install"
