@@ -19,11 +19,14 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(authUser);
 
+// HOMEPAGE
+const homepage = '/testlists';
+
 // ROUTES
-app.use('/register', registerRouter);
-app.use('/login', loginRouter);
-app.use('/api', onlyAuthUsers, apiRouter);
-app.use('/', clientRouter);
+app.use(`${homepage}/register`, registerRouter);
+app.use(`${homepage}/login`, loginRouter);
+app.use(`${homepage}/api`, onlyAuthUsers, apiRouter);
+app.use(`${homepage}/`, clientRouter);
 
 sequelize.sync({ force: false });
 

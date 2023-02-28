@@ -12,43 +12,45 @@ import List from './components/lists/List';
 import { useSelector } from 'react-redux';
 
 const router = createBrowserRouter([
-    { path: 'login', element: <Login/> },
-    { path: 'register', element: <Register/> },
+    { path: 'login', element: <Login /> },
+    { path: 'register', element: <Register /> },
     {
         path: '',
-        element: <ProtectedRoute protection={user => !!user} redirectPath='/login'/>,
-        errorElement: <ErrorPage/>,
+        element: <ProtectedRoute protection={user => !!user} redirectPath='/login' />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: '',
-                element: <Root/>,
+                element: <Root />,
                 children: [
                     {
                         path: 'lists',
-                        element: <Lists/>,
+                        element: <Lists />,
                         children: [
                             {
                                 path: ':listId',
-                                element: <List/>,
-                                errorElement: <ErrorPage/>
+                                element: <List />,
+                                errorElement: <ErrorPage />
                             }
                         ]
                     },
-                    { path: 'me', element: <UserPanel/> },
+                    { path: 'me', element: <UserPanel /> },
                 ]
             },
         ]
     }
-]);
+], {
+    basename: '/testlists',
+});
 
 function App() {
     const selectedTheme = useSelector(state => state.theme.selectedTheme);
-    const className = classNames( `${selectedTheme}` );
+    const className = classNames(`${selectedTheme}`);
 
     return (
         <div id='navigation-root' className={className}>
-            <RouterProvider router={router}/>
-            <div id='popup-root'/>
+            <RouterProvider router={router} />
+            <div id='popup-root' />
         </div>
     );
 }
