@@ -27,6 +27,8 @@ app.use('/', clientRouter);
 
 sequelize.sync({ force: false });
 
-function logPort() { console.log(`Server listening on ${PORT}...`) };
+const logPort = () => {
+    console.log(`Server listening on ${PORT}...`)
+};
 
 app.listen(PORT, logPort);
