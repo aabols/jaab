@@ -1,10 +1,10 @@
-// configure environment variables
 require('dotenv').config();
 
 module.exports = {
+    env: process.env.NODE_ENV || 'development',
     server: {
         port: process.env.PORT || 3001,
-        jwtKey: process.env.JWT_SECRET_KEY || 'pleb'
+        jwtKey: process.env.NODE_JWT_SECRET_KEY || 'pleb'
     },
     db: {
         development: {

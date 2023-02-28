@@ -1,13 +1,9 @@
-// import sequelize
 const Sequelize = require('sequelize');
 
-// determine environment type
-const env = process.env.NODE_ENV || 'development';
+const config = require('../../config.js');
 
-// import DB config
-const config = require('../../config.js').db[env];
-
-// create a sequelize instance
-const sequelize = new Sequelize(config);
+const env = config.env;
+const db = config.db[env];
+const sequelize = new Sequelize(db);
 
 module.exports = sequelize;
