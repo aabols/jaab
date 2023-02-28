@@ -33,8 +33,11 @@ jobs:
         cd client
         npm run build --if-present
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: built-artifact
-        path: client/build
+    - name: Save private key
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+    - name: Deploy to server
+      run: |
+        scp -i ~/.ssh/id_rsa -r client/build/ github@jaab.dev:/var/www/test.jaab.dev/
