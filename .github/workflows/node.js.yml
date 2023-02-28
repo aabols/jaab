@@ -51,6 +51,9 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
+    
+    - name: Stop server app
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-stop --if-present"
 
     - name: Deploy to server
       run: |
@@ -58,3 +61,6 @@ jobs:
     
     - name: Install dependencies on server
       run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm install"
+
+    - name: Start server app
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-start --if-present"
