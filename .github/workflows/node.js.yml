@@ -53,5 +53,5 @@ jobs:
 
     - name: Deploy to server
       run: |
-        rsync -av --exclude='.env' ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/
+        rsync -av --delete ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/
 #        scp -i ~/.ssh/id_rsa -r ./ github@jaab.dev:/var/www/test.jaab.dev/
