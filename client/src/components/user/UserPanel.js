@@ -37,7 +37,7 @@ export default function UserPanel() {
                 <input
                     type='button'
                     style={{ backgroundColor: deleteConfirm ? '#f66' : '#faa' }}
-                    value={deleteConfirm ? 'Confirm account delete' : 'Delete account'}
+                    value={deleteConfirm ? 'Confirm account deletion' : 'Delete account'}
                     onClick={handleDelete}
                 />
             </div>
