@@ -1,7 +1,9 @@
 import { themeConstants } from "../_constants/themeConstants";
 
+const prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
 const initialState = {
-    selectedTheme: 'theme-light',
+    selectedTheme: prefersDarkTheme ? 'theme-dark' : 'theme-light',
 };
 
 export const themeReducer = (state = initialState, action) => {
