@@ -1,6 +1,8 @@
 import { userConstants } from '../_constants/userConstants';
 import { api } from '../api';
 
+const homepage = process.env.REACT_APP_HOMEPAGE;
+
 export const userServices = {
     register: (user) => {
         const requestOptions = {
@@ -8,7 +10,7 @@ export const userServices = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
         };
-        return fetch('/testlists/register', requestOptions)
+        return fetch(`${homepage}/register`, requestOptions)
             .then(handleResponse);
     },
 
@@ -18,7 +20,7 @@ export const userServices = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
         };
-        return fetch('/testlists/login', requestOptions)
+        return fetch(`${homepage}/login`, requestOptions)
             .then(handleResponse)
             .then((data) => {
                 localStorage.setItem(

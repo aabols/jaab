@@ -11,6 +11,8 @@ import Lists from './components/lists/Lists';
 import List from './components/lists/List';
 import { useSelector } from 'react-redux';
 
+const homepage = process.env.REACT_APP_HOMEPAGE;
+
 const router = createBrowserRouter([
     { path: 'login', element: <Login /> },
     { path: 'register', element: <Register /> },
@@ -40,7 +42,7 @@ const router = createBrowserRouter([
         ]
     }
 ], {
-    basename: '/testlists',
+    basename: homepage,
 });
 
 function App() {

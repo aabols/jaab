@@ -2,8 +2,10 @@ import axios from 'axios';
 
 import { store } from './store';
 
+const homepage = process.env.REACT_APP_HOMEPAGE;
+
 const api = axios.create({
-    baseURL: '/testlists/api',
+    baseURL: `${homepage}/api`,
     headers: {
         'Content-Type': 'application/json'
     }
