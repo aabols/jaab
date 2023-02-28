@@ -29,6 +29,12 @@ jobs:
       run: |
         cd client
         npm run build --if-present
+    
+    - name: Create deployment package
+      run: mkdir -p ~/deployment/client
+    
+    - name: Include built app in the deployment package
+      run: cp -r client/build ~/deployment/client
 
     - name: Save private key
       run: |
