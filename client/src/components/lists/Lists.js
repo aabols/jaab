@@ -9,6 +9,10 @@ export default function Lists() {
     const refreshRate = useSelector(state => state.lists.settings.refreshRate);
 
     useEffect(() => {
+        document.title = 'Lists';
+    }, []);
+
+    useEffect(() => {
         if (refreshRate < 1) return;
         dispatch(listsActions.reloadLists(Math.floor(10000 / refreshRate)));
         return () => dispatch(listsActions.stopReloadLists());
