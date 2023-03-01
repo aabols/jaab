@@ -17,7 +17,7 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
     - name: Stop server app
-      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-stop --if-present"
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npx pm2 delete --silent test_server"
 
   client:
     name: Build and deploy client
