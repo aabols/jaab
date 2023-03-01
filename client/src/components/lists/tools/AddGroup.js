@@ -22,24 +22,24 @@ export default function AddGroup({ list }) {
 
     const trigger = (
         <div className='icon' title='Add group'>
-            <GoDiffAdded/>
+            <GoDiffAdded />
         </div>
     );
 
     const body = (
-        <div className = 'menu'>
-            <div className = 'menu__item menu__item--centered'>
-                <form className = 'form form--medium' onSubmit={ handleSubmit }>
-                    <div className = 'form__field'>
-                    <label htmlFor = 'title'>
-                        New group:
-                    </label>
-                    <input
-                        className = 'form__input'
-                        type = 'text'
-                        name = 'title'
-                        ref = { titleRef }
-                    />
+        <div className='menu'>
+            <div className='menu__item menu__item--centered'>
+                <form className='form form--medium' onSubmit={handleSubmit}>
+                    <div className='form__field'>
+                        <label htmlFor='title'>
+                            New group:
+                        </label>
+                        <input
+                            className='form__input'
+                            type='text'
+                            name='title'
+                            ref={titleRef}
+                        />
                     </div>
                 </form>
             </div>
@@ -48,12 +48,12 @@ export default function AddGroup({ list }) {
 
     return (
         <Popup
-            className = 'menu__popup'
-            trigger = { trigger }
-            ref = { popupRef }
-            position = 'bottom center'
-            arrow = { false }
-            children = { body }
+            className='menu__popup'
+            trigger={trigger}
+            ref={popupRef}
+            position='bottom center'
+            arrow={false}
+            children={body}
         />
     )
 };
