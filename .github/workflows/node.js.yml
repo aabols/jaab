@@ -71,7 +71,7 @@ jobs:
   start:
     name: Start server app
     runs-on: ubuntu-latest
-    needs: client server
+    needs: [client, server]
     steps:
     - name: Save private key
       run: |
