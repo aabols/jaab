@@ -69,7 +69,7 @@ export default function Group({ groupId }) {
                 {group.title}
             </legend>
             <If condition={!collapsed}>
-                <form className='form' onSubmit={handleCreateItem}>
+                <form className='form form--narrow' onSubmit={handleCreateItem}>
                     <input
                         className='form__input'
                         type='text'
