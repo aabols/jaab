@@ -46,7 +46,10 @@ jobs:
         ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
     - name: Deploy built app to server
       run: |
-        rsync -av --delete client/build/ github@jaab.dev:/var/www/test.jaab.dev/client/build/
+        mkdir -p ~/deployment
+        cp -r client/build ~/deployment/
+        ssh github@jaab.dev "mkdir -p /var/www/test.jaab.dev/client"
+        rsync -av --delete ~/deployment github@jaab.dev:/var/www/test.jaab.dev/client/
 
   server:
     name: Deploy and build server
@@ -55,12 +58,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    - name: Create deployment package
-      run: |
-        mkdir -p ~/deployment
-        cp -r server ~/deployment/
-        cp package.json ~/deployment/
-        cp package-lock.json ~/deployment/
     - name: Save private key
       run: |
         mkdir ~/.ssh
@@ -69,8 +66,12 @@ jobs:
         ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
     - name: Deploy package to server
       run: |
+        mkdir -p ~/deployment
+        cp -r server ~/deployment/
+        cp package.json ~/deployment/
+        cp package-lock.json ~/deployment/
         ssh github@jaab.dev "cd /var/www/test.jaab.dev && rm -r node_modules"
-        rsync -av --delete --exclude='server/.env' ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/
+        rsync -av --delete --exclude='server/.env' --exclude='client' ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/
     - name: Install dependencies on server
       run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm install"
 
