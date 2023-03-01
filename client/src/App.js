@@ -6,6 +6,7 @@ import Root from './components/Root';
 import Register from './components/user/Register';
 import Login from './components/user/Login';
 import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRouteLegacy from './components/ProtectedRouteLegacy';
 import Lists from './components/lists/Lists';
 import List from './components/lists/List';
 import { useSelector } from 'react-redux';
@@ -17,7 +18,8 @@ const router = createBrowserRouter([
     { path: 'register', element: <Register /> },
     {
         path: '',
-        element: <ProtectedRoute protection={user => !!user} redirectPath='/login' />,
+        //element: <ProtectedRoute protection={user => !!user} redirectPath='/login' />,
+        element: <ProtectedRouteLegacy protection={(user, legacyUser) => !!user || !!legacyUser} redirectPath='/login' />,
         errorElement: <ErrorPage />,
         children: [
             {
