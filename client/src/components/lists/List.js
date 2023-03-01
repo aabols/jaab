@@ -34,7 +34,7 @@ export default function List() {
             <If condition={list}>
                 <ListToolbar list={list} />
             </If>
-            <div className='boardLayout'>
+            <div id='list-groups' className='boardLayout'>
                 {groupComponents}
             </div>
         </div>

@@ -20,12 +20,8 @@ export default function Lists() {
 
     return (
         <div id='lists' className='columnLayout'>
-            <div className='columnLayout__fixedColumn'>
-                <ListNavigation />
-            </div>
-            <div className='columnLayout__growColumn'>
-                <Outlet />
-            </div>
+            <ListNavigation />
+            <Outlet />
         </div>
     )
 };
