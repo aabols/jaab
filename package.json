@@ -7,7 +7,7 @@
     "stop": "cd server && node stop-server.js",
     "start": "cd server && node index.js",
     "test-start": "cd server && npx pm2 start index.js --name test_server",
-    "test-stop": "cd server && npx pm2 delete test_server",
+    "test-stop": "cd server && npx pm2 delete test_server --ignore-error",
     "test-restart": "cd server && npx pm2 restart test_server",
     "dev": "concurrently npm:dev-*",
     "dev-server": "cd server && nodemon index.js",
