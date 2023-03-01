@@ -49,7 +49,7 @@ jobs:
         mkdir -p ~/deployment
         cp -r client/build ~/deployment/
         ssh github@jaab.dev "mkdir -p /var/www/test.jaab.dev/client"
-        rsync -av --delete ~/deployment github@jaab.dev:/var/www/test.jaab.dev/client/
+        rsync -av --delete ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/client/
 
   server:
     name: Deploy and build server
