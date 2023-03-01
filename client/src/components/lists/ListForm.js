@@ -34,7 +34,7 @@ export default function ListForm({ list, onUpdate, onDelete }) {
         <form className='form form--wide' onSubmit={handleSave}>
             <div className='form__field'>
                 <label htmlFor='title'>
-                    Rename list:
+                    List title:
                 </label>
                 <input
                     className='form__input'
