@@ -1,9 +1,11 @@
 import { userConstants } from "../_constants/userConstants";
 
 let user = JSON.parse(localStorage.getItem(userConstants.JWT_LOCAL_STORAGE_KEY));
+let legacyUser = JSON.parse(localStorage.getItem(userConstants.JWT_LOCAL_STORAGE_KEY_LEGACY));
 
 const initialState = {
-    user
+    user,
+    legacyUser,
 };
 
 export const authReducer = (state = initialState, action) => {
