@@ -32,7 +32,7 @@ export default function UserMigration() {
         setProcessing(true);
         setAlert('');
         setError(false);
-        const { passwordConfirmation, ...registrationData } = formValues;
+        // const { passwordConfirmation, ...registrationData } = formValues;
         // submit and process response
     };
 
