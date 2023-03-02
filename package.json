@@ -4,12 +4,14 @@
   "description": "jaab.dev website",
   "main": "server/index.js",
   "scripts": {
+    "dev": "concurrently npm:dev-*",
+    "db-add-migration": "cd server/db && npx sequelize-cli migration:generate --name migration-name",
+    "db-migrate": "cd server/db && npx sequelize-cli db:migrate",
     "stop": "cd server && node stop-server.js",
     "start": "cd server && node index.js",
     "test-start": "cd server && npx pm2 start index.js --name test_server",
     "test-stop": "cd server && npx pm2 delete test_server",
     "test-restart": "cd server && npx pm2 restart test_server",
-    "dev": "concurrently npm:dev-*",
     "dev-server": "cd server && nodemon index.js",
     "dev-client": "cd client && npm start"
   },
