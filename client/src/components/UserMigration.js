@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { IoPersonSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +12,8 @@ export default function UserMigration() {
     const [loaded, setLoaded] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [processing, setProcessing] = useState(false);
+    const [alert, setAlert] = useState('');
+    const [error, setError] = useState(false);
     const [formValues, setFormValues] = useState({
         username: legacyUser.user.name,
         email: '',
@@ -27,6 +30,10 @@ export default function UserMigration() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setProcessing(true);
+        setAlert('');
+        setError(false);
+        const { passwordConfirmation, ...registrationData } = formValues;
+        // submit and process response
     };
 
     const handleLogout = (e) => {
@@ -134,6 +141,11 @@ export default function UserMigration() {
 
     const detailsForm = (
         <form className='form form--wide' onSubmit={handleSubmit}>
+            <div
+                children={'< back'}
+                onClick={() => { setShowForm(false) }}
+                style={{ cursor: 'pointer' }}
+            />
             <div className='form__field'>
                 <label htmlFor='username'>Username (yes, you can change it):</label>
                 <input
@@ -205,6 +217,13 @@ export default function UserMigration() {
                 type='submit'
                 disabled={processing || !validateForm(formValues)}
                 value={processing ? 'Processing' : 'Submit'}
+            />
+            <div
+                className={classNames('alert', {
+                    'alert--error': error,
+                    'alert--success': !error,
+                })}
+                children={alert}
             />
         </form>
     );
