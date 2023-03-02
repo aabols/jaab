@@ -1,29 +1,39 @@
-const { DataTypes } = require('sequelize');
+'use strict';
+const { Model } = require('sequelize');
 
-const sequelize = require('../');
-const List = require('./List');
-
-const ListGroup = sequelize.define('ListGroup', {
+module.exports = (sequelize, DataTypes) => {
+  class ListGroup extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      ListGroup.belongsTo(models.List);
+      ListGroup.hasMany(models.ListItem, { onDelete: 'CASCADE' });
+    }
+  }
+  ListGroup.init({
     id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        defaultValue: DataTypes.UUIDV4
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: { msg: 'Group must have a name' },
-            notEmpty: { msg: 'Group must have a name' }
-        }
-    }
-}, {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'Group must have a name' },
+        notEmpty: { msg: 'Group must have a name' },
+      },
+    },
+  }, {
+    sequelize,
+    modelName: 'ListGroup',
     defaultScope: {
-        attributes: ['id', 'title']
-    }
-});
-
-List.hasMany(ListGroup, { onDelete: 'CASCADE' });
-ListGroup.belongsTo(List);
-
-module.exports = ListGroup;
+      attributes: ['id', 'title'],
+    },
+  });
+  return ListGroup;
+};

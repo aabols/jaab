@@ -1,31 +1,39 @@
-const { DataTypes } = require('sequelize');
+'use strict';
+const { Model } = require('sequelize');
 
-const sequelize = require('../');
-const User = require('./User');
-
-const List = sequelize.define('List', {
+module.exports = (sequelize, DataTypes) => {
+  class List extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      List.belongsToMany(models.User, { through: 'UserLists' });
+      List.hasMany(models.ListGroup, { onDelete: 'CASCADE' });
+    }
+  }
+  List.init({
     id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        defaultValue: DataTypes.UUIDV4
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: { msg: 'List must have a name' },
-            notEmpty: { msg: 'List must have a name' }
-        }
-    }
-}, {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'List must have a name' },
+        notEmpty: { msg: 'List must have a name' }
+      },
+    },
+  }, {
+    sequelize,
+    modelName: 'List',
     defaultScope: {
-        attributes: ['id', 'title'],
-    }
-});
-
-const listUserAssociationTable = 'UserLists';
-
-User.belongsToMany(List, { through: listUserAssociationTable });
-List.belongsToMany(User, { through: listUserAssociationTable });
-
-module.exports = List;
+      attributes: ['id', 'title'],
+    },
+  });
+  return List;
+};

@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const config = require('../config');
-const User = require('../db/models/User');
+const db = require('../db/models');
+// const User = require('../db/models/User');
+const User = db.User;
 
 const JWT_SECRET_KEY = config.server.jwtKey;
 

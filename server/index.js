@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const config = require('./config.js');
-const sequelize = require('./db');
+const db = require('./db/models');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const apiRouter = require('./routes/api');
@@ -28,7 +28,7 @@ root.use('/api', onlyAuthUsers, apiRouter);
 root.use('/', clientRouter);
 app.use(homepage, root);
 
-sequelize.sync({ force: false });
+db.sequelize.sync({ force: false });
 
 const logPort = () => {
     console.log(`Server listening on ${PORT}...`)

@@ -1,7 +1,12 @@
-const List = require('../db/models/List');
-const User = require('../db/models/User');
-const ListGroup = require('../db/models/ListGroup');
-const ListItem = require('../db/models/ListItem');
+const db = require('../db/models');
+// const List = require('../db/models/List');
+const List = db.List;
+// const User = require('../db/models/User');
+const User = db.User;
+// const ListGroup = require('../db/models/ListGroup');
+const ListGroup = db.ListGroup;
+// const ListItem = require('../db/models/ListItem');
+const ListItem = db.ListItem;
 
 module.exports = {
     getListItem: async (req, res) => {
