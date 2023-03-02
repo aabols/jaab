@@ -5,7 +5,7 @@ import ErrorPage from './components/ErrorPage';
 import Root from './components/Root';
 import Register from './components/user/Register';
 import Login from './components/user/Login';
-import ProtectedRoute from './components/ProtectedRoute';
+//import ProtectedRoute from './components/ProtectedRoute';
 import ProtectedRouteLegacy from './components/ProtectedRouteLegacy';
 import Lists from './components/lists/Lists';
 import List from './components/lists/List';

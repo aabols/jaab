@@ -24,6 +24,11 @@ export default function UserMigration() {
         setLoaded(true);
     }, []);
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setProcessing(true);
+    };
+
     const handleLogout = (e) => {
         e.preventDefault();
         dispatch(userActions.legacyLogout());
@@ -128,7 +133,7 @@ export default function UserMigration() {
     };
 
     const detailsForm = (
-        <form className='form form--wide'>
+        <form className='form form--wide' onSubmit={handleSubmit}>
             <div className='form__field'>
                 <label htmlFor='username'>Username (yes, you can change it):</label>
                 <input
