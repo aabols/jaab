@@ -17,6 +17,7 @@ module.exports = {
         host: 'localhost',
         dialect: 'sqlite',
         storage: path.resolve(__dirname, 'dev_db.sqlite3'),
+        seederStorage: 'sequelize',
     },
     test: {
         database: process.env.NODE_DB_TEST_NAME,
