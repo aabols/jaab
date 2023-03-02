@@ -12,11 +12,11 @@ export const listsActions = {
         dispatch({ type: listsConstants.REFRESH_ALL_REQUEST });
         listsServices.refreshAll()
             .then(res => dispatch({
-                    type: listsConstants.REFRESH_ALL_SUCCESS,
-                    payload: res.data
+                type: listsConstants.REFRESH_ALL_SUCCESS,
+                payload: res.data
             }))
             .catch(res => dispatch({
-                    type: listsConstants.REFRESH_ALL_FAILURE
+                type: listsConstants.REFRESH_ALL_FAILURE
             }));
     },
 
