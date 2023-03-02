@@ -1,5 +1,7 @@
 const path = require('path');
+const config = require('../config.js');
 
 module.exports = {
+    'env': config.env,
     'config': path.resolve(__dirname, '../config.js'),
 }
