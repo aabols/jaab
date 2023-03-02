@@ -35,6 +35,10 @@ export const userServices = {
         localStorage.removeItem(userConstants.JWT_LOCAL_STORAGE_KEY);
     },
 
+    legacyLogout: () => {
+        localStorage.removeItem(userConstants.JWT_LOCAL_STORAGE_KEY_LEGACY);
+    },
+
     deleteAccount: () => {
         return api.delete('/user');
     },

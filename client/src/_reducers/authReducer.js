@@ -20,6 +20,11 @@ export const authReducer = (state = initialState, action) => {
                 ...state,
                 user: null
             };
+        case userConstants.LOGOUT_SUCCESS_LEGACY:
+            return {
+                ...state,
+                legacyUser: null
+            };
         default:
             return state;
     }

@@ -16,5 +16,10 @@ export const userActions = {
     logout: () => dispatch => {
         userServices.logout();
         dispatch({ type: userConstants.LOGOUT_SUCCESS });
-    }
+    },
+
+    legacyLogout: () => dispatch => {
+        userServices.legacyLogout();
+        dispatch({ type: userConstants.LOGOUT_SUCCESS_LEGACY });
+    },
 };
