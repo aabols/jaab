@@ -86,5 +86,7 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
+    - name: Migrate database
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run db-migrate --if-present"
     - name: Start server app
       run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-start --if-present"
