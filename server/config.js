@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 
 module.exports = {
     env: process.env.NODE_ENV || 'development',
@@ -13,7 +14,7 @@ module.exports = {
         password: 'rootpw',
         host: 'localhost',
         dialect: 'sqlite',
-        storage: './dev_db.sqlite3',
+        storage: path.resolve(__dirname, 'dev_db.sqlite3'),
     },
     test: {
         database: process.env.NODE_DB_TEST_NAME,
