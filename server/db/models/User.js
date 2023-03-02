@@ -67,6 +67,10 @@ module.exports = (sequelize, DataTypes) => {
         );
       },
     },
+    legacy: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   }, {
     sequelize,
     modelName: 'User',
