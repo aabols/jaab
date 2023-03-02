@@ -2,12 +2,17 @@ import { Outlet } from 'react-router-dom';
 import React from 'react';
 
 import NavBar from './NavBar';
+import UserMigration from './UserMigration';
+import { useSelector } from 'react-redux';
 
 export default function Root() {
+    const legacyUser = useSelector(state => state.auth.legacyUser);
+    const user = useSelector(state => state.auth.user);
     return (
         <>
-            <NavBar />
-            <Outlet />
+            {!!legacyUser && <UserMigration />}
+            {!!user && <NavBar />}
+            {!!user && <Outlet />}
         </>
-    )
+    );
 };
