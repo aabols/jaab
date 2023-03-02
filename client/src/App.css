@@ -241,6 +241,7 @@
     border-color: var(--color-accent1);
     color: var(--color-accent1);
     font-size: inherit;
+    cursor: pointer;
 }
 
 .form__confirmButton--hover:hover {
