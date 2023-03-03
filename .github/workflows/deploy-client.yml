@@ -1,0 +1,40 @@
+name: Build and deploy client
+
+on:
+  push:
+    branches:
+      - trunk
+    paths:
+      - 'client/**'
+
+jobs:
+  client:
+    name: Build and deploy client
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Use Node.js v14.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14.x'
+    - name: Install dependencies
+      run: |
+        cd client
+        npm install
+    - name: Build application
+      run: |
+        cd client
+        npm run build
+    - name: Config ssh
+      run: |
+        mkdir ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
+    - name: Deploy built app to server
+      run: |
+        mkdir -p ~/deployment
+        cp -r client/build ~/deployment/
+        ssh github@jaab.dev "mkdir -p /var/www/test.jaab.dev/client"
+        rsync -av --delete ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/client/

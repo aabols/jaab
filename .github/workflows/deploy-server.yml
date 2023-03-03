@@ -1,0 +1,37 @@
+name: Build and deploy to test environment
+
+on:
+  push:
+    branches: 
+    - trunk
+    paths-ignore:
+    - 'client/**'
+
+  server:
+    name: Deploy and build server
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Save private key
+      run: |
+        mkdir ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
+    - name: Stop server app
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-stop --if-present"
+    - name: Deploy package to server
+      run: |
+        mkdir -p ~/deployment
+        cp -r server ~/deployment/
+        cp package.json ~/deployment/
+        cp package-lock.json ~/deployment/
+        ssh github@jaab.dev "cd /var/www/test.jaab.dev && rm -r node_modules"
+        rsync -av --delete --exclude='server/.env' --exclude='client' ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/
+    - name: Install dependencies on server
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm install"
+    - name: Migrate database
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run db-migrate --if-present"
+    - name: Start server app
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-start --if-present"
