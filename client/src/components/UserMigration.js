@@ -6,7 +6,6 @@ import Popup from 'reactjs-popup';
 import { userActions } from '../_actions/userActions';
 import { userConstants } from '../_constants/userConstants';
 import { userServices } from '../_services/userServices';
-import ConfirmButton from './lists/ConfirmButton';
 
 export default function UserMigration() {
     const legacyUser = useSelector(state => state.auth.legacyUser);
@@ -124,19 +123,6 @@ export default function UserMigration() {
                 />
                 <div style={{ fontSize: '0.8em' }}>
                     Maybe for some reason you are logged into <i>someone else's</i> old account, and don't feel comfortable making this decision. This is the option for you. But please tell them to come here!
-                </div>
-            </div>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'stretch',
-            }}>
-                <ConfirmButton
-                    value='Delete this account...'
-                    confirmValue='Are you sure?'
-                />
-                <div style={{ fontSize: '0.8em' }}>
-                    All your lists will also be deleted (unless they have been shared with someone who decides to keep their account), and you will have to register again.
                 </div>
             </div>
             <div style={{ fontSize: '0.8em' }}>
@@ -257,7 +243,7 @@ export default function UserMigration() {
             open={loaded}
             closeOnDocumentClick={showSuccess}
             children={
-                showSuccess
+                !showSuccess
                     ? successMessage
                     : showForm
                         ? detailsForm
