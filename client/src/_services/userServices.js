@@ -14,6 +14,26 @@ export const userServices = {
             .then(handleResponse);
     },
 
+    registerLegacy: (user, legacyUser) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user,
+                legacyUser,
+            }),
+        };
+        return fetch(`${homepage}/migrate`, requestOptions)
+            .then(handleResponse)
+            .then((data) => {
+                localStorage.setItem(
+                    userConstants.JWT_LOCAL_STORAGE_KEY,
+                    JSON.stringify(data)
+                );
+                return data;
+            });
+    },
+
     login: (user) => {
         const requestOptions = {
             method: 'POST',
@@ -27,6 +47,30 @@ export const userServices = {
                     userConstants.JWT_LOCAL_STORAGE_KEY,
                     JSON.stringify(data)
                 );
+                return data;
+            });
+    },
+
+    legacyLogin: (user) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user)
+        };
+        return fetch(`${homepage}/login`, requestOptions)
+            .then(handleResponse)
+            .then((data) => {
+                if (data.user) {
+                    localStorage.setItem(
+                        userConstants.JWT_LOCAL_STORAGE_KEY_LEGACY,
+                        JSON.stringify(data)
+                    );
+                } else {
+                    localStorage.setItem(
+                        userConstants.JWT_LOCAL_STORAGE_KEY,
+                        JSON.stringify(data)
+                    );
+                }
                 return data;
             });
     },

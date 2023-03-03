@@ -4,6 +4,8 @@ import { IoPersonSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import Popup from 'reactjs-popup';
 import { userActions } from '../_actions/userActions';
+import { userConstants } from '../_constants/userConstants';
+import { userServices } from '../_services/userServices';
 import ConfirmButton from './lists/ConfirmButton';
 
 export default function UserMigration() {
@@ -11,11 +13,12 @@ export default function UserMigration() {
     const dispatch = useDispatch();
     const [loaded, setLoaded] = useState(false);
     const [showForm, setShowForm] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [alert, setAlert] = useState('');
     const [error, setError] = useState(false);
     const [formValues, setFormValues] = useState({
-        username: legacyUser.user.name,
+        username: legacyUser?.user.name,
         email: '',
         firstName: '',
         lastName: '',
@@ -32,8 +35,21 @@ export default function UserMigration() {
         setProcessing(true);
         setAlert('');
         setError(false);
-        // const { passwordConfirmation, ...registrationData } = formValues;
-        // submit and process response
+        const { passwordConfirmation, ...registrationData } = formValues;
+        userServices.registerLegacy(registrationData, legacyUser)
+            .then(res => {
+                setProcessing(false);
+                dispatch({
+                    type: userConstants.LOGIN_SUCCESS,
+                    payload: res
+                });
+                dispatch(userActions.legacyLogout());
+                setShowSuccess(true);
+            })
+            .catch(err => {
+                setProcessing(false);
+                setError(err);
+            });
     };
 
     const handleLogout = (e) => {
@@ -202,7 +218,7 @@ export default function UserMigration() {
                 />
             </div>
             <div className='form__field'>
-                <label htmlFor='passwordConfirmation'>Password (at least 8 characters):</label>
+                <label htmlFor='passwordConfirmation'>Confirm password:</label>
                 <input
                     className='form__input'
                     type='password'
@@ -228,14 +244,24 @@ export default function UserMigration() {
         </form>
     );
 
+    const successMessage = (
+        <div>
+            <h3>Nice one!</h3>
+            <p>Your account is good to go</p>
+        </div>
+    );
+
     return (
         loaded && <Popup
             className='modal-popup'
             open={loaded}
+            closeOnDocumentClick={showSuccess}
             children={
-                showForm
-                    ? detailsForm
-                    : optionsDialog
+                showSuccess
+                    ? successMessage
+                    : showForm
+                        ? detailsForm
+                        : optionsDialog
             }
         />
     );

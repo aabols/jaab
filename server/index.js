@@ -6,6 +6,7 @@ const config = require('./config.js');
 const db = require('./db/models');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
+const migrateRouter = require('./routes/migrate');
 const apiRouter = require('./routes/api');
 const clientRouter = require('./routes/client');
 const authUser = require('./middleware/authUser');
@@ -23,6 +24,7 @@ app.use(authUser);
 // ROUTES
 const root = express.Router();
 root.use('/register', registerRouter);
+root.use('/migrate', migrateRouter);
 root.use('/login', loginRouter);
 root.use('/api', onlyAuthUsers, apiRouter);
 root.use('/', clientRouter);

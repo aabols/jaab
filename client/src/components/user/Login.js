@@ -8,6 +8,7 @@ import { userConstants } from '../../_constants/userConstants';
 export default function Login() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user);
+    const legacyUser = useSelector(state => state.auth.legacyUser);
     const firstFieldRef = useRef();
     const [loggingIn, setLoggingIn] = useState(false);
     const [error, setError] = useState('');
@@ -18,7 +19,8 @@ export default function Login() {
 
     useEffect(() => { firstFieldRef.current.focus() }, []);
 
-    if (user) return <Navigate to='/' />;
+    // if (user) return <Navigate to='/' />;
+    if (user || legacyUser) return <Navigate to='/' />;
 
     const handleInputChange = (e) => {
         setFormValues((oldValues) => ({
@@ -27,17 +29,42 @@ export default function Login() {
         }));
     };
 
-    const handleLogin = (e) => {
+    //    const handleLogin = (e) => {
+    //        e.preventDefault();
+    //        setLoggingIn(true);
+    //        setError('');
+    //        userServices.login(formValues)
+    //            .then(res => {
+    //                setLoggingIn(false);
+    //                dispatch({
+    //                    type: userConstants.LOGIN_SUCCESS,
+    //                    payload: res
+    //                });
+    //            })
+    //            .catch(err => {
+    //                setLoggingIn(false);
+    //                setError(err);
+    //            });
+    //    };
+
+    const handleLegacyLogin = (e) => {
         e.preventDefault();
         setLoggingIn(true);
         setError('');
-        userServices.login(formValues)
+        userServices.legacyLogin(formValues)
             .then(res => {
                 setLoggingIn(false);
-                dispatch({
-                    type: userConstants.LOGIN_SUCCESS,
-                    payload: res
-                });
+                if (res.user) {
+                    dispatch({
+                        type: userConstants.LOGIN_SUCCESS_LEGACY,
+                        payload: res
+                    });
+                } else {
+                    dispatch({
+                        type: userConstants.LOGIN_SUCCESS,
+                        payload: res
+                    });
+                }
             })
             .catch(err => {
                 setLoggingIn(false);
@@ -45,15 +72,21 @@ export default function Login() {
             });
     };
 
-    const validateForm = ({ username, password }) => {
+    // const validateForm = ({ username, password }) => {
+    //     if (!username || !password) return false;
+    //     if (password.length < 8) return false;
+    //     return true;
+    // };
+
+    const validateFormLegacy = ({ username, password }) => {
         if (!username || !password) return false;
-        if (password.length < 8) return false;
+        if (password.length < 4) return false;
         return true;
     };
 
     return (
         <div id='login' className='frame'>
-            <form className='form form--wide' onSubmit={handleLogin}>
+            <form className='form form--wide' onSubmit={handleLegacyLogin}>
                 <div className='form__field'>
                     <label htmlFor='username'>Username</label>
                     <input
@@ -82,7 +115,7 @@ export default function Login() {
                 <input
                     className='form__button'
                     type='submit'
-                    disabled={loggingIn || !validateForm(formValues)}
+                    disabled={loggingIn || !validateFormLegacy(formValues)}
                     value={loggingIn ? 'Logging in...' : 'Log in'}
                 />
             </form>

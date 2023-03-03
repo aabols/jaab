@@ -15,6 +15,11 @@ export const authReducer = (state = initialState, action) => {
                 ...state,
                 user: action.payload,
             };
+        case userConstants.LOGIN_SUCCESS_LEGACY:
+            return {
+                ...state,
+                legacyUser: action.payload,
+            };
         case userConstants.LOGOUT_SUCCESS:
             return {
                 ...state,
