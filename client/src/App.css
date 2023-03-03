@@ -16,6 +16,7 @@
 #list-navigation {
     flex-grow: 0;
     flex-shrink: 0;
+    font-size: 0.9em;
 }
 
 #List {
