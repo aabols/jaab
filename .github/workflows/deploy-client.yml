@@ -3,9 +3,10 @@ name: Build and deploy client
 on:
   push:
     branches:
-      - trunk
+    - trunk
     paths:
-      - 'client/**'
+    - 'client/**'
+    - '.github/workflows/deploy-client.yml'
 
 jobs:
   client:
