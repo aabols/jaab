@@ -243,7 +243,7 @@ export default function UserMigration() {
             open={loaded}
             closeOnDocumentClick={showSuccess}
             children={
-                !showSuccess
+                showSuccess
                     ? successMessage
                     : showForm
                         ? detailsForm
