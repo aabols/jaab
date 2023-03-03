@@ -50,7 +50,7 @@ module.exports = {
                 // validate legacy token
                 // assume valid, otherwise uncomment the below:
                 await axios.post(
-                    'http://localhost:8001/api/validate.php',
+                    'http://localhost:8069/legacy/api/validate.php',
                     { token }
                 );
             } catch (err) {

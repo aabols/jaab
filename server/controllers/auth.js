@@ -35,7 +35,7 @@ module.exports = {
             if (userWithPassword.legacy) {
                 //const legacyToken = 'this is a fake legacy token'; // legacy auth
                 const legacyTokenRes = await axios.post(
-                    'http://localhost:8001/api/login.php',
+                    'http://localhost:8069/legacy/api/login.php',
                     {
                         username: req.body.username,
                         pin: req.body.password,
