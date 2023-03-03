@@ -41,7 +41,8 @@ module.exports = {
                         pin: req.body.password,
                     }
                 );
-                const legacyToken = legacyTokenRes?.data;
+                if (!legacyTokenRes) throw { status: 404, message: 'Password incorrect' };
+                const legacyToken = legacyTokenRes.data;
                 if (!legacyToken) throw { status: 404, message: 'Password incorrect' };
                 res.json({
                     user: { name: userWithPassword.username },

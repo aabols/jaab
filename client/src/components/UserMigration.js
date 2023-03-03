@@ -122,7 +122,7 @@ export default function UserMigration() {
                     onClick={handleLogout}
                 />
                 <div style={{ fontSize: '0.8em' }}>
-                    Maybe for some reason you are logged into <i>someone else's</i> old account, and don't feel comfortable making this decision. This is the option for you. But please tell them to come here!
+                    Already provided the additional details? Perhaps this is your second device - it doesn't know that you have already migrated, so please log out, and log in again with your new credentials!
                 </div>
             </div>
             <div style={{ fontSize: '0.8em' }}>
