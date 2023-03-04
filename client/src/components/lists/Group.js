@@ -20,7 +20,7 @@ export default function Group({ groupId }) {
 
     const group = groups.find(group => group.id === groupId);
     const items = allItems.filter(item => item.groupId === group.id)
-        .filter(({ checked }) => !shoppingMode || !checked)
+        .filter(({ checked, title }) => !shoppingMode || !checked || (!!searchQuery && title.toLowerCase().includes(searchQuery.toLowerCase())))
         .filter(({ title }) => title.toLowerCase().includes(searchQuery.toLowerCase()))
         .filter(({ title }) => title.toLowerCase().includes(globalSearch.toLowerCase()))
         .sort(sortOptions.titleAZ.fn)
