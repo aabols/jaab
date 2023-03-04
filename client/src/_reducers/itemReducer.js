@@ -8,34 +8,27 @@ export const itemReducer = (state = initialState, action) => {
     switch (action.type) {
         case userConstants.LOGOUT_SUCCESS:
             return [];
-        case listsConstants.CREATE_ITEM_LOCAL:
-            state = state.slice();
-            state.push(action.payload);
-            return state;
-        case listsConstants.CHANGE_ITEM_LOCAL:
-            state = state.slice();
-            state.splice(
-                state.findIndex(item => item.id === action.payload.id),
-                1,
-                action.payload
-            );
-            return state;
-        case listsConstants.DELETE_ITEM_LOCAL:
-            state = state.slice();
-            state.splice(
-                state.findIndex(item => item.id === action.payload),
-                1
-            );
-            return state;
 
-        case listsConstants.REFRESH_ALL_SUCCESS:
-            state = state.filter(c => (
-                (!action.payload.items.find(s => s.id === c.id) && requestControllers.has(c.id)) || (requestControllers.get(c.id)?.type === listsConstants.UPDATE_ITEM_REQUEST)
-            ));
-            state.push(...action.payload.items.filter(s => (
-                (!requestControllers.has(s.id) || requestControllers.get(s.id)?.type === listsConstants.CREATE_ITEM_REQUEST)
-            )));
-            return state;
+        case listsConstants.READ_LIST_SUCCESS:
+            {
+                const items = action.payload.ListGroups
+                    .flatMap(group => group.ListItems
+                        .map(({ id, title, checked }) => ({ id, title, checked, groupId: group.id })));
+                state = state.filter(localCopy => {
+                    const serverCopy = items.find(serverCopy => serverCopy.id === localCopy.id);
+                    const ongoingRequest = requestControllers.get(localCopy.id);
+                    if (!serverCopy && ongoingRequest) return true;
+                    if (ongoingRequest?.type === listsConstants.UPDATE_ITEM_REQUEST) return true;
+                    return false;
+                });
+                state.push(...items.filter(serverCopy => {
+                    const ongoingRequest = requestControllers.get(serverCopy.id);
+                    if (!ongoingRequest) return true;
+                    if (ongoingRequest.type === listsConstants.CREATE_ITEM_REQUEST) return true;
+                    return false;
+                }));
+                return state;
+            }
 
         case listsConstants.CREATE_ITEM_REQUEST:
             state = state.slice();

@@ -2,7 +2,8 @@ import { listsConstants } from '../_constants/listsConstants';
 import { sortOptions } from '../utils/sortFunctions';
 
 const initialState = {
-    refreshRate: 5,
+    listsRefreshDelay: 5000,
+    listRefreshDelay: 3000,
     sortOption: Object.keys(sortOptions)[0],
     shoppingMode: false,
     globalSearch: '',
@@ -14,11 +15,6 @@ export const settingsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 globalSearch: action.payload
-            };
-        case listsConstants.SET_REFRESH_RATE:
-            return {
-                ...state,
-                refreshRate: action.payload
             };
         case listsConstants.SET_SORT_OPTION:
             return {

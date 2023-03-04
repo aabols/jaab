@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { isCancel } from 'axios';
 
 import { store } from './store';
 import { userActions } from './_actions/userActions';
@@ -21,6 +21,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
     response => response,
     error => {
+        if (isCancel(error)) return Promise.reject(error);
         if (error.response.status === 401) {
             store.dispatch(userActions.logout());
         }

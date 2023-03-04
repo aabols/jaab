@@ -1,131 +1,36 @@
 import { v4 as uuid } from 'uuid';
-
 import { listsConstants } from '../_constants/listsConstants';
 import { listsServices } from '../_services/listsServices';
 import { requestControllers } from '../requestControllers';
 import { isCancel } from 'axios';
 
-let stopReload;
-
 export const listsActions = {
-    refreshAll: () => dispatch => {
-        dispatch({ type: listsConstants.REFRESH_ALL_REQUEST });
-        listsServices.refreshAll()
-            .then(res => dispatch({
-                type: listsConstants.REFRESH_ALL_SUCCESS,
-                payload: res.data
-            }))
-            .catch(res => dispatch({
-                type: listsConstants.REFRESH_ALL_FAILURE
-            }));
-    },
-
-    createListLocal: (list) => dispatch => {
-        const listWithId = { id: uuid(), ...list };
-        dispatch({
-            type: listsConstants.CREATE_LIST_LOCAL,
-            payload: listWithId
-        });
-    },
-
-    changeListLocal: (list) => dispatch => {
-        dispatch({
-            type: listsConstants.CHANGE_LIST_LOCAL,
-            payload: list
-        });
-    },
-
-    deleteListLocal: (listId) => dispatch => {
-        dispatch({
-            type: listsConstants.DELETE_LIST_LOCAL,
-            payload: listId
-        });
-    },
-
-    createGroupLocal: (group) => dispatch => {
-        const groupWithId = { id: uuid(), ...group };
-        dispatch({
-            type: listsConstants.CREATE_GROUP_LOCAL,
-            payload: groupWithId
-        });
-    },
-
-    changeGroupLocal: (group) => dispatch => {
-        dispatch({
-            type: listsConstants.CHANGE_GROUP_LOCAL,
-            payload: group
-        });
-    },
-
-    deleteGroupLocal: (groupId) => dispatch => {
-        dispatch({
-            type: listsConstants.DELETE_GROUP_LOCAL,
-            payload: groupId
-        });
-    },
-
-    createItemLocal: (item) => dispatch => {
-        const itemWithId = { id: uuid(), ...item };
-        dispatch({
-            type: listsConstants.CREATE_ITEM_LOCAL,
-            payload: itemWithId
-        });
-    },
-
-    changeItemLocal: (item) => dispatch => {
-        dispatch({
-            type: listsConstants.CHANGE_ITEM_LOCAL,
-            payload: item
-        });
-    },
-
-    deleteItemLocal: (itemId) => dispatch => {
-        dispatch({
-            type: listsConstants.DELETE_ITEM_LOCAL,
-            payload: itemId
-        });
-    },
-
-    reloadLists: (interval) => dispatch => {
-        let timeoutId;
-        let refreshController;
-        const refreshFunction = () => {
-            refreshController = new AbortController();
-            listsServices.refreshAll(refreshController.signal)
-                .then(res => {
-                    refreshController = null;
-                    dispatch({
-                        type: listsConstants.REFRESH_ALL_SUCCESS,
-                        payload: {
-                            lists: res.data
-                                .map(({ id, title }) => ({ id, title })),
-                            groups: res.data
-                                .flatMap(({ id: listId, ListGroups }) => ListGroups
-                                    .map(({ id, title }) => ({ listId, id, title }))),
-                            items: res.data
-                                .flatMap(({ id: listId, ListGroups }) => ListGroups
-                                    .flatMap(({ id: groupId, ListItems }) => ListItems
-                                        .map(({ id, title, checked }) => ({ listId, groupId, id, title, checked })))),
-                        }
-                    });
-                    timeoutId = setTimeout(refreshFunction, interval);
-                })
-                .catch(err => {
-                    if (!isCancel(err)) {
-                        refreshController = null;
-                        timeoutId = setTimeout(refreshFunction, interval);
-                    }
+    refreshLists: (callback) => dispatch => {
+        const controller = new AbortController();
+        listsServices.readLists({ signal: controller.signal })
+            .then(res => {
+                dispatch({
+                    type: listsConstants.READ_LISTS_SUCCESS,
+                    payload: res.data
                 });
-        };
-        stopReload = () => {
-            if (timeoutId) { clearTimeout(timeoutId) };
-            if (refreshController) { refreshController.abort() };
-        };
-        refreshFunction();
+                callback && callback();
+            })
+            .catch(err => { });
+        return controller;
     },
 
-    stopReloadLists: () => dispatch => {
-        stopReload();
+    refreshList: (list, callback) => dispatch => {
+        const controller = new AbortController();
+        listsServices.readList(list, { signal: controller.signal })
+            .then(res => {
+                dispatch({
+                    type: listsConstants.READ_LIST_SUCCESS,
+                    payload: res.data
+                });
+                callback && callback();
+            })
+            .catch(err => { });
+        return controller;
     },
 
     createList: (list) => dispatch => {

@@ -17,8 +17,16 @@ export const listsServices = {
         return api.put(`/lists/${list.id}/unshare`, { username }, { signal });
     },
 
+    readLists: (axiosConfig = {}) => {
+        return api.get('/lists', axiosConfig);
+    },
+
     createList: (list, signal) => {
         return api.post('/lists/', list, { signal });
+    },
+
+    readList: (list, axiosConfig = {}) => {
+        return api.get(`/lists/${list.id}`, axiosConfig);
     },
 
     updateList: (list, signal) => {

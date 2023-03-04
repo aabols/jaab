@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Popup from 'reactjs-popup';
@@ -7,9 +7,30 @@ import If from '../If';
 import ListForm from './ListForm';
 
 export default function ListNavigation() {
-    const [searchQuery, setSearchQuery] = useState('');
     const dispatch = useDispatch();
     const [editList, setEditList] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const refreshDelay = useSelector(state => state.lists.settings.listsRefreshDelay);
+    const refresh = useRef();
+
+    const requestRefresh = useMemo(() => {
+        const scheduleRefresh = () => {
+            refresh.current.schedule = setTimeout(requestRefresh, refreshDelay);
+        };
+        const requestRefresh = () => {
+            refresh.current.request = dispatch(listsActions.refreshLists(scheduleRefresh));
+        };
+        return requestRefresh;
+    }, [dispatch, refreshDelay]);
+
+    useEffect(() => {
+        refresh.current = {};
+        requestRefresh();
+        return () => {
+            refresh.current.request.abort();
+            clearTimeout(refresh.current.schedule);
+        }
+    }, [requestRefresh]);
 
     const handleSearchChange = (e) => {
         e.preventDefault();

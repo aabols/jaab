@@ -1,22 +1,46 @@
-import React from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Group from './Group';
 import ListToolbar from './ListToolbar';
 import { sortOptions } from '../../utils/sortFunctions';
 import If from '../If';
+import { listsActions } from '../../_actions/listsActions';
 
 export default function List() {
     const { listId } = useParams();
+    const dispatch = useDispatch();
     const lists = useSelector(state => state.lists.lists);
     const allGroups = useSelector(state => state.lists.groups);
     const allItems = useSelector(state => state.lists.items);
     const sortOptionKey = useSelector(state => state.lists.settings.sortOption);
     const shoppingMode = useSelector(state => state.lists.settings.shoppingMode);
     const globalSearch = useSelector(state => state.lists.settings.globalSearch);
-
+    const refreshDelay = useSelector(state => state.lists.settings.listRefreshDelay);
+    const refresh = useRef();
     const list = lists.find(list => list.id === listId);
+
+    const requestRefresh = useMemo(() => {
+        const scheduleRefresh = () => {
+            refresh.current.schedule = setTimeout(requestRefresh, refreshDelay);
+        };
+        const requestRefresh = () => {
+            refresh.current.request = dispatch(listsActions.refreshList(list, scheduleRefresh));
+        };
+        return requestRefresh;
+    }, [dispatch, refreshDelay, list]);
+
+    useEffect(() => {
+        if (!list) return;
+        refresh.current = {};
+        list && requestRefresh();
+        return () => {
+            refresh.current.request.abort();
+            clearTimeout(refresh.current.schedule);
+        }
+    }, [requestRefresh, list]);
+
     if (!list && lists.length > 0) return <Navigate to='..' />;
 
     const sortFunction = sortOptions[sortOptionKey].fn;
