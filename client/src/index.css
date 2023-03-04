@@ -24,7 +24,8 @@ body {
 }
 
 .theme-dark {
-    --color-background: #111;
+    /*     --color-background: #111; */
+    --color-background: #131311;
     --color-accent1: #f36109;
     --color-accent2: #fff;
     --color-menu-hover: #222;
