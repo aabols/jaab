@@ -33,7 +33,6 @@ module.exports = {
             if (!userWithPassword) throw { status: 404, message: 'User not found' };
 
             if (userWithPassword.legacy) {
-                //const legacyToken = 'this is a fake legacy token'; // legacy auth
                 const legacyTokenRes = await axios.post(
                     'http://localhost:8069/legacy/api/login.php',
                     {

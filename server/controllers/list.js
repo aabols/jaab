@@ -1,11 +1,4 @@
-const { Op } = require('sequelize');
-const db = require('../db/models');
-// const List = require('../db/models/List');
-const List = db.List;
-// const User = require('../db/models/User');
-const User = db.User;
-// const ListGroup = require('../db/models/ListGroup');
-const ListGroup = db.ListGroup;
+const { List, User, ListGroup, Sequelize: { Op } } = require('../db/models');
 
 module.exports = {
     getList: async (req, res) => {

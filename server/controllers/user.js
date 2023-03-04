@@ -1,9 +1,8 @@
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
-const { Op } = require('sequelize');
-const { User } = require('../db/models');
 const config = require('../config');
 const JWT_SECRET_KEY = config.server.jwtKey;
+const { User, Sequelize: { Op } } = require('../db/models');
 
 module.exports = {
     getUsers: async (req, res) => {
@@ -44,26 +43,19 @@ module.exports = {
 
     migrateUser: async (req, res) => {
         try {
-            // destructure request body
             const { user: { username, ...rest }, legacyUser: { token, user: { name: legacyUsername } } } = req.body;
             try {
-                // validate legacy token
-                // assume valid, otherwise uncomment the below:
                 await axios.post(
                     'http://localhost:8069/legacy/api/validate.php',
                     { token }
                 );
             } catch (err) {
-                // if invalid token, throw error
                 throw { status: 401, message: 'Unauthorized' };
             }
-            // find legacy account
             const legacyUser = await User.scope('auth').findOne({
                 where: { username: legacyUsername, legacy: true },
             });
-            // if legacy account not found, throw error
             if (!legacyUser) throw { status: 404, message: 'Old account not found' };
-            // if same username, update details and send new token
             let user;
             let newToken;
             if (username === legacyUsername) {
@@ -77,14 +69,10 @@ module.exports = {
                 })
                 return;
             }
-            // new username
-            // find existing account
             const existingUser = await User.findOne({
                 where: { username },
             });
-            // if username already taken, throw error
             if (existingUser) throw { status: 409, message: 'Username already in use' };
-            // username available, update details and send new token
             legacyUser.set({
                 ...rest,
                 username,
