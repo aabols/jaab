@@ -1,4 +1,4 @@
-const { List, User, ListGroup, Sequelize: { Op } } = require('../db/models');
+const { List, User, ListGroup, ListItem, Sequelize: { Op } } = require('../db/models');
 
 module.exports = {
     getList: async (req, res) => {
@@ -14,7 +14,10 @@ module.exports = {
                         required: true,
                         attributes: [],
                     },
-                    ListGroup,
+                    {
+                        model: ListGroup,
+                        include: ListItem,
+                    },
                 ]
             });
             if (!list) throw { status: 404, message: 'List not found' };
