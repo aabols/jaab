@@ -6,7 +6,6 @@ on:
     - trunk
     paths:
     - 'client/**'
-    - '.github/workflows/deploy-client.yml'
 
 jobs:
   client:
@@ -35,7 +34,4 @@ jobs:
         ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
     - name: Deploy built app to server
       run: |
-        mkdir -p ~/deployment
-        cp -r client/build ~/deployment/
-        ssh github@jaab.dev "mkdir -p /var/www/test.jaab.dev/client"
-        rsync -av --delete ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/client/
+        rsync -av --delete client/build/ github@jaab.dev:/var/www/test.jaab.dev/client/build/

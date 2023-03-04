@@ -1,15 +1,16 @@
-name: Deploy code to server
+name: Deploy package and build server
 
 on:
   push:
     branches: 
     - trunk
     paths:
-    - 'server/**'
+    - 'package.json'
+    - 'package.lock.json'
 
 jobs:
   server:
-    name: Deploy code to server
+    name: Deploy package and build server
     concurrency: server_restart
     runs-on: ubuntu-latest
     steps:
@@ -23,10 +24,13 @@ jobs:
         ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
     - name: Deploy code to server
       run: |
-        rsync -av --delete --exclude='.env' server/ github@jaab.dev:/var/www/test.jaab.dev/server/
+        mkdir -p ~/deployment
+        cp package.json ~/deployment/
+        cp package-lock.json ~/deployment/
+        rsync -av ~/deployment/ github@jaab.dev:/var/www/test.jaab.dev/
     - name: Stop server
       run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-stop"
-    - name: Migrate database
-      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run db-migrate"
+    - name: Install dependencies on server
+      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm install"
     - name: Start server
       run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-start"
