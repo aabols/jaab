@@ -41,5 +41,12 @@
 			"    e.preventDefault();""    $0",
 			"};"
 		]
+	},
+	"Console log": {
+		"scope": "javascript",
+		"prefix": "clg",
+		"body": [
+			"console.log($0);"
+		]
 	}
 }
