@@ -1,9 +1,10 @@
 import { themeConstants } from "../_constants/themeConstants";
 
 const prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const themeSetting = localStorage.getItem(themeConstants.LOCAL_STORAGE_KEY);
 
 const initialState = {
-    selectedTheme: prefersDarkTheme ? 'theme-dark' : 'theme-light',
+    selectedTheme: themeSetting || (prefersDarkTheme ? 'theme-dark' : 'theme-light'),
 };
 
 export const themeReducer = (state = initialState, action) => {

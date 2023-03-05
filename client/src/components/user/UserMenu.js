@@ -14,9 +14,19 @@ export default function UserMenu() {
 
     const handleChangeTheme = (e) => {
         e.preventDefault();
-        if (selectedTheme === 'theme-light') return dispatch({
-            type: themeConstants.SELECT_THEME_DARK
-        });
+        if (selectedTheme === 'theme-light') {
+            localStorage.setItem(
+                themeConstants.LOCAL_STORAGE_KEY,
+                'theme-dark'
+            );
+            return dispatch({
+                type: themeConstants.SELECT_THEME_DARK
+            });
+        }
+        localStorage.setItem(
+            themeConstants.LOCAL_STORAGE_KEY,
+            'theme-light'
+        );
         dispatch({ type: themeConstants.SELECT_THEME_LIGHT });
     };
 
