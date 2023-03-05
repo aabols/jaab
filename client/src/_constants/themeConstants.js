@@ -2,4 +2,6 @@ export const themeConstants = {
     SELECT_THEME_LIGHT: 'THEME_SELECT_THEME_LIGHT',
     SELECT_THEME_DARK: 'THEME_SELECT_THEME_DARK',
     LOCAL_STORAGE_KEY: 'THEME',
+    LIGHT_THEME_CLASSNAME: 'theme-light',
+    DARK_THEME_CLASSNAME: 'theme-dark',
 };
