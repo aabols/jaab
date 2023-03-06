@@ -3,7 +3,7 @@ import { sortOptions } from '../utils/sortFunctions';
 
 const initialState = {
     listsRefreshDelay: 5000,
-    listRefreshDelay: 3000,
+    listRefreshDelay: 2000,
     sortOption: Object.keys(sortOptions)[0],
     shoppingMode: false,
     globalSearch: '',
