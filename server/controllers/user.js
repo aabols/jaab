@@ -9,6 +9,7 @@ module.exports = {
         try {
             const query = req.query.q;
             if (!query) throw { status: 400, message: 'Missing search query' };
+            if (query.length < 3) throw { status: 400, message: 'Query too short' };
             const users = await User.findAll({
                 limit: 10,
                 where: {

@@ -24,7 +24,7 @@ export default function ListSharing({ list }) {
     }, []);
 
     useEffect(() => {
-        if (!shareInput) {
+        if (shareInput.length < 3) {
             setUsersFound([]);
             return;
         }
