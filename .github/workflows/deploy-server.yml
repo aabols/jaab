@@ -20,13 +20,13 @@ jobs:
         mkdir ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan jaab.dev >> ~/.ssh/known_hosts
+        ssh-keyscan ${{ secrets.TEST_SERVER_HOST }} >> ~/.ssh/known_hosts
     - name: Deploy code to server
       run: |
-        rsync -av --delete --exclude='.env' server/ github@jaab.dev:/var/www/test.jaab.dev/server/
+        rsync -av --delete --exclude='.env' server/ ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_HOST }}:${{ secrets.TEST_SERVER_ROOT }}/server/
     - name: Stop server
-      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-stop"
+      run: ssh ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_HOST }} "cd ${{ secrets.TEST_SERVER_ROOT }}/server && npx pm2 stop ${{ secrets.TEST_SERVER_NAME }}"
     - name: Migrate database
-      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run db-migrate"
+      run: ssh ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_HOST }} "cd ${{ secrets.TEST_SERVER_ROOT }} && npm run db-migrate"
     - name: Start server
-      run: ssh github@jaab.dev "cd /var/www/test.jaab.dev && npm run test-start"
+      run: ssh ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_HOST }} "cd ${{ secrets.TEST_SERVER_ROOT }}/server && npx pm2 start index.js --name ${{ secrets.TEST_SERVER_NAME }}"
