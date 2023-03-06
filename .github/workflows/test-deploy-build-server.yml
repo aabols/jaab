@@ -1,4 +1,4 @@
-name: Deploy package and build server
+name: TEST | Deploy package and build server
 
 on:
   push:

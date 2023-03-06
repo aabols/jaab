@@ -1,4 +1,4 @@
-name: Deploy code to server
+name: TEST | Deploy code to server
 
 on:
   push:
