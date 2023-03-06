@@ -16,9 +16,9 @@ export default function UserMenu() {
     const handleChangeTheme = (e) => {
         e.preventDefault();
         if (selectedTheme === themeConstants.LIGHT_THEME_CLASSNAME) {
-            settingsActions.setDarkTheme();
+            dispatch(settingsActions.setDarkTheme());
         } else {
-            settingsActions.setLightTheme();
+            dispatch(settingsActions.setLightTheme());
         }
     };
 
