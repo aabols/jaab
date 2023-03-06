@@ -4,6 +4,7 @@ import Popup from 'reactjs-popup';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMenuSharp, IoPersonSharp } from 'react-icons/io5';
 import { userActions } from '../../_actions/userActions';
+import { settingsActions } from '../../_actions/settingsActions';
 import { themeConstants } from '../../_constants/themeConstants';
 
 export default function UserMenu() {
@@ -14,20 +15,11 @@ export default function UserMenu() {
 
     const handleChangeTheme = (e) => {
         e.preventDefault();
-        if (selectedTheme === 'theme-light') {
-            localStorage.setItem(
-                themeConstants.LOCAL_STORAGE_KEY,
-                'theme-dark'
-            );
-            return dispatch({
-                type: themeConstants.SELECT_THEME_DARK
-            });
+        if (selectedTheme === themeConstants.LIGHT_THEME_CLASSNAME) {
+            settingsActions.setDarkTheme();
+        } else {
+            settingsActions.setLightTheme();
         }
-        localStorage.setItem(
-            themeConstants.LOCAL_STORAGE_KEY,
-            'theme-light'
-        );
-        dispatch({ type: themeConstants.SELECT_THEME_LIGHT });
     };
 
     const handleLogout = (e) => {
@@ -65,7 +57,7 @@ export default function UserMenu() {
                 </div>
                 <div className='menu__divider' />
                 <div className='menu__item menu__item--centered menu__item--clickable menu__item--hoverable' onClick={handleChangeTheme}>
-                    {selectedTheme === 'theme-light' ? 'Dark mode' : 'Light mode'}
+                    {selectedTheme === themeConstants.LIGHT_THEME_CLASSNAME ? 'Dark mode' : 'Light mode'}
                 </div>
                 <div className='menu__divider' />
                 <div className='menu__item menu__item--centered menu__item--clickable menu__item--hoverable' onClick={handleLogout}>
