@@ -10,10 +10,7 @@
     "db-seed": "cd server/db && npx sequelize-cli db:seed:all",
     "db-unseed": "cd server/db && npx sequelize-cli db:seed:undo:all",
     "db-add-migration": "cd server/db && npx sequelize-cli migration:generate --name migration-name",
-    "db-add-seeder": "cd server/db && npx sequelize-cli seed:generate --name seeder-name",
-    "test-start": "cd server && npx pm2 start index.js --name test_server",
-    "test-stop": "cd server && npx pm2 stop test_server",
-    "test-restart": "cd server && npx pm2 restart test_server"
+    "db-add-seeder": "cd server/db && npx sequelize-cli seed:generate --name seeder-name"
   },
   "author": "Janis Abols",
   "license": "ISC",
