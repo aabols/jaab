@@ -1,0 +1,36 @@
+name: PROD | Deploy package and build server
+
+on:
+  push:
+    branches: 
+    - trunk
+    paths:
+    - 'package.json'
+    - 'package.lock.json'
+
+jobs:
+  server:
+    name: Deploy package and build server
+    concurrency: server_restart
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Save private key
+      run: |
+        mkdir ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan ${{ secrets.PROD_SERVER_HOST }} >> ~/.ssh/known_hosts
+    - name: Deploy code to server
+      run: |
+        mkdir -p ~/deployment
+        cp package.json ~/deployment/
+        cp package-lock.json ~/deployment/
+        rsync -av ~/deployment/ ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }}:${{ secrets.PROD_SERVER_ROOT }}/
+    - name: Stop server
+      run: ssh ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }} "cd ${{ secrets.PROD_SERVER_ROOT }}/server && npx pm2 stop ${{ secrets. TEST_SERVER_NAME }}"
+    - name: Install dependencies on server
+      run: ssh ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }} "cd ${{ secrets.PROD_SERVER_ROOT }} && npm install"
+    - name: Start server
+      run: ssh ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }} "cd ${{ secrets.PROD_SERVER_ROOT }}/server && npx pm2 start index.js --name ${{ secrets.PROD_SERVER_NAME }}"

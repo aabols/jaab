@@ -1,0 +1,32 @@
+name: PROD | Deploy code to server
+
+on:
+  push:
+    branches: 
+    - trunk
+    paths:
+    - 'server/**'
+
+jobs:
+  server:
+    name: Deploy code to server
+    concurrency: server_restart
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Save private key
+      run: |
+        mkdir ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan ${{ secrets.PROD_SERVER_HOST }} >> ~/.ssh/known_hosts
+    - name: Deploy code to server
+      run: |
+        rsync -av --delete --exclude='.env' server/ ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }}:${{ secrets.PROD_SERVER_ROOT }}/server/
+    - name: Stop server
+      run: ssh ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }} "cd ${{ secrets.PROD_SERVER_ROOT }}/server && npx pm2 stop ${{ secrets.PROD_SERVER_NAME }}"
+    - name: Migrate database
+      run: ssh ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }} "cd ${{ secrets.PROD_SERVER_ROOT }} && npm run db-migrate"
+    - name: Start server
+      run: ssh ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }} "cd ${{ secrets.PROD_SERVER_ROOT }}/server && npx pm2 start index.js --name ${{ secrets.PROD_SERVER_NAME }}"
