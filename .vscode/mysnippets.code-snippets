@@ -38,7 +38,8 @@
 		"prefix": "evh",
 		"body": [
 			"const $1 = (e) => {",
-			"    e.preventDefault();""    $0",
+			"    e.preventDefault();",
+			"    $0",
 			"};"
 		]
 	},
@@ -47,6 +48,20 @@
 		"prefix": "clg",
 		"body": [
 			"console.log($0);"
+		]
+	},
+	"React functional component": {
+		"scope": "javascript",
+		"prefix": "rfc",
+		"body": [
+			"import React from 'react';",
+			"",
+			"export default function ${1:Component}($0) {",
+			"    return (",
+			"        <div>${1:Component}</div>",
+			"    );",
+			"};",
+			""
 		]
 	}
 }
