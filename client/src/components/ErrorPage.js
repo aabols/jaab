@@ -6,7 +6,7 @@ export default function ErrorPage() {
     console.log(error);
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'center' }}>
-            <h1>Lohs esi?</h1>
+            <h1>Something went wrong...</h1>
             <p>
                 {error.status} {error.statusText} {error.message}
             </p>

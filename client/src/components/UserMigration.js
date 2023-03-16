@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { IoPersonSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import Popup from 'reactjs-popup';
-import { userActions } from '../_actions/userActions';
+import { userActions } from '../_actions/user';
 import { userConstants } from '../_constants/userConstants';
 import { userServices } from '../_services/userServices';
 

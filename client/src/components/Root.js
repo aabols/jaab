@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import React from 'react';
 
-import NavBar from './NavBar';
+import NavBar from './navBar';
 import UserMigration from './UserMigration';
 import { useSelector } from 'react-redux';
 

@@ -1,7 +1,7 @@
 import axios, { isCancel } from 'axios';
 
 import { store } from './store';
-import { userActions } from './_actions/userActions';
+import { userActions } from './_actions/user';
 
 const homepage = process.env.REACT_APP_HOMEPAGE;
 
@@ -29,6 +29,4 @@ api.interceptors.response.use(
     }
 );
 
-export {
-    api
-};
+export { api };
