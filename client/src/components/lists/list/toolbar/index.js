@@ -9,7 +9,7 @@ export default memo(ListToolbar);
 
 function ListToolbar({ listId }) {
     return (
-        <div id='ListToolbar' className='toolbar'>
+        <div id='list-toolbar'>
             <ShoppingMode />
             <AddGroup listId={listId} />
             <SearchList listId={listId} />

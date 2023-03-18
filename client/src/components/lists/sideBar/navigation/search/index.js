@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { listActions } from '../../../../_actions/list';
+import { listActions } from '../../../../../_actions/list';
 
 export default function ListSearchBox({ value, setValue }) {
     const dispatch = useDispatch();

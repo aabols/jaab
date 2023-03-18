@@ -15,7 +15,7 @@ export default function NavBar() {
         ));
 
     return (
-        <div id='navigation-bar' className='toolbar'>
+        <div id='navigation-bar'>
             <div className='toolbar__group toolbar__group--justify-left'>
                 {linkComponents}
             </div>

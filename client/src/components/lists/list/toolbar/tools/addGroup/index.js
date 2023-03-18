@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { GoDiffAdded } from 'react-icons/go';
 import Popup from 'reactjs-popup';
 import { groupActions } from '../../../../../../_actions/group';
+import Icon from '../../../../../_shared/icon';
 
 export default function AddGroup({ listId }) {
     const dispatch = useDispatch();
@@ -17,11 +18,7 @@ export default function AddGroup({ listId }) {
         titleRef.current.value = '';
     }
 
-    const trigger = (
-        <div className='icon' title='Add group'>
-            <GoDiffAdded />
-        </div>
-    );
+    const trigger = (<Icon title='Add group' icon={<GoDiffAdded />} />);
 
     const body = (
         <div className='menu'>

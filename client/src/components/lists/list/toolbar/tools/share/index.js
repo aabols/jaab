@@ -8,6 +8,7 @@ import { listsServices } from '../../../../../../_services/listsServices';
 import { userServices } from '../../../../../../_services/userServices';
 import If from '../../../../../_shared/if';
 import { useSelector } from 'react-redux';
+import Icon from '../../../../../_shared/icon';
 
 export default function ShareList({ listId }) {
     const [sharedUsers, setSharedUsers] = useState([]);
@@ -86,11 +87,7 @@ export default function ShareList({ listId }) {
         popupRef.current.close();
     };
 
-    const trigger = (
-        <div className='icon' title='Share'>
-            <BsFillPersonPlusFill />
-        </div>
-    );
+    const trigger = (<Icon title='Share' icon={<BsFillPersonPlusFill />} />);
 
     const users = sharedUsers
         .map(({ firstName, lastName, username }) => {

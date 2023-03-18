@@ -1,9 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
 import { settingsConstants } from '../../../../../../_constants/settingsConstants';
 import { RiShoppingCartFill, RiShoppingCartLine } from 'react-icons/ri';
-import If from '../../../../../_shared/if';
+import Icon from '../../../../../_shared/icon';
 
 export default function ShoppingMode() {
     const dispatch = useDispatch();
@@ -19,20 +18,11 @@ export default function ShoppingMode() {
     };
 
     return (
-        <div
-            className={classNames({
-                'icon': true,
-                'icon--disabled': globalSearch
-            })}
-            onClick={handleToggleShoppingMode}
+        <Icon
+            icon={shoppingMode ? <RiShoppingCartFill /> : <RiShoppingCartLine />}
             title='Shopping mode'
-        >
-            <If condition={shoppingMode}>
-                <RiShoppingCartFill />
-            </If>
-            <If condition={!shoppingMode}>
-                <RiShoppingCartLine />
-            </If>
-        </div>
+            disabled={globalSearch}
+            onClick={handleToggleShoppingMode}
+        />
     )
 };

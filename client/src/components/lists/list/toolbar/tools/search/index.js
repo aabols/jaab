@@ -5,6 +5,7 @@ import { BiSearch } from 'react-icons/bi';
 import Popup from 'reactjs-popup';
 import { itemActions } from '../../../../../../_actions/item';
 import { store } from '../../../../../../store';
+import Icon from '../../../../../_shared/icon';
 
 export default function SearchList({ listId }) {
     const dispatch = useDispatch();
@@ -45,11 +46,7 @@ export default function SearchList({ listId }) {
         });
     };
 
-    const trigger = (
-        <div className='icon' title='Search in list'>
-            <BiSearch />
-        </div>
-    );
+    const trigger = <Icon title='Search in list' icon={<BiSearch />} />
 
     const body = (
         <div className='menu'>

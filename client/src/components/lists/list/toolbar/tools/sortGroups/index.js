@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Popup from 'reactjs-popup';
 import { settingsConstants } from '../../../../../../_constants/settingsConstants';
 import { sortOptions } from '../../../../../../utils/sortFunctions';
-import classNames from 'classnames';
+import Icon from '../../../../../_shared/icon';
 
 const sortOptionKeys = Object.keys(sortOptions);
 
@@ -12,25 +12,17 @@ export default function SortGroups() {
     const sortMenuRef = useRef();
     const sortOption = useSelector(state => state.settings.sortOption);
 
-    const currentSortIcon = (
-        <div
-            className='icon'
-            key={sortOption}
-            title={sortOptions[sortOption].title}
-        >
-            {sortOptions[sortOption].icon()}
-        </div>
-    );
+    const currentSortIcon = <Icon
+        key={sortOption}
+        title={sortOptions[sortOption].title}
+        icon={sortOptions[sortOption].icon()}
+    />;
 
     const sortIcons = sortOptionKeys
         .map(opt => (
-            <div
-                className={classNames({
-                    'icon': true,
-                    'icon--120': true,
-                    'icon--inverted': opt === sortOption,
-                })}
+            <Icon
                 key={opt}
+                active={opt === sortOption}
                 title={sortOptions[opt].title}
                 onClick={e => {
                     e.preventDefault();
@@ -39,9 +31,8 @@ export default function SortGroups() {
                         payload: opt
                     });
                 }}
-            >
-                {sortOptions[opt].icon()}
-            </div>
+                icon={sortOptions[opt].icon()}
+            />
         ));
 
     return (
@@ -54,7 +45,7 @@ export default function SortGroups() {
             position='bottom center'
             keepTooltipInside={true}
         >
-            <div className='menu'>
+            <div id='sort-menu' className='menu'>
                 {sortIcons}
             </div>
         </Popup>

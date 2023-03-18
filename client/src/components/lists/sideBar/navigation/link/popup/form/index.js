@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listActions } from '../../../../../../_actions/list';
-import ConfirmButton from '../../../../../_shared/confirmButton';
-import SubmitButton from '../../../../../_shared/submitButton';
-import TextInput from '../../../../../_shared/textInput';
+import { listActions } from '../../../../../../../_actions/list';
+import ConfirmButton from '../../../../../../_shared/confirmButton';
+import SubmitButton from '../../../../../../_shared/submitButton';
+import TextInput from '../../../../../../_shared/textInput';
 
 export default function ListForm({ listId, onUpdate, onDelete }) {
     const titleRef = useRef();

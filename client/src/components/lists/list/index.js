@@ -33,11 +33,11 @@ export default function List() {
         .map(groupId => <Group key={groupId} listId={listId} groupId={groupId} />);
 
     return (
-        <div id='List'>
+        <div id='list'>
             <If condition={listId}>
                 <ListToolbar listId={listId} />
             </If>
-            <div id='list-groups' className='boardLayout'>
+            <div id='list-groups'>
                 {groupComponents}
             </div>
         </div>

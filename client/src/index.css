@@ -9,6 +9,7 @@ body {
 
 .theme-light {
     --color-background: #fff;
+    --color-sidebar: #eee;
     --color-accent1: #f36109;
     --color-accent2: #fff;
     --color-menu-hover: #eee;
@@ -22,6 +23,7 @@ body {
 
 .theme-dark {
     --color-background: #131311;
+    --color-sidebar: #222;
     --color-accent1: #f36109;
     --color-accent2: #fff;
     --color-menu-hover: #222;

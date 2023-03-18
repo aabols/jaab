@@ -80,7 +80,7 @@ export default function ListSharing({ list }) {
         ));
 
     return (
-        <div id='ListSharing'>
+        <div id='list-sharing'>
             <h2>{list.title}</h2>
             <form onSubmit={handleShare}>
                 <input type='text' placeholder='Share with (username)...' onChange={handleShareInputChange} value={shareInput} />
