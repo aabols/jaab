@@ -5,8 +5,8 @@ export const listsServices = {
         return api.get(`/lists/${listId}/users`, { signal });
     },
 
-    shareList: (list, username, signal) => {
-        return api.put(`/lists/${list.id}/share`, { username }, { signal });
+    shareList: (listId, username, signal) => {
+        return api.put(`/lists/${listId}/share`, { username }, { signal });
     },
 
     unshareList: (listId, username, signal) => {
