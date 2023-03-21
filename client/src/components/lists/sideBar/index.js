@@ -8,16 +8,17 @@ import ListsSettings from './settings';
 
 export default function SideBar() {
     const [selectedOption, setSelectedOption] = useState();
+    const close = () => setSelectedOption(null);
 
     const options = [
         {
             title: 'Lists',
             icon: <IoMenuSharp />,
-            body: <ListNavigation />,
+            body: <ListNavigation onNavigate={close} />,
         }, {
             title: 'Settings',
             icon: <GiSettingsKnobs />,
-            body: <ListsSettings />,
+            body: <ListsSettings onSave={close} />,
         }
     ];
 

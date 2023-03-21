@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import ListPopup from './popup';
 
-export default function ListNavLink({ listId }) {
+export default function ListNavLink({ listId, onClick }) {
     const [edit, setEdit] = useState(false);
     const title = useSelector(state => state.lists.find(list => list.id === listId).title);
 
@@ -20,6 +20,7 @@ export default function ListNavLink({ listId }) {
                 to={listId}
                 onContextMenu={handleEdit}
                 children={title}
+                onClick={onClick}
             />
             <ListPopup
                 listId={listId}

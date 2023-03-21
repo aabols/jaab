@@ -5,7 +5,7 @@ import { settingsConstants } from '../../../../_constants/settingsConstants';
 import NumberInput from '../../../_shared/numberInput';
 import SubmitButton from '../../../_shared/submitButton';
 
-export default function ListsSettings() {
+export default function ListsSettings({ onSave }) {
     const delayRef = useRef();
     const dispatch = useDispatch();
     const refreshDelay = useSelector(state => state.settings.listRefreshDelay);
@@ -13,6 +13,7 @@ export default function ListsSettings() {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(settingsActions.setRefreshDelay(delayRef.current.value));
+        onSave();
     };
 
     return (
