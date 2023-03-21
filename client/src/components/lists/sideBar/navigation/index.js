@@ -14,7 +14,9 @@ export default function ListNavigation({ onNavigate }) {
     return (
         <div id='list-navigation'>
             <ListSearchBox value={searchQuery} setValue={setSearchQuery} />
-            {lists}
+            <div id='list-navigation-items'>
+                {lists}
+            </div>
         </div>
     );
 };
