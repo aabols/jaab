@@ -10,18 +10,13 @@ module.exports = {
             const query = req.query.q;
             if (!query) throw { status: 400, message: 'Missing search query' };
             if (query.length < 3) throw { status: 400, message: 'Query too short' };
-            const users = await User.findAll({
-                limit: 10,
-                where: {
-                    [Op.or]: [
-                        { username: { [Op.substring]: query } },
-                        { firstName: { [Op.substring]: query } },
-                        { lastName: { [Op.substring]: query } },
-                    ],
-                    id: { [Op.ne]: req.user.id }
-                }
-            });
-            res.json(users);
+            const users = await User
+                .scope(
+                    { method: ['search', query, 10] },
+                    { method: ['excludeId', req.user.id] },
+                )
+                .findAll();
+            res.json(users.map(u => u.clean()));
         } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
@@ -35,8 +30,7 @@ module.exports = {
                 defaults: rest,
             });
             if (!created) throw { status: 409, message: 'Username already in use' };
-            const { firstName, lastName } = user.toJSON();
-            res.status(201).json({ username, firstName, lastName });
+            res.status(201).json(user.clean());
         } catch ({ status, message }) {
             res.status(status || 400).json({ message });
         }

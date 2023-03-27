@@ -3,8 +3,15 @@
 ### USER TOKENS
 @token1 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdXNlcjEuY29tIiwiZmlyc3ROYW1lIjoiVGVzdCIsImxhc3ROYW1lIjoiVXNlciIsImlhdCI6MTY3NjcxODQyOH0.aKP5Z-kACd5P6DqGN-Gw3G14PbBLNCGsYeaKm6i7Sso
 @token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdXNlcjIuY29tIiwiZmlyc3ROYW1lIjoiVGVzdCIsImxhc3ROYW1lIjoiVXNlciIsImlhdCI6MTY3Njc0NDUzN30.JCvzHpTJC2udRr5P0qXn64OLPa_SxfKU9yKGDt7Kfao
+#@demouser = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRlbW91c2VyIiwiZmlyc3ROYW1lIjoiRGVtbyIsImxhc3ROYW1lIjoiVXNlciIsImlhdCI6MTY3OTc4NjE5OX0.TZ5XsEoio-ezVzgWHeLNw5acdI1e2Aw-Pz_63F2V_FY
+@demouser = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRlbW91c2VyIiwiZmlyc3ROYW1lIjoiRGVtbyIsImxhc3ROYW1lIjoiVXNlciIsImlhdCI6MTY3OTg2MzA2OX0.GzgGo9WnUTB01CKgwrn9bFUQBj5x5m4p8T9VT1mcnso
 ### USER
-@token = {{token1}}
+@token = {{demouser}}
+### FIND USERS
+GET {{api}}/user?q=maj
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
 ### GET ALL LISTS
 GET {{api}}/lists/all
 Authorization: Bearer {{token}}
@@ -20,11 +27,11 @@ POST {{api}}/lists
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{ "title": "Test List 1" }
+{ "title": "Test List 4" }
 
 
 ### LIST
-@listId = 402bb753-bdcd-452d-b313-cc342b858604
+@listId = c12fb227-6087-4aba-a342-a2b1b0ce13cd
 ### GET LIST
 GET {{api}}/lists/{{listId}}
 Authorization: Bearer {{token}}
@@ -38,7 +45,28 @@ PUT {{api}}/lists/{{listId}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{ "title": "rename hopefully working" }
+{ "title": "Another list bites the dust" }
+### GET USERS
+GET {{api}}/lists/{{listId}}/users
+Authorization: Bearer {{token}}
+Content-Type: application/json
+### SHARE LIST
+PUT {{api}}/lists/{{listId}}/share
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "username": "simonmajor",
+    "role": 2
+}
+### UNSHARE LIST
+PUT {{api}}/lists/{{listId}}/unshare
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "username": "simonmajor"
+}
 ### CREATE GROUP
 POST {{api}}/lists/{{listId}}
 Authorization: Bearer {{token}}
@@ -48,11 +76,7 @@ Content-Type: application/json
 
 
 ### GROUP
-@groupId = 465c9f67-3560-4177-9a98-e0fb8ec52292
-### DELETE GROUP
-DELETE {{api}}/lists/{{listId}}/{{groupId}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
+@groupId = 78aa0b1a-dd71-4766-a1d4-a9acd73d31ed
 ### GET GROUP
 GET {{api}}/lists/{{listId}}/{{groupId}}
 Authorization: Bearer {{token}}
@@ -62,16 +86,20 @@ PUT {{api}}/lists/{{listId}}/{{groupId}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{ "title": "Renamed group 1" }
+{ "title": "Shoppings" }
+### DELETE GROUP
+DELETE {{api}}/lists/{{listId}}/{{groupId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
 ### CREATE ITEM
 POST {{api}}/lists/{{listId}}/{{groupId}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{ "title": "Test item 6" }
+{ "title": "Test item 1" }
 
 ### ITEM
-@itemId = 40b46495-483a-4107-8ca2-b28986314c13
+@itemId = 8d5f69c0-64d5-44a2-856a-46e38cffe196
 ### GET ITEM
 GET {{api}}/lists/{{listId}}/{{groupId}}/{{itemId}}
 Authorization: Bearer {{token}}
@@ -81,7 +109,10 @@ PUT {{api}}/lists/{{listId}}/{{groupId}}/{{itemId}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{ "checked": "false" }
+{
+    "checked": "true",
+    "title": "Test rename 3"
+}
 ### DELETE ITEM
 DELETE {{api}}/lists/{{listId}}/{{groupId}}/{{itemId}}
 Authorization: Bearer {{token}}

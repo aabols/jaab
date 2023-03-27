@@ -9,6 +9,8 @@ export default function ListForm({ listId, onUpdate, onDelete }) {
     const titleRef = useRef();
     const dispatch = useDispatch();
     const title = useSelector(state => state.lists.find(l => l.id === listId).title);
+    // const list = useSelector(state => state.lists.find(l => l.id === listId));
+    // console.log(list);
 
     const handleSubmit = (e) => {
         e.preventDefault();

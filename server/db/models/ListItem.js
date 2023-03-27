@@ -11,6 +11,33 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       ListItem.belongsTo(models.ListGroup);
+      ListItem.addScope('mustHaveUser', (userId) => ({
+        include: {
+          model: models.ListGroup,
+          required: true,
+          include: {
+            model: models.List,
+            required: true,
+            include: {
+              model: models.User,
+              where: { id: userId },
+              required: true,
+            },
+          },
+        }
+      }));
+    }
+    clean = (cleanOptions = {}) => {
+      const { include = [] } = cleanOptions;
+      const inclusions = {
+        // name: () => ({ attribute: value }),
+      };
+      const base = {
+        id: this.id,
+        title: this.title,
+        checked: this.checked,
+      };
+      return include.reduce((c, i) => ({ ...c, ...(inclusions[i] && inclusions[i]()) }), base);
     }
   }
   ListItem.init({

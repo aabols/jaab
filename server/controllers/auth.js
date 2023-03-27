@@ -10,16 +10,20 @@ const JWT_SECRET_KEY = config.server.jwtKey;
 module.exports = {
     loginUser: async (req, res) => {
         try {
-            const userWithPassword = await User.scope('auth').findOne({ where: { username: req.body.username } });
-            if (!userWithPassword) throw { status: 404, message: 'User not found' };
+            const user = await User.unscoped().findOne({ where: { username: req.body.username } });
+            if (!user) throw { status: 404, message: 'User not found' };
 
-            const passwordsMatch = await bcrypt.compare(req.body.password, userWithPassword.password);
-            if (!passwordsMatch) throw { status: 404, message: 'Password incorrect' };
+            const passwordsMatch = await bcrypt.compare(req.body.password, user.password);
+            if (!passwordsMatch) throw { status: 404, message: 'Incorrect password' };
 
-            const user = await User.scope('jwt').findByPk(userWithPassword.id).then(user => user.toJSON());
-            const token = jwt.sign(user, JWT_SECRET_KEY);
+            const jwtBody = {
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            };
+            const token = jwt.sign(jwtBody, JWT_SECRET_KEY);
             res.json({
-                ...user,
+                ...jwtBody,
                 token
             });
         } catch ({ status, message }) {
@@ -29,10 +33,10 @@ module.exports = {
 
     loginUserLegacy: async (req, res) => {
         try {
-            const userWithPassword = await User.scope('auth').findOne({ where: { username: req.body.username } });
-            if (!userWithPassword) throw { status: 404, message: 'User not found' };
+            const user = await User.unscoped().findOne({ where: { username: req.body.username } });
+            if (!user) throw { status: 404, message: 'User not found' };
 
-            if (userWithPassword.legacy) {
+            if (user.legacy) {
                 const legacyTokenRes = await axios.post(
                     'http://localhost:8069/legacy/api/login.php',
                     {
@@ -40,23 +44,27 @@ module.exports = {
                         pin: req.body.password,
                     }
                 );
-                if (!legacyTokenRes) throw { status: 404, message: 'Password incorrect' };
+                if (!legacyTokenRes) throw { status: 404, message: 'Incorrect password' };
                 const legacyToken = legacyTokenRes.data;
-                if (!legacyToken) throw { status: 404, message: 'Password incorrect' };
+                if (!legacyToken) throw { status: 404, message: 'Incorrect password' };
                 res.json({
-                    user: { name: userWithPassword.username },
+                    user: { name: user.username },
                     token: legacyToken,
-                })
+                });
                 return;
             }
 
-            const passwordsMatch = await bcrypt.compare(req.body.password, userWithPassword.password);
-            if (!passwordsMatch) throw { status: 404, message: 'Password incorrect' };
+            const passwordsMatch = await bcrypt.compare(req.body.password, user.password);
+            if (!passwordsMatch) throw { status: 404, message: 'Incorrect password' };
 
-            const user = await User.scope('jwt').findByPk(userWithPassword.id).then(user => user.toJSON());
-            const token = jwt.sign(user, JWT_SECRET_KEY);
+            const jwtBody = {
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            };
+            const token = jwt.sign(jwtBody, JWT_SECRET_KEY);
             res.json({
-                ...user,
+                ...jwtBody,
                 token
             });
         } catch ({ status, message }) {

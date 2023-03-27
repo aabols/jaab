@@ -1,17 +1,12 @@
-const { List, User, ListGroup, ListItem } = require('../db/models');
+const { List, User, UserList, ListGroup, ListItem } = require('../db/models');
 
 module.exports = {
     getLists: async (req, res) => {
         try {
-            const lists = await List.findAll({
-                include: {
-                    model: User,
-                    where: { id: req.user.id },
-                    required: true,
-                    attributes: [],
-                }
-            });
-            res.json(lists);
+            const lists = await List
+                .scope({ method: ['mustHaveUser', req.user.id] })
+                .findAll();
+            res.json(lists.map(l => l.clean({ include: ['role'] })));
         } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
@@ -19,9 +14,14 @@ module.exports = {
 
     addList: async (req, res) => {
         try {
-            const newList = await req.user.createList(req.body);
-            const { id, title } = newList.toJSON();
-            res.status(201).json({ id, title });
+            const role = 1;
+            const list = await req.user.createList(req.body, {
+                through: { role },
+            });
+            res.json({
+                ...list.clean(),
+                _role: role,
+            });
         } catch ({ status, message }) {
             res.status(status || 400).json({ message });
         }
@@ -29,20 +29,13 @@ module.exports = {
 
     getAllLists: async (req, res) => {
         try {
-            const lists = await List.findAll({
-                include: [
-                    {
-                        model: User,
-                        where: { id: req.user.id },
-                        required: true,
-                        attributes: [],
-                    }, {
-                        model: ListGroup,
-                        include: ListItem
-                    }
-                ]
-            });
-            res.json(lists);
+            const lists = await List
+                .scope(
+                    { method: ['mustHaveUser', req.user.id] },
+                    'includeGroupsAndItems'
+                )
+                .findAll();
+            res.json(lists.map(l => l.clean({ include: ['role', 'groupsWithItems'] })));
         } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }

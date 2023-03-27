@@ -7,8 +7,10 @@
     "dev-server": "cd server && nodemon index.js",
     "dev-client": "cd client && npm start",
     "db-migrate": "cd server/db && npx sequelize-cli db:migrate",
+    "db-emigrate-last": "cd server/db && npx sequelize-cli db:migrate:undo",
     "db-seed": "cd server/db && npx sequelize-cli db:seed:all",
     "db-unseed": "cd server/db && npx sequelize-cli db:seed:undo:all",
+    "db-unseed-last": "cd server/db && npx sequelize-cli db:seed:undo",
     "db-add-migration": "cd server/db && npx sequelize-cli migration:generate --name migration-name",
     "db-add-seeder": "cd server/db && npx sequelize-cli seed:generate --name seeder-name"
   },

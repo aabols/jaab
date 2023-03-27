@@ -3,29 +3,11 @@ const { List, User, ListGroup, ListItem } = require('../db/models');
 module.exports = {
     getListItem: async (req, res) => {
         try {
-            const listItem = await ListItem.findOne({
-                where: {
-                    id: req.params.itemId,
-                },
-                include: {
-                    model: ListGroup,
-                    required: true,
-                    attributes: [],
-                    include: {
-                        model: List,
-                        required: true,
-                        attributes: [],
-                        include: {
-                            model: User,
-                            where: { id: req.user.id },
-                            required: true,
-                            attributes: [],
-                        },
-                    },
-                },
-            });
+            const listItem = await ListItem
+                .scope({ method: ['mustHaveUser', req.user.id] })
+                .findByPk(req.params.itemId);
             if (!listItem) throw { status: 404, message: 'Item not found' };
-            res.json(listItem);
+            res.json(listItem.clean());
         } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
@@ -33,32 +15,18 @@ module.exports = {
 
     updateListItem: async (req, res) => {
         try {
-            const listItem = await ListItem.findOne({
-                where: {
-                    id: req.params.itemId,
-                },
-                include: {
-                    model: ListGroup,
-                    required: true,
-                    attributes: [],
-                    include: {
-                        model: List,
-                        required: true,
-                        attributes: [],
-                        include: {
-                            model: User,
-                            where: { id: req.user.id },
-                            required: true,
-                            attributes: [],
-                        },
-                    },
-                },
-            });
+            const listItem = await ListItem
+                .scope({ method: ['mustHaveUser', req.user.id] })
+                .findByPk(req.params.itemId);
             if (!listItem) throw { status: 404, message: 'Item not found' };
+            const role = listItem.ListGroup.List.Users[0].UserList.role;
+            if (role > 4) throw { status: 403, message: 'Insufficient role' };
             listItem.set(req.body);
-            await listItem.save({ fields: ['title', 'checked'] });
-            const { id, title, checked } = listItem;
-            res.json({ id, title, checked });
+            const fields = (role === 4)
+                ? ['checked']
+                : ['title', 'checked'];
+            await listItem.save({ fields });
+            res.json(listItem.clean());
         } catch ({ status, message }) {
             res.status(status || 400).json({ message });
         };
@@ -66,28 +34,12 @@ module.exports = {
 
     deleteListItem: async (req, res) => {
         try {
-            const listItem = await ListItem.findOne({
-                where: {
-                    id: req.params.itemId,
-                },
-                include: {
-                    model: ListGroup,
-                    required: true,
-                    attributes: [],
-                    include: {
-                        model: List,
-                        required: true,
-                        attributes: [],
-                        include: {
-                            model: User,
-                            where: { id: req.user.id },
-                            required: true,
-                            attributes: [],
-                        },
-                    },
-                },
-            });
+            const listItem = await ListItem
+                .scope({ method: ['mustHaveUser', req.user.id] })
+                .findByPk(req.params.itemId);
             if (!listItem) throw { status: 404, message: 'Item not found' };
+            const role = listItem.ListGroup.List.Users[0].UserList.role;
+            if (role > 3) throw { status: 403, message: 'Insufficient role' };
             await listItem.destroy();
             res.json({ message: 'Item deleted' });
         } catch ({ status, message }) {

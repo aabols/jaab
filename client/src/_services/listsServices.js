@@ -1,12 +1,12 @@
 import { api } from '../api';
 
 export const listsServices = {
-    getUsers: (listId, signal) => {
-        return api.get(`/lists/${listId}/users`, { signal });
+    getUsers: (listId, axiosConfig = {}) => {
+        return api.get(`/lists/${listId}/users`, axiosConfig);
     },
 
-    shareList: (listId, username, signal) => {
-        return api.put(`/lists/${listId}/share`, { username }, { signal });
+    shareList: (listId, username, role, axiosConfig = {}) => {
+        return api.put(`/lists/${listId}/share`, { username, role }, axiosConfig);
     },
 
     unshareList: (listId, username, signal) => {

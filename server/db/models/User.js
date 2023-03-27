@@ -1,5 +1,5 @@
 'use strict';
-const { Model } = require('sequelize');
+const { Model, Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
@@ -11,7 +11,47 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.belongsToMany(models.List, { through: 'UserLists' });
+      User.belongsToMany(models.List, { through: models.UserList });
+      User.addScope('mayHaveList', (listId) => ({
+        include: {
+          model: models.List,
+          where: { id: listId },
+          required: false,
+        },
+      }));
+      User.addScope('search', (query, limit) => ({
+        limit,
+        where: {
+          [Op.or]: [
+            { username: { [Op.substring]: query } },
+            { firstName: { [Op.substring]: query } },
+            { lastName: { [Op.substring]: query } },
+          ],
+        },
+      }));
+      User.addScope('excludeId', (excludeId) => ({
+        where: { id: { [Op.ne]: excludeId } },
+      }));
+      User.addScope('mustHaveList', (listId) => ({
+        include: {
+          model: models.List,
+          where: { id: listId },
+          required: true,
+        },
+      }));
+    }
+    clean = (cleanOptions = {}) => {
+      const { include = [] } = cleanOptions;
+      const inclusions = {
+        // inclusionName: () => ({attributeName: attributeValue}),
+        listRole: () => ({ _role: this.Lists[0].UserList.role }),
+      };
+      const base = {
+        username: this.username,
+        firstName: this.firstName,
+        lastName: this.lastName,
+      };
+      return include.reduce((c, i) => ({ ...c, ...(inclusions[i] && inclusions[i]()) }), base);
     }
   }
   User.init({

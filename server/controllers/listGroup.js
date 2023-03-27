@@ -1,28 +1,16 @@
-const { List, User, ListGroup, ListItem } = require('../db/models');
+const { ListGroup } = require('../db/models');
 
 module.exports = {
     getListGroup: async (req, res) => {
         try {
-            const listGroup = await ListGroup.findOne({
-                where: {
-                    id: req.params.groupId,
-                },
-                include: [
-                    {
-                        model: List,
-                        required: true,
-                        attributes: [],
-                        include: {
-                            model: User,
-                            where: { id: req.user.id },
-                            required: true,
-                        },
-                    },
-                    ListItem
-                ]
-            });
+            const listGroup = await ListGroup
+                .scope(
+                    { method: ['mustHaveUser', req.user.id] },
+                    'includeItems',
+                )
+                .findByPk(req.params.groupId);
             if (!listGroup) throw { status: 404, message: 'Group not found' };
-            res.json(listGroup);
+            res.json(listGroup.clean({ include: ['items'] }));
         } catch ({ status, message }) {
             res.status(status || 500).json({ message });
         }
@@ -30,27 +18,16 @@ module.exports = {
 
     updateListGroup: async (req, res) => {
         try {
-            const listGroup = await ListGroup.findOne({
-                where: {
-                    id: req.params.groupId,
-                },
-                include: {
-                    model: List,
-                    required: true,
-                    attributes: [],
-                    include: {
-                        model: User,
-                        where: { id: req.user.id },
-                        required: true,
-                        attributes: [],
-                    },
-                },
-            });
+            const listGroup = await ListGroup
+                .scope(
+                    { method: ['mustHaveUser', req.user.id] },
+                )
+                .findByPk(req.params.groupId);
             if (!listGroup) throw { status: 404, message: 'Group not found' };
+            if (listGroup.List.Users[0].UserList.role > 2) throw { status: 403, message: 'Insufficient role' };
             listGroup.set(req.body);
             await listGroup.save({ fields: ['title'] });
-            const { id, title } = listGroup.toJSON();
-            res.json({ id, title });
+            res.json(listGroup.clean());
         } catch ({ status, message }) {
             res.status(status || 400).json({ message });
         };
@@ -58,19 +35,13 @@ module.exports = {
 
     deleteListGroup: async (req, res) => {
         try {
-            const group = await ListGroup.findOne({
-                where: { id: req.params.groupId },
-                include: {
-                    model: List,
-                    required: true,
-                    include: {
-                        model: User,
-                        where: { id: req.user.id },
-                        required: true,
-                    }
-                }
-            });
-            if (!group) throw { status: 400, message: 'Group not found' };
+            const group = await ListGroup
+                .scope(
+                    { method: ['mustHaveUser', req.user.id] },
+                )
+                .findByPk(req.params.groupId);
+            if (!group) throw { status: 404, message: 'Group not found' };
+            if (group.List.Users[0].UserList.role > 2) throw { status: 403, message: 'Insufficient role' };
             group.destroy();
             res.json({ message: 'Group deleted' });
         } catch ({ status, message }) {
@@ -80,26 +51,15 @@ module.exports = {
 
     addListItem: async (req, res) => {
         try {
-            const listGroup = await ListGroup.findOne({
-                where: {
-                    id: req.params.groupId,
-                },
-                include: {
-                    model: List,
-                    required: true,
-                    attributes: [],
-                    include: {
-                        model: User,
-                        where: { id: req.user.id },
-                        required: true,
-                        attributes: [],
-                    },
-                },
-            });
+            const listGroup = await ListGroup
+                .scope(
+                    { method: ['mustHaveUser', req.user.id] },
+                )
+                .findByPk(req.params.groupId);
             if (!listGroup) throw { status: 404, message: 'Group not found' };
+            if (listGroup.List.Users[0].UserList.role > 3) throw { status: 403, message: 'Insufficient role' };
             const listItem = await listGroup.createListItem(req.body);
-            const { id, title, checked } = listItem.toJSON();
-            res.status(201).json({ id, title, checked });
+            res.status(201).json(listItem.clean());
         } catch ({ status, message }) {
             res.status(status || 400).json({ message });
         };

@@ -1,5 +1,5 @@
 'use strict';
-const { Model } = require('sequelize');
+const { Model, Op } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class List extends Model {
@@ -10,8 +10,36 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      List.belongsToMany(models.User, { through: 'UserLists' });
+      List.belongsToMany(models.User, { through: models.UserList });
       List.hasMany(models.ListGroup, { onDelete: 'CASCADE' });
+      List.addScope('mustHaveUser', (userId) => ({
+        include: {
+          model: models.User,
+          where: { id: userId },
+          required: true,
+        },
+      }));
+      List.addScope('includeUsers', {
+        include: models.User.unscoped()
+      });
+      List.addScope('includeGroupsAndItems', {
+        include: {
+          model: models.ListGroup,
+          include: models.ListItem
+        }
+      });
+    }
+    clean = (cleanOptions = {}) => {
+      const { include = [] } = cleanOptions;
+      const inclusions = {
+        role: () => ({ _role: this.Users[0].UserList.role }),
+        groupsWithItems: () => ({ ListGroups: this.ListGroups }),
+      };
+      const base = {
+        id: this.id,
+        title: this.title,
+      };
+      return include.reduce((c, i) => ({ ...c, ...(inclusions[i] && inclusions[i]()) }), base);
     }
   }
   List.init({
