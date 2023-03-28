@@ -38,6 +38,7 @@ export default function listsReducer(state = initialState, action) {
                 }),
             ].filter(list => !!list);
         default:
+            if (/-list-/.test(action.type) && state.length === 0) return [listReducer(undefined, fwdAction)];
             if (/-list-/.test(action.type)) return state.map(list => list.id === action.listId ? listReducer(list, fwdAction) : list);
             if (/-lists-/.test(action.type)) return state.map(list => listReducer(list, fwdAction));
             return state;
