@@ -5,10 +5,18 @@ import { GiSettingsKnobs } from 'react-icons/gi'
 import Icon from '../../_shared/icon';
 import If from '../../_shared/if';
 import ListsSettings from './settings';
+import { BsPinAngle, BsPinFill } from 'react-icons/bs';
+import { useParams } from 'react-router-dom';
 
 export default function SideBar() {
-    const [selectedOption, setSelectedOption] = useState();
-    const close = () => setSelectedOption(null);
+    const { listId } = useParams();
+    const [pinned, setPinned] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(listId ? null : 'Lists');
+
+    const close = () => {
+        if (pinned) return;
+        setSelectedOption(null);
+    };
 
     const options = [
         {
@@ -26,18 +34,30 @@ export default function SideBar() {
         key={option.title}
         title={option.title}
         icon={option.icon}
-        active={option.title === selectedOption?.title}
-        onClick={() => setSelectedOption(opt => opt?.title === option.title ? null : option)}
+        active={option.title === selectedOption}
+        onClick={() => setSelectedOption(opt => opt === option.title ? null : option.title)}
     />);
+
+    const body = options.find(o => o.title === selectedOption)?.body;
 
     return (
         <div id='side-bar'>
             <div id='side-bar-icons'>{icons}</div>
             <If condition={selectedOption}>
                 <div id='side-bar-content'>
-                    <center><b>{selectedOption?.title}</b></center>
+                    <div id='side-bar-header'>
+                        <div id='side-bar-title'>
+                            {selectedOption}
+                        </div>
+                        <div id='side-bar-pin'>
+                            <Icon
+                                icon={pinned ? <BsPinFill /> : <BsPinAngle />}
+                                onClick={() => setPinned(p => !p)}
+                            />
+                        </div>
+                    </div>
                     <div className='menu__divider' />
-                    {selectedOption?.body}
+                    {body}
                 </div>
             </If>
         </div>

@@ -44,6 +44,23 @@
     padding: 5px;
 }
 
+#side-bar-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+}
+
+#side-bar-title {
+    font-weight: bold;
+    padding: 0 1.4em;
+}
+
+#side-bar-pin {
+    position: absolute;
+    right: 0;
+}
+
 #list-navigation {
     display: flex;
     flex-direction: column;
