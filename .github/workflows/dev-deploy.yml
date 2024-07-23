@@ -1,0 +1,14 @@
+name: DEV | Deploy
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  test:
+    name: Deploy DEV
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test dev workflow
+        run: ssh ${{ secrets.PROD_SERVER_USER }}@${{secrets.PROD_SERVER_HOST}} "mkdir ${{secrets.PROD_SERVER_ROOT}}/workflow-test"
