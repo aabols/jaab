@@ -14,8 +14,7 @@ export default function SideBar() {
     const [selectedOption, setSelectedOption] = useState(listId ? null : 'Lists');
 
     const close = () => {
-        if (pinned) return;
-        setSelectedOption(null);
+        if (!pinned) setSelectedOption(null);
     };
 
     const options = [

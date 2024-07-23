@@ -15,7 +15,10 @@ export default function SearchInput({ id, label, finder, display, onSelect }) {
     }, [query]);
 
     useEffect(() => {
-        if (!debouncedQuery) return;
+        if (!debouncedQuery) {
+            setResults([]);
+            return;
+        }
         const cancel = finder(debouncedQuery, setResults);
         return cancel;
     }, [finder, debouncedQuery]);
