@@ -10,5 +10,11 @@ jobs:
     name: Deploy DEV
     runs-on: ubuntu-latest
     steps:
+      - name: Set up SSH
+        run: |
+          mkdir ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan ${{secrets.PROD_SERVER_HOST}} >> ~/.ssh/known_hosts
       - name: Test dev workflow
         run: ssh ${{ secrets.PROD_SERVER_USER }}@${{secrets.PROD_SERVER_HOST}} "mkdir ${{secrets.PROD_SERVER_ROOT}}/workflow-test"
