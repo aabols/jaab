@@ -1,0 +1,84 @@
+#food {
+  height: 100%;
+  padding: 20px;
+}
+
+.recipe__step {
+  background-color: aqua;
+}
+
+.gantt {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  /* center the chart container */
+  align-items: flex-start;
+}
+
+.gantt__chart {
+  height: 50%;
+  position: relative;
+  background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 16px;
+  overflow-x: auto;
+  /* allow horizontal scrolling when bars exceed width */
+  overflow-y: visible;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.gantt__chart::after {
+  /* give a bit of bottom space to accommodate bars */
+  content: '';
+  display: block;
+  height: 12px;
+}
+
+.gantt__bar {
+  position: absolute;
+  height: 36px;
+  background: linear-gradient(180deg, #4caf50, #388e3c);
+  border-radius: 6px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gantt__bar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.gantt__bar__label {
+  font-size: 14px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+  max-width: calc(100% - 24px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* responsive small screens */
+@media (max-width: 480px) {
+  .gantt__chart {
+    padding: 12px;
+  }
+
+  .gantt__bar {
+    height: 32px;
+    padding-left: 8px;
+  }
+
+  .gantt__bar__label {
+    font-size: 13px;
+  }
+}

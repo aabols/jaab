@@ -5,6 +5,7 @@ import MenuPopup from './menuPopup';
 export default function NavBar() {
     const links = [
         { path: '/lists', caption: 'Lists' },
+        { path: '/food', caption: 'Food' },
     ];
 
     const linkComponents = links
