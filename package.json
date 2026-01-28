@@ -4,6 +4,7 @@
   "description": "jaab.dev website",
   "main": "server/index.js",
   "scripts": {
+    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
     "dev-server": "cd server && nodemon index.js",
     "dev-client": "cd client && npm start",
     "db-migrate": "cd server/db && npx sequelize-cli db:migrate",
