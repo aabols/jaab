@@ -12,6 +12,7 @@ body {
     --color-sidebar: #eee;
     --color-accent1: #f36109;
     --color-accent2: #fff;
+    --color-accent3: #444;
     --color-menu-hover: #eee;
     --color-button-hover: #ca5b16;
     --color-disabled: #999;
@@ -26,6 +27,7 @@ body {
     --color-sidebar: #222;
     --color-accent1: #f36109;
     --color-accent2: #fff;
+    --color-accent3: #777;
     --color-menu-hover: #222;
     --color-button-hover: #d87232;
     --color-disabled: #2a2a2a;

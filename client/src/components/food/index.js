@@ -70,7 +70,7 @@ export default function Food() {
 
     return (
         <div id="food" className="food-root">
-            <SelectionMenu options={FOOD_ITEMS} onAdd={addFood} onClear={clearAll} onNew={() => setSelected({})} />
+            <SelectionMenu options={FOOD_ITEMS} onAdd={addFood} onClear={clearAll} />
             <Calculator selectedList={selectedList} totals={totals} onIncrement={addFood} onDecrement={decrementFood} onRemove={removeFood} onClear={clearAll} />
         </div>
     );

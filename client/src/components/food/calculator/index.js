@@ -1,5 +1,6 @@
 import React from 'react';
 import SelectedItemPill from '../selectedItemPill';
+import Button from '../../_shared/button'
 
 export default function Calculator({ selectedList, totals, onIncrement, onDecrement, onRemove, onClear }) {
   return (
@@ -73,7 +74,7 @@ export default function Calculator({ selectedList, totals, onIncrement, onDecrem
       </section>
 
       <div className="calc-actions">
-        <button className="btn btn-primary" onClick={onClear}>Clear all</button>
+        <Button value='Clear all' onClick={onClear} />
       </div>
     </main>
   );

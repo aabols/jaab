@@ -8,20 +8,13 @@
 /* Aside (selection menu) */
 .food-aside {
   width: 200px;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid var(--color-accent1);
   padding: 12px;
   box-sizing: border-box;
-  background: #fafafa;
 }
 
 .food-aside__title {
   margin: 0 0 8px 0;
-}
-
-.food-aside__controls {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
 }
 
 .btn {
@@ -45,12 +38,12 @@
 }
 
 .food-card {
-  border: 1px solid #eee;
+  border: 1px solid var(--color-accent1);
   padding: 8px;
   border-radius: 6px;
   margin-bottom: 8px;
   cursor: pointer;
-  background: #fff;
+  background: var(--color-background);
 }
 
 .food-card__name {
@@ -59,7 +52,7 @@
 
 .food-card__meta {
   font-size: 12px;
-  color: #555;
+  color: var(--color-accent3);
 }
 
 /* Main area */

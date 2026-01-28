@@ -1,14 +1,11 @@
 import React from 'react';
 import MenuCard from '../menuCard';
+import Button from '../../_shared/button'
 
-export default function SelectionMenu({ options, onAdd, onClear, onNew }) {
+export default function SelectionMenu({ options, onAdd, onClear }) {
   return (
     <aside className="food-aside">
       <h3 className="food-aside__title">Foods</h3>
-      <div className="food-aside__controls">
-        <button className="btn" onClick={onClear} aria-label="Clear selection">Clear</button>
-        <button className="btn" onClick={onNew} aria-label="Start new calculation">New</button>
-      </div>
 
       <div className="food-list">
         {options.map(item => (
