@@ -1,0 +1,33 @@
+#meal-planner {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    background-color: #222;
+}
+
+#meal-planner-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    font-size: 1.2em;
+}
+
+#meal-plan {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin: 8px;
+
+    background-color: #333;
+}
+
+.meal-planner__step {
+    flex-grow: 1;
+    background-color: #444;
+}

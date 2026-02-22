@@ -6,6 +6,7 @@ export default function NavBar() {
     const links = [
         { path: '/lists', caption: 'Lists' },
         { path: '/food', caption: 'Food' },
+        { path: '/meal-planner', caption: 'Meal Planner' },
     ];
 
     const linkComponents = links

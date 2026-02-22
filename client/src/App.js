@@ -10,6 +10,7 @@ import ProtectedRouteLegacy from './components/ProtectedRouteLegacy';
 import Lists from './components/lists';
 import List from './components/lists/list';
 import Food from './components/food';
+import MealPlanner from './components/mealPlanner';
 import { useSelector } from 'react-redux';
 
 const homepage = process.env.REACT_APP_HOMEPAGE;
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
                     {
                         path: 'food',
                         element: <Food />,
+                        errorElement: <ErrorPage />
+                    },
+                    {
+                        path: 'meal-planner',
+                        element: <MealPlanner />,
                         errorElement: <ErrorPage />
                     }
                 ]
